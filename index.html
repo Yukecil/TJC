@@ -793,7 +793,6 @@ h1{ font-size:26px; }
 
 </style>
 </head>
-
 <body>
 
 <div class="container" id="container">
@@ -803,10 +802,7 @@ h1{ font-size:26px; }
 <button class="icon-btn" id="themeBtn">🌸</button>
 </div>
 
-<textarea id="inputData" placeholder="请选择统计类型
-头尾统计：1234567890
-号码统计：01 23 45 12 34
-生肖统计：鼠牛虎兔龙蛇"></textarea>
+<textarea id="inputData" placeholder="请选择统计类型 头尾统计：1234567890 号码统计：01 23 45 12 34 生肖统计：鼠牛虎兔龙蛇"></textarea>
 
 <div class="toolbar">
 <select id="modeSelect">
@@ -1154,7 +1150,18 @@ if (map.hasOwnProperty(ch)) map[ch]++;
 let arr = Object.entries(map);
 if (!includeZero) arr = arr.filter(i => i[1] > 0);
 if (arr.length === 0) return null;
-arr.sort((a, b) => b[1] - a[1]);
+
+// 先按次数降序，次数相同按数字从小到大
+arr.sort((a, b) => {
+if (b[1] !== a[1]) return b[1] - a[1];
+let numA = parseInt(a[0]);
+let numB = parseInt(b[0]);
+if (!isNaN(numA) && !isNaN(numB)) {
+return numA - numB;
+}
+return String(a[0]).localeCompare(String(b[0]));
+});
+
 return arr;
 }
 
@@ -1175,6 +1182,18 @@ let count = item[1];
 if (!includeZero && count === 0) return;
 if (!group[count]) group[count] = [];
 group[count].push(item[0]);
+});
+
+// 对每个组内的项目排序（从小到大）
+Object.keys(group).forEach(count => {
+group[count].sort((a, b) => {
+let numA = parseInt(a);
+let numB = parseInt(b);
+if (!isNaN(numA) && !isNaN(numB)) {
+return numA - numB;
+}
+return String(a).localeCompare(String(b));
+});
 });
 
 let html = '';
@@ -1218,6 +1237,18 @@ if (!group[count]) group[count] = [];
 group[count].push(item[0]);
 });
 
+// 对每个组内的项目排序（从小到大）
+Object.keys(group).forEach(count => {
+group[count].sort((a, b) => {
+let numA = parseInt(a);
+let numB = parseInt(b);
+if (!isNaN(numA) && !isNaN(numB)) {
+return numA - numB;
+}
+return String(a).localeCompare(String(b));
+});
+});
+
 let html = '<div class="history-result">';
 const sortedCounts = Object.keys(group).map(Number).sort((a, b) => b - a);
 sortedCounts.forEach(count => {
@@ -1257,10 +1288,8 @@ function clearAllHistory() {
 showConfirm('确定要清除所有历史记录吗？', () => {
 localStorage.removeItem('xy_history');
 toast('历史记录已清除');
-// 刷新弹窗
 const overlay = document.querySelector('.modal-overlay');
 if (overlay) overlay.remove();
-// 重新打开
 document.getElementById('historyBtn').click();
 });
 }
@@ -1271,10 +1300,8 @@ let history = JSON.parse(localStorage.getItem('xy_history') || '[]');
 history.splice(index, 1);
 localStorage.setItem('xy_history', JSON.stringify(history));
 toast('已删除');
-// 刷新弹窗
 const overlay = document.querySelector('.modal-overlay');
 if (overlay) overlay.remove();
-// 重新打开
 document.getElementById('historyBtn').click();
 }
 
@@ -1376,7 +1403,6 @@ historyHTML += '<div class="modal-title">📜 历史记录</div>';
 if (!history.length) {
 historyHTML += '<div class="empty-history">暂无历史记录</div>';
 } else {
-// 操作栏
 historyHTML += '<div class="history-actions-bar">';
 historyHTML += '<button class="history-clear-all-btn" onclick="clearAllHistory()">🗑️ 清除全部</button>';
 historyHTML += '<button class="history-refresh-btn" onclick="closeModal();document.getElementById(\'historyBtn\').click();">🔄 刷新</button>';
