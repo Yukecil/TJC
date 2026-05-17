@@ -2,1447 +2,1310 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>咸鱼统计器 Pro</title>
-
 <meta name="theme-color" content="#ff69b4">
-
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 
 body{
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:18px;
-color:#fff;
-overflow-x:hidden;
-transition:.35s;
-background:linear-gradient(135deg,#ffdde1,#ee9ca7);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:12px;
+    color:#fff;
+    overflow-x:hidden;
+    transition:background .35s;
+    background:linear-gradient(135deg,#ffdde1,#ee9ca7);
 }
 
 body::before{
-content:"";
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 20%,rgba(255,255,255,.2),transparent 20%),
-radial-gradient(circle at 80% 40%,rgba(255,255,255,.18),transparent 20%);
-pointer-events:none;
-animation: bgPulse 8s ease-in-out infinite alternate;
-}
-
-@keyframes bgPulse {
-0% { opacity: 0.5; transform: scale(1); }
-100% { opacity: 1; transform: scale(1.1); }
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 20% 20%,rgba(255,255,255,.2),transparent 20%),
+        radial-gradient(circle at 80% 40%,rgba(255,255,255,.18),transparent 20%);
+    pointer-events:none;
+    z-index:0;
 }
 
 .container{
-width:100%;
-max-width:760px;
-background:rgba(25,25,35,.65);
-backdrop-filter:blur(18px);
-border-radius:32px;
-padding:22px;
-box-shadow:0 20px 60px rgba(0,0,0,.35);
-position:relative;
-animation: containerSlideIn .6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes containerSlideIn{
-from{ opacity:0; transform:translateY(30px) scale(0.95); }
-to{ opacity:1; transform:translateY(0) scale(1); }
+    width:100%;
+    max-width:600px;
+    background:rgba(25,25,35,.65);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-radius:24px;
+    padding:16px;
+    box-shadow:0 10px 40px rgba(0,0,0,.3);
+    position:relative;
+    z-index:1;
+    margin:0 auto;
 }
 
 .topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
 }
 
 h1{
-font-size:30px;
-background:linear-gradient(135deg,#fff,#ffd1ea);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation: titleShine 3s ease-in-out infinite;
-}
-
-@keyframes titleShine {
-0%, 100% { filter: brightness(1); }
-50% { filter: brightness(1.3); }
+    font-size:22px;
+    background:linear-gradient(135deg,#fff,#ffd1ea);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin:0;
 }
 
 .icon-btn{
-width:46px;
-height:46px;
-border-radius:50%;
-border:none;
-background:rgba(255,255,255,.12);
-color:#fff;
-font-size:20px;
-cursor:pointer;
-backdrop-filter:blur(10px);
-transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-position: relative;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    font-size:18px;
+    cursor:pointer;
+    transition:all .3s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
 }
 
-.icon-btn:hover { transform: rotate(180deg) scale(1.1); background: rgba(255,255,255,.2); }
-.icon-btn:active { transform: rotate(360deg) scale(0.9); }
-
-/* 短按提示弹窗 */
-.tip-popup {
-position: fixed;
-top: 80px;
-left: 50%;
-transform: translateX(-50%);
-background: rgba(0,0,0,.85);
-backdrop-filter: blur(10px);
-padding: 12px 20px;
-border-radius: 16px;
-z-index: 100002;
-animation: tipBounceIn .4s cubic-bezier(0.34, 1.56, 0.64, 1);
-display: flex;
-align-items: center;
-gap: 10px;
-box-shadow: 0 10px 30px rgba(0,0,0,.5);
-white-space: nowrap;
+.icon-btn:active{
+    transform:scale(.9);
+    background:rgba(255,255,255,.2);
 }
 
-@keyframes tipBounceIn {
-from { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.8); }
-to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+textarea{
+    width:100%;
+    border:none;
+    outline:none;
+    padding:12px 14px;
+    border-radius:18px;
+    margin-bottom:10px;
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    font-size:14px;
+    resize:none;
+    min-height:100px;
+    font-family:inherit;
+    line-height:1.6;
 }
 
-.tip-popup.fade-out {
-animation: tipFadeOut .3s ease forwards;
+textarea::placeholder{
+    color:rgba(255,255,255,.4);
+    font-size:13px;
 }
 
-@keyframes tipFadeOut {
-from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-to { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.9); }
+textarea:focus{
+    background:rgba(255,255,255,.12);
 }
 
-.tip-popup-icon {
-font-size: 28px;
-animation: tipIconBounce .6s ease-in-out infinite;
-}
-
-@keyframes tipIconBounce {
-0%, 100% { transform: translateY(0); }
-50% { transform: translateY(-5px); }
-}
-
-.tip-popup-text {
-font-size: 13px;
-color: rgba(255,255,255,.9);
-}
-
-.tip-popup-highlight {
-color: #ffd700;
-font-weight: 700;
-}
-
-/* 主题选择弹窗 */
-.theme-modal-overlay {
-position: fixed;
-top: 0; left: 0; right: 0; bottom: 0;
-background: rgba(0,0,0,.7);
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 100001;
-animation: fadeIn .3s ease;
-}
-
-.theme-modal {
-background: rgba(30,30,45,.95);
-backdrop-filter: blur(20px);
-border-radius: 24px;
-padding: 20px;
-width: 90%;
-max-width: 400px;
-max-height: 60vh;
-overflow-y: auto;
-box-shadow: 0 20px 60px rgba(0,0,0,.5);
-animation: modalSlideIn .4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.theme-modal-title {
-font-size: 18px;
-font-weight: 700;
-margin-bottom: 16px;
-color: #fff;
-text-align: center;
-}
-
-.theme-grid {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 10px;
-}
-
-.theme-option {
-background: rgba(255,255,255,.06);
-border-radius: 16px;
-padding: 14px 8px;
-text-align: center;
-cursor: pointer;
-transition: all 0.3s ease;
-border: 2px solid transparent;
-position: relative;
-}
-
-.theme-option:hover {
-background: rgba(255,255,255,.12);
-transform: scale(1.05);
-}
-
-.theme-option:active {
-transform: scale(0.95);
-}
-
-.theme-option.active {
-border-color: #ffd700;
-box-shadow: 0 0 20px rgba(255,215,0,.3);
-}
-
-.theme-option.active::after {
-content: '✓';
-position: absolute;
-top: -8px;
-right: -8px;
-width: 20px;
-height: 20px;
-background: #ffd700;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 12px;
-color: #000;
-font-weight: 700;
-}
-
-.theme-option-icon {
-font-size: 28px;
-margin-bottom: 6px;
-display: block;
-}
-
-.theme-option-name {
-font-size: 11px;
-opacity: 0.8;
-}
-
-.theme-preview {
-width: 100%;
-height: 20px;
-border-radius: 10px;
-margin-top: 8px;
-background: var(--preview-bg);
-}
-
-.theme-modal-close {
-width: 100%;
-padding: 10px;
-border: none;
-border-radius: 12px;
-background: rgba(255,255,255,.1);
-color: #fff;
-font-size: 14px;
-cursor: pointer;
-margin-top: 14px;
-transition: all 0.3s ease;
-}
-
-.theme-modal-close:hover {
-background: rgba(255,255,255,.2);
-}
-
-textarea,
 select{
-width:100%;
-border:none;
-outline:none;
-padding:16px;
-border-radius:22px;
-margin-bottom:14px;
-background:rgba(255,255,255,.08);
-color:#fff;
-font-size:16px;
-transition: all 0.3s ease;
+    width:100%;
+    border:none;
+    outline:none;
+    padding:12px 14px;
+    border-radius:18px;
+    margin-bottom:10px;
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    font-size:14px;
+    cursor:pointer;
+    -webkit-appearance:none;
+    appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    padding-right:36px;
 }
 
-textarea:focus,
-select:focus {
-background: rgba(255,255,255,.12);
-box-shadow: 0 0 20px rgba(255,105,180,.3);
-transform: translateY(-2px);
+select option{
+    background:#2a2a3a;
+    color:#fff;
 }
 
-textarea{ resize:none; min-height:120px; }
-textarea::placeholder{ color:rgba(255,255,255,.45); }
+/* 生肖快捷按键面板 */
+.zodiac-panel{
+    background:rgba(255,255,255,.06);
+    border-radius:18px;
+    padding:12px;
+    margin-bottom:10px;
+    display:none;
+    animation:slideDown .3s ease;
+}
 
-select { color: #fff; background: rgba(255,255,255,.15); cursor: pointer; }
-select option { background: #333; color: #fff; }
+.zodiac-panel.show{
+    display:block;
+}
 
-.toolbar{ display:flex; gap:10px; margin-bottom:14px; }
-.toolbar select{ margin:0; }
+@keyframes slideDown{
+    from{opacity:0;transform:translateY(-10px);max-height:0}
+    to{opacity:1;transform:translateY(0);max-height:300px}
+}
 
-.button-panel{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.zodiac-panel-title{
+    font-size:12px;
+    opacity:.6;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+.zodiac-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.zodiac-btn{
+    padding:10px 6px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .2s;
+    text-align:center;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.zodiac-btn:active{
+    transform:scale(.9);
+    background:rgba(255,255,255,.2);
+}
+
+.zodiac-btn:hover{
+    background:rgba(255,255,255,.15);
+}
+
+.zodiac-actions{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.zodiac-actions button{
+    flex:1;
+    padding:8px;
+    border:none;
+    border-radius:10px;
+    font-size:12px;
+    cursor:pointer;
+    transition:all .2s;
+    color:#fff;
+}
+
+.zodiac-clear-btn{
+    background:rgba(239,68,68,.3);
+}
+
+.zodiac-clear-btn:active{
+    background:rgba(239,68,68,.6);
+}
+
+.zodiac-space-btn{
+    background:rgba(255,255,255,.1);
+}
+
+.zodiac-space-btn:active{
+    background:rgba(255,255,255,.2);
+}
+
+.zodiac-undo-btn{
+    background:rgba(139,92,246,.3);
+}
+
+.zodiac-undo-btn:active{
+    background:rgba(139,92,246,.6);
+}
+
+.button-panel{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:12px;
+}
 
 button.action{
-flex:1;
-padding:14px;
-border:none;
-border-radius:18px;
-font-weight:700;
-color:#fff;
-cursor:pointer;
-transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-position: relative;
-overflow: hidden;
+    padding:12px 8px;
+    border:none;
+    border-radius:14px;
+    font-weight:700;
+    font-size:13px;
+    color:#fff;
+    cursor:pointer;
+    transition:all .2s;
+    -webkit-tap-highlight-color:transparent;
 }
 
-button.action::before {
-content: '';
-position: absolute;
-top: 50%; left: 50%;
-width: 0; height: 0;
-border-radius: 50%;
-background: rgba(255,255,255,.3);
-transform: translate(-50%, -50%);
-transition: width 0.6s, height 0.6s;
+button.action:active{
+    transform:scale(.95);
+    opacity:.8;
 }
 
-button.action:active::before { width: 300px; height: 300px; }
-button.action:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,.3); }
-button.action:active{ transform:scale(.95) translateY(0); }
+#runBtn{background:linear-gradient(135deg,#22c55e,#16a34a)}
+#copyBtn{background:linear-gradient(135deg,#facc15,#eab308);color:#000}
+#clearBtn{background:linear-gradient(135deg,#ef4444,#dc2626)}
+#historyBtn{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
 
-#runBtn{ background:linear-gradient(135deg,#22c55e,#16a34a); animation: pulseGreen 2s ease-in-out infinite; }
-
-@keyframes pulseGreen {
-0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,.4); }
-50% { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+.stats-bar{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:10px;
 }
-
-#copyBtn{ background:linear-gradient(135deg,#facc15,#eab308); }
-#clearBtn{ background:linear-gradient(135deg,#ef4444,#dc2626); }
-#historyBtn{ background:linear-gradient(135deg,#8b5cf6,#7c3aed); }
-
-.stats-bar{ display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
 
 .stat-card{
-flex:1;
-min-width:120px;
-background:rgba(255,255,255,.06);
-padding:12px;
-border-radius:18px;
-text-align:center;
-transition: all 0.3s ease;
-animation: statFloat 3s ease-in-out infinite;
+    background:rgba(255,255,255,.06);
+    padding:10px;
+    border-radius:14px;
+    text-align:center;
 }
 
-.stat-card:nth-child(2) { animation-delay: 0.5s; }
-
-@keyframes statFloat {
-0%, 100% { transform: translateY(0); }
-50% { transform: translateY(-3px); }
+.stat-card div:first-child{
+    font-size:11px;
+    opacity:.75;
+    margin-bottom:2px;
 }
 
-.stat-card:hover { background: rgba(255,255,255,.12); transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,.3); }
-.stat-card div:first-child{ opacity:.75; font-size:13px; margin-bottom:4px; }
-
-.stat-card div:last-child {
-font-size: 24px;
-font-weight: 700;
-animation: numberGlow 2s ease-in-out infinite;
-}
-
-@keyframes numberGlow {
-0%, 100% { text-shadow: 0 0 5px rgba(255,255,255,.5); }
-50% { text-shadow: 0 0 20px rgba(255,255,255,.8), 0 0 40px rgba(255,105,180,.6); }
+.stat-card div:last-child{
+    font-size:20px;
+    font-weight:700;
 }
 
 .result-wrapper{
-background:rgba(0,0,0,.22);
-border-radius:24px;
-padding:10px;
-max-height:55vh;
-overflow:auto;
-transition: all 0.3s ease;
+    background:rgba(0,0,0,.15);
+    border-radius:18px;
+    padding:8px;
+    max-height:50vh;
+    max-height:50dvh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
 }
 
-.result-wrapper::-webkit-scrollbar { width: 6px; }
-.result-wrapper::-webkit-scrollbar-track { background: rgba(255,255,255,.05); border-radius: 3px; }
-.result-wrapper::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 3px; }
-.result-wrapper::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.3); }
+.result-wrapper::-webkit-scrollbar{width:4px}
+.result-wrapper::-webkit-scrollbar-track{background:transparent}
+.result-wrapper::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
 
 .group{
-background:rgba(255,255,255,.05);
-border-radius:18px;
-margin-bottom:12px;
-overflow:hidden;
-animation: groupSlideIn .5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-.group:nth-child(1) { animation-delay: 0.1s; }
-.group:nth-child(2) { animation-delay: 0.2s; }
-.group:nth-child(3) { animation-delay: 0.3s; }
-.group:nth-child(4) { animation-delay: 0.4s; }
-.group:nth-child(5) { animation-delay: 0.5s; }
-
-@keyframes groupSlideIn {
-from { opacity: 0; transform: translateX(-20px) scale(0.95); }
-to { opacity: 1; transform: translateX(0) scale(1); }
+    background:rgba(255,255,255,.04);
+    border-radius:14px;
+    margin-bottom:8px;
+    overflow:hidden;
 }
 
 .group-header{
-padding:12px 14px;
-font-weight:700;
-background:linear-gradient(135deg,rgba(255,105,180,.45),rgba(255,105,180,.1));
-display:flex;
-justify-content:space-between;
-align-items:center;
-transition: all 0.3s ease;
+    padding:10px 12px;
+    font-weight:700;
+    font-size:14px;
+    background:linear-gradient(135deg,rgba(255,105,180,.3),rgba(255,105,180,.08));
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
-
-.group-header:hover { background:linear-gradient(135deg,rgba(255,105,180,.6),rgba(255,105,180,.2)); }
 
 .copy-small{
-border:none;
-padding:6px 12px;
-border-radius:12px;
-background:rgba(255,255,255,.15);
-color:#fff;
-cursor:pointer;
-font-size:13px;
-transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border:none;
+    padding:4px 10px;
+    border-radius:10px;
+    background:rgba(255,255,255,.15);
+    color:#fff;
+    cursor:pointer;
+    font-size:11px;
+    transition:all .2s;
 }
 
-.copy-small:hover { background: rgba(255,255,255,.3); transform: scale(1.1); }
-.copy-small:active { transform: scale(0.9); }
+.copy-small:active{
+    background:rgba(255,255,255,.3);
+    transform:scale(.9);
+}
 
-.group-items{ display:flex; flex-wrap:wrap; gap:10px; padding:14px; }
+.group-items{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:10px;
+}
 
 .item{
-padding:10px 16px;
-border-radius:16px;
-background:rgba(255,255,255,.08);
-transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-font-size:15px;
-min-width:44px;
-text-align:center;
-animation: itemPopIn .4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-cursor: pointer;
+    padding:6px 10px;
+    border-radius:12px;
+    background:rgba(255,255,255,.08);
+    font-size:13px;
+    min-width:36px;
+    text-align:center;
+    cursor:pointer;
+    transition:all .2s;
 }
 
-.item:nth-child(1) { animation-delay: 0.05s; }
-.item:nth-child(2) { animation-delay: 0.1s; }
-.item:nth-child(3) { animation-delay: 0.15s; }
-.item:nth-child(4) { animation-delay: 0.2s; }
-.item:nth-child(5) { animation-delay: 0.25s; }
-.item:nth-child(6) { animation-delay: 0.3s; }
-.item:nth-child(7) { animation-delay: 0.35s; }
-.item:nth-child(8) { animation-delay: 0.4s; }
-.item:nth-child(9) { animation-delay: 0.45s; }
-.item:nth-child(10) { animation-delay: 0.5s; }
-
-@keyframes itemPopIn {
-from { opacity: 0; transform: scale(0) rotate(-180deg); }
-to { opacity: 1; transform: scale(1) rotate(0); }
+.item:active{
+    transform:scale(.9);
+    background:rgba(255,255,255,.2);
 }
-
-.item:hover { background: rgba(255,255,255,.15); transform: translateY(-3px) scale(1.1); box-shadow: 0 5px 15px rgba(0,0,0,.3); }
 
 .item.hot{
-background:linear-gradient(135deg,#ff4757,#ff6b81);
-box-shadow:0 0 15px rgba(255,71,87,.4);
-font-weight:700;
-animation: hotGlow 1.5s ease-in-out infinite, itemPopIn .4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-@keyframes hotGlow {
-0%, 100% { box-shadow: 0 0 15px rgba(255,71,87,.4); transform: scale(1); }
-50% { box-shadow: 0 0 30px rgba(255,71,87,.8), 0 0 60px rgba(255,71,87,.4); transform: scale(1.05); }
+    background:linear-gradient(135deg,#ff4757,#ff6b81);
+    box-shadow:0 0 12px rgba(255,71,87,.3);
+    font-weight:700;
 }
 
 .item.zero{
-background:linear-gradient(135deg,#ff4757,#ff6b81);
-box-shadow:0 0 15px rgba(255,71,87,.4);
-font-weight:700;
-animation: zeroShake 0.5s ease-in-out infinite;
+    background:linear-gradient(135deg,#ff4757,#ff6b81);
+    box-shadow:0 0 8px rgba(255,71,87,.2);
+    font-weight:700;
+    animation:shake .5s ease-in-out infinite;
 }
 
-@keyframes zeroShake {
-0%, 100% { transform: translateX(0); }
-25% { transform: translateX(-5px); }
-75% { transform: translateX(5px); }
+@keyframes shake{
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-3px)}
+    75%{transform:translateX(3px)}
+}
+
+.empty{
+    padding:30px 10px;
+    text-align:center;
+    color:rgba(255,255,255,.5);
+    font-size:14px;
 }
 
 .toast{
-position:fixed;
-bottom:80px;
-left:50%;
-transform:translateX(-50%);
-background:rgba(0,0,0,.75);
-padding:12px 22px;
-border-radius:999px;
-z-index:99999;
-animation: toastSlideUp .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position:fixed;
+    bottom:80px;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(0,0,0,.8);
+    padding:10px 20px;
+    border-radius:20px;
+    z-index:99999;
+    font-size:13px;
+    animation:toastIn .3s ease;
+    pointer-events:none;
+    white-space:nowrap;
 }
 
-@keyframes toastSlideUp {
-from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.8); }
-to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+@keyframes toastIn{
+    from{opacity:0;transform:translateX(-50%) translateY(10px)}
+    to{opacity:1;transform:translateX(-50%) translateY(0)}
 }
 
-/* 粒子效果 */
-.particle {
-position: fixed;
-pointer-events: none;
-z-index: 99998;
-animation: particleFly 1s ease-out forwards;
+/* 弹窗 */
+.modal-overlay{
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,.7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:100000;
+    padding:16px;
 }
 
-@keyframes particleFly {
-0% { opacity: 1; transform: translate(0, 0) scale(1); }
-100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+.modal-content{
+    background:rgba(30,30,45,.95);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-radius:20px;
+    padding:20px;
+    width:100%;
+    max-width:500px;
+    max-height:75vh;
+    max-height:75dvh;
+    overflow-y:auto;
+    box-shadow:0 10px 40px rgba(0,0,0,.5);
 }
 
-/* 历史记录弹窗样式 */
-.modal-overlay {
-position: fixed;
-top: 0; left: 0; right: 0; bottom: 0;
-background: rgba(0,0,0,.7);
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 100000;
-animation: fadeIn .3s ease;
+.modal-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:16px;
+    text-align:center;
 }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.modal-content {
-background: rgba(30,30,45,.95);
-backdrop-filter: blur(20px);
-border-radius: 24px;
-padding: 24px;
-width: 90%;
-max-width: 500px;
-max-height: 70vh;
-overflow-y: auto;
-box-shadow: 0 20px 60px rgba(0,0,0,.5);
-animation: modalSlideIn .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+.theme-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
 }
 
-@keyframes modalSlideIn {
-from { opacity: 0; transform: scale(0.8) translateY(30px); }
-to { opacity: 1; transform: scale(1) translateY(0); }
+.theme-option{
+    background:rgba(255,255,255,.06);
+    border-radius:14px;
+    padding:12px 8px;
+    text-align:center;
+    cursor:pointer;
+    transition:all .2s;
+    border:2px solid transparent;
 }
 
-.modal-title {
-font-size: 20px;
-font-weight: 700;
-margin-bottom: 20px;
-color: #fff;
-text-align: center;
-animation: titleShine 3s ease-in-out infinite;
+.theme-option:active{
+    transform:scale(.95);
 }
 
-/* 历史记录顶部操作栏 */
-.history-actions-bar {
-display: flex;
-gap: 8px;
-margin-bottom: 14px;
+.theme-option.active{
+    border-color:#ffd700;
+    box-shadow:0 0 15px rgba(255,215,0,.3);
 }
 
-.history-actions-bar button {
-flex: 1;
-padding: 8px;
-border: none;
-border-radius: 10px;
-font-size: 12px;
-cursor: pointer;
-transition: all 0.3s ease;
-color: #fff;
+.theme-option-icon{
+    font-size:24px;
+    display:block;
+    margin-bottom:4px;
 }
 
-.history-clear-all-btn {
-background: rgba(239,68,68,.3);
+.theme-option-name{
+    font-size:11px;
+    opacity:.8;
 }
 
-.history-clear-all-btn:hover {
-background: rgba(239,68,68,.6);
+.theme-preview{
+    width:100%;
+    height:14px;
+    border-radius:7px;
+    margin-top:6px;
 }
 
-.history-refresh-btn {
-background: rgba(255,255,255,.1);
+.modal-close-btn{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    font-size:14px;
+    cursor:pointer;
+    margin-top:14px;
+    transition:all .2s;
 }
 
-.history-refresh-btn:hover {
-background: rgba(255,255,255,.2);
+.modal-close-btn:active{
+    background:rgba(255,255,255,.2);
 }
 
-.history-item {
-background: rgba(255,255,255,.08);
-border-radius: 14px;
-padding: 14px;
-margin-bottom: 10px;
-transition: all 0.3s ease;
-animation: historyItemSlide .3s ease both;
-position: relative;
+.history-actions{
+    display:flex;
+    gap:6px;
+    margin-bottom:12px;
 }
 
-.history-item:nth-child(1) { animation-delay: 0.05s; }
-.history-item:nth-child(2) { animation-delay: 0.1s; }
-.history-item:nth-child(3) { animation-delay: 0.15s; }
-.history-item:nth-child(4) { animation-delay: 0.2s; }
-.history-item:nth-child(5) { animation-delay: 0.25s; }
-
-@keyframes historyItemSlide {
-from { opacity: 0; transform: translateY(10px); }
-to { opacity: 1; transform: translateY(0); }
+.history-actions button{
+    flex:1;
+    padding:8px;
+    border:none;
+    border-radius:10px;
+    font-size:12px;
+    cursor:pointer;
+    color:#fff;
+    transition:all .2s;
 }
 
-.history-item:hover { background: rgba(255,255,255,.15); }
-
-/* 删除单条按钮 */
-.history-delete-btn {
-position: absolute;
-top: 8px;
-right: 8px;
-width: 24px;
-height: 24px;
-border-radius: 50%;
-border: none;
-background: rgba(239,68,68,.3);
-color: #fff;
-font-size: 10px;
-cursor: pointer;
-transition: all 0.3s ease;
-display: flex;
-align-items: center;
-justify-content: center;
+.history-clear-btn{
+    background:rgba(239,68,68,.3);
 }
 
-.history-delete-btn:hover {
-background: rgba(239,68,68,.8);
-transform: scale(1.2);
+.history-clear-btn:active{
+    background:rgba(239,68,68,.6);
 }
 
-.history-time { font-size: 13px; opacity: .7; margin-bottom: 6px; padding-right: 28px; }
-.history-text { font-size: 14px; word-break: break-all; opacity: .8; margin-bottom: 8px; }
-.history-mode { font-size: 12px; opacity: .6; margin-bottom: 8px; }
-
-.history-result { background: rgba(0,0,0,.2); border-radius: 12px; padding: 8px; }
-
-.history-result .history-group {
-background: rgba(255,255,255,.05);
-border-radius: 8px;
-margin-bottom: 6px;
-overflow: hidden;
-transition: all 0.3s ease;
+.history-item{
+    background:rgba(255,255,255,.06);
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:8px;
+    position:relative;
+    cursor:pointer;
+    transition:all .2s;
 }
 
-.history-result .history-group:hover { background: rgba(255,255,255,.08); transform: scale(1.02); }
-
-.history-result .history-group-header {
-padding: 6px 10px;
-font-size: 13px;
-font-weight: 600;
-background: rgba(255,105,180,.2);
-display: flex;
-justify-content: space-between;
-align-items: center;
+.history-item:active{
+    background:rgba(255,255,255,.1);
 }
 
-.history-result .history-group-items { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; }
-
-.history-result .history-item-tag {
-padding: 5px 10px;
-border-radius: 12px;
-background: rgba(255,255,255,.08);
-font-size: 12px;
-min-width: 32px;
-text-align: center;
-transition: all 0.3s ease;
+.history-delete-btn{
+    position:absolute;
+    top:8px;
+    right:8px;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    border:none;
+    background:rgba(239,68,68,.3);
+    color:#fff;
+    font-size:10px;
+    cursor:pointer;
+    transition:all .2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-.history-result .history-item-tag.hot,
-.history-result .history-item-tag.zero {
-background: linear-gradient(135deg,#ff4757,#ff6b81);
-font-weight: 600;
-animation: hotGlow 1.5s ease-in-out infinite;
+.history-delete-btn:active{
+    background:rgba(239,68,68,.7);
 }
 
-.modal-bottom-btns {
-display: flex;
-gap: 8px;
-margin-top: 14px;
+.history-time{
+    font-size:11px;
+    opacity:.6;
+    margin-bottom:4px;
+    padding-right:28px;
 }
 
-.modal-close {
-flex: 1;
-padding: 12px;
-border: none;
-border-radius: 14px;
-background: rgba(255,255,255,.1);
-color: #fff;
-font-size: 16px;
-cursor: pointer;
-transition: all 0.3s ease;
+.history-text{
+    font-size:12px;
+    opacity:.8;
+    word-break:break-all;
+    margin-bottom:4px;
 }
 
-.modal-close:hover { background: rgba(255,255,255,.2); transform: translateY(-2px); }
-.modal-close:active { transform: scale(0.95); }
-
-.empty-history {
-text-align: center;
-padding: 40px 20px;
-color: rgba(255,255,255,.5);
-font-size: 16px;
-animation: fadeIn 0.5s ease;
+.history-mode{
+    font-size:10px;
+    opacity:.5;
 }
 
-/* 确认弹窗 */
-.confirm-overlay {
-position: fixed;
-top: 0; left: 0; right: 0; bottom: 0;
-background: rgba(0,0,0,.8);
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 100003;
-animation: fadeIn .3s ease;
+.history-result{
+    background:rgba(0,0,0,.2);
+    border-radius:10px;
+    padding:6px;
+    margin-top:6px;
 }
 
-.confirm-dialog {
-background: rgba(30,30,45,.98);
-border-radius: 20px;
-padding: 24px;
-width: 85%;
-max-width: 320px;
-text-align: center;
-box-shadow: 0 20px 60px rgba(0,0,0,.5);
-animation: modalSlideIn .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+.history-result .mini-group{
+    background:rgba(255,255,255,.04);
+    border-radius:6px;
+    margin-bottom:4px;
+    overflow:hidden;
 }
 
-.confirm-text {
-font-size: 15px;
-margin-bottom: 20px;
-color: #fff;
+.history-result .mini-group-header{
+    padding:4px 8px;
+    font-size:11px;
+    font-weight:600;
+    background:rgba(255,105,180,.2);
 }
 
-.confirm-btns {
-display: flex;
-gap: 10px;
+.history-result .mini-group-items{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px;
+    padding:6px;
 }
 
-.confirm-btns button {
-flex: 1;
-padding: 10px;
-border: none;
-border-radius: 12px;
-font-size: 14px;
-cursor: pointer;
-transition: all 0.3s ease;
-color: #fff;
+.history-result .mini-item{
+    padding:3px 8px;
+    border-radius:8px;
+    background:rgba(255,255,255,.06);
+    font-size:11px;
 }
 
-.confirm-cancel {
-background: rgba(255,255,255,.1);
+.history-result .mini-item.hot{
+    background:linear-gradient(135deg,#ff4757,#ff6b81);
+    font-weight:600;
 }
 
-.confirm-cancel:hover {
-background: rgba(255,255,255,.2);
+.confirm-overlay{
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,.8);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:100001;
 }
 
-.confirm-ok {
-background: rgba(239,68,68,.5);
+.confirm-dialog{
+    background:rgba(30,30,45,.98);
+    border-radius:16px;
+    padding:20px;
+    width:85%;
+    max-width:300px;
+    text-align:center;
 }
 
-.confirm-ok:hover {
-background: rgba(239,68,68,.8);
+.confirm-text{
+    font-size:14px;
+    margin-bottom:16px;
 }
 
-@keyframes fade{
-from{ opacity:0; transform:translateX(-50%) translateY(10px); }
-to{ opacity:1; transform:translateX(-50%); }
+.confirm-btns{
+    display:flex;
+    gap:8px;
 }
 
-@media (max-width:700px){
-.container{ padding:18px; }
-h1{ font-size:26px; }
-.theme-grid { grid-template-columns: repeat(2, 1fr); }
-.tip-popup { top: 60px; padding: 10px 16px; font-size: 12px; }
-.tip-popup-icon { font-size: 24px; }
+.confirm-btns button{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    font-size:14px;
+    cursor:pointer;
+    color:#fff;
+    transition:all .2s;
 }
 
+.confirm-cancel{
+    background:rgba(255,255,255,.1);
+}
+
+.confirm-ok{
+    background:rgba(239,68,68,.5);
+}
+
+@media (max-width:400px){
+    .container{padding:12px}
+    h1{font-size:20px}
+    .zodiac-grid{grid-template-columns:repeat(3,1fr)}
+    .theme-grid{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
 
 <div class="container" id="container">
 
-<div class="topbar">
-<h1>🫧 咸鱼统计器 Pro</h1>
-<button class="icon-btn" id="themeBtn">🌸</button>
-</div>
+    <div class="topbar">
+        <h1>🫧 咸鱼统计器 Pro</h1>
+        <button class="icon-btn" id="themeBtn">🌸</button>
+    </div>
 
-<textarea id="inputData" placeholder="请选择统计类型 头尾统计：1234567890 号码统计：01 23 45 12 34 生肖统计：鼠牛虎兔龙蛇"></textarea>
+    <textarea id="inputData" placeholder="请选择统计模式后输入数据&#10;头尾统计：1234567890&#10;号码统计：01 23 45 12 34&#10;生肖统计：点击下方生肖按键快速输入"></textarea>
 
-<div class="toolbar">
-<select id="modeSelect">
-<option value="digitSplit">头尾统计</option>
-<option value="digitWhole">号码统计</option>
-<option value="shengxiao">生肖统计</option>
-</select>
-</div>
+    <!-- 生肖快捷按键面板 -->
+    <div class="zodiac-panel" id="zodiacPanel">
+        <div class="zodiac-panel-title">🐲 点击生肖快速输入</div>
+        <div class="zodiac-grid" id="zodiacGrid"></div>
+        <div class="zodiac-actions">
+            <button class="zodiac-space-btn" id="zodiacSpaceBtn">⏎ 空格</button>
+            <button class="zodiac-undo-btn" id="zodiacUndoBtn">↩ 撤销</button>
+            <button class="zodiac-clear-btn" id="zodiacClearBtn">🗑 清空</button>
+        </div>
+    </div>
 
-<div class="button-panel">
-<button class="action" id="runBtn">开始统计</button>
-<button class="action" id="copyBtn">复制统计</button>
-<button class="action" id="clearBtn">删除统计</button>
-<button class="action" id="historyBtn">历史记录</button>
-</div>
+    <select id="modeSelect">
+        <option value="digitSplit">头尾统计 (0-9)</option>
+        <option value="digitWhole">号码统计 (01-49)</option>
+        <option value="shengxiao">生肖统计</option>
+    </select>
 
-<div class="stats-bar">
-<div class="stat-card"><div>总数据</div><div id="totalData">0</div></div>
-<div class="stat-card"><div>高频数据</div><div id="hotData">0</div></div>
-</div>
+    <div class="button-panel">
+        <button class="action" id="runBtn">🚀 开始统计</button>
+        <button class="action" id="copyBtn">📋 复制结果</button>
+        <button class="action" id="clearBtn">🗑️ 清除数据</button>
+        <button class="action" id="historyBtn">📜 历史记录</button>
+    </div>
 
-<div class="result-wrapper">
-<div id="result" style="padding:25px;text-align:center;color:#ccc">暂无数据</div>
-</div>
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div>📊 总数据量</div>
+            <div id="totalData">0</div>
+        </div>
+        <div class="stat-card">
+            <div>🔥 最高频次</div>
+            <div id="hotData">-</div>
+        </div>
+    </div>
+
+    <div class="result-wrapper">
+        <div id="result">
+            <div class="empty">✨ 输入数据后点击"开始统计"</div>
+        </div>
+    </div>
 
 </div>
 
 <script>
-
-// 扩展主题库
-const themes=[
-{ bg:'linear-gradient(135deg,#ffdde1,#ee9ca7)', card:'rgba(25,25,35,.65)', icon:'🌸', name:'樱花粉' },
-{ bg:'linear-gradient(135deg,#141e30,#243b55)', card:'rgba(15,20,35,.72)', icon:'🌙', name:'深蓝夜' },
-{ bg:'linear-gradient(135deg,#11998e,#38ef7d)', card:'rgba(10,40,35,.68)', icon:'🌿', name:'翠绿林' },
-{ bg:'linear-gradient(135deg,#3a1c71,#d76d77,#ffaf7b)', card:'rgba(45,20,60,.68)', icon:'🍭', name:'糖果紫' },
-{ bg:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)', card:'rgba(20,30,45,.72)', icon:'💎', name:'深海蓝' },
-{ bg:'linear-gradient(135deg,#f5af19,#f12711)', card:'rgba(40,20,15,.7)', icon:'🔥', name:'烈焰红' },
-{ bg:'linear-gradient(135deg,#8e2de2,#4a00e0)', card:'rgba(25,15,45,.7)', icon:'💜', name:'极光紫' },
-{ bg:'linear-gradient(135deg,#00b4db,#0083b0)', card:'rgba(10,25,40,.72)', icon:'❄️', name:'冰湖蓝' },
-{ bg:'linear-gradient(135deg,#ff9966,#ff5e62)', card:'rgba(45,25,20,.68)', icon:'🧡', name:'落日橙' },
-{ bg:'linear-gradient(135deg,#232526,#414345)', card:'rgba(20,20,25,.75)', icon:'🖤', name:'暗夜黑' },
-{ bg:'linear-gradient(135deg,#e0eafc,#cfdef3)', card:'rgba(35,35,45,.65)', icon:'☁️', name:'云雾白' },
-{ bg:'linear-gradient(135deg,#ff0844,#ffb199)', card:'rgba(40,15,25,.7)', icon:'💗', name:'玫瑰金' }
+// ============ 主题配置 ============
+const themes = [
+    { bg:'linear-gradient(135deg,#ffdde1,#ee9ca7)', icon:'🌸', name:'樱花粉' },
+    { bg:'linear-gradient(135deg,#141e30,#243b55)', icon:'🌙', name:'深蓝夜' },
+    { bg:'linear-gradient(135deg,#11998e,#38ef7d)', icon:'🌿', name:'翠绿林' },
+    { bg:'linear-gradient(135deg,#3a1c71,#d76d77,#ffaf7b)', icon:'🍭', name:'糖果紫' },
+    { bg:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)', icon:'💎', name:'深海蓝' },
+    { bg:'linear-gradient(135deg,#f5af19,#f12711)', icon:'🔥', name:'烈焰红' },
+    { bg:'linear-gradient(135deg,#8e2de2,#4a00e0)', icon:'💜', name:'极光紫' },
+    { bg:'linear-gradient(135deg,#00b4db,#0083b0)', icon:'❄️', name:'冰湖蓝' },
+    { bg:'linear-gradient(135deg,#ff9966,#ff5e62)', icon:'🧡', name:'落日橙' },
+    { bg:'linear-gradient(135deg,#232526,#414345)', icon:'🖤', name:'暗夜黑' },
+    { bg:'linear-gradient(135deg,#e0eafc,#cfdef3)', icon:'☁️', name:'云雾白' },
+    { bg:'linear-gradient(135deg,#ff0844,#ffb199)', icon:'💗', name:'玫瑰金' }
 ];
 
-let themeIndex=0;
-let currentData=[];
-let highestItem='';
-let tipTimeout = null;
+// ============ 十二生肖 ============
+const zodiacAnimals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
+
+let currentData = [];
+let highestItem = '';
+let themeIndex = 0;
+let zodiacHistory = ''; // 用于撤销
+
+// ============ 初始化生肖按键 ============
+function initZodiacPanel() {
+    const grid = document.getElementById('zodiacGrid');
+    grid.innerHTML = '';
+    
+    zodiacAnimals.forEach(animal => {
+        const btn = document.createElement('button');
+        btn.className = 'zodiac-btn';
+        btn.textContent = animal;
+        btn.addEventListener('click', () => insertZodiac(animal));
+        grid.appendChild(btn);
+    });
+}
+
+// ============ 插入生肖文字 ============
+function insertZodiac(animal) {
+    const textarea = document.getElementById('inputData');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    
+    // 保存当前值用于撤销
+    zodiacHistory = text;
+    
+    // 在光标位置插入生肖
+    textarea.value = text.substring(0, start) + animal + text.substring(end);
+    
+    // 移动光标到插入文字后面
+    const newPos = start + animal.length;
+    textarea.setSelectionRange(newPos, newPos);
+    textarea.focus();
+    
+    // 震动反馈
+    if (navigator.vibrate) navigator.vibrate(15);
+}
+
+// ============ 生肖面板按钮事件 ============
+document.getElementById('zodiacSpaceBtn').addEventListener('click', () => {
+    const textarea = document.getElementById('inputData');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    
+    zodiacHistory = text;
+    textarea.value = text.substring(0, start) + ' ' + text.substring(end);
+    textarea.setSelectionRange(start + 1, start + 1);
+    textarea.focus();
+});
+
+document.getElementById('zodiacUndoBtn').addEventListener('click', () => {
+    const textarea = document.getElementById('inputData');
+    if (zodiacHistory !== '') {
+        textarea.value = zodiacHistory;
+        zodiacHistory = '';
+        textarea.focus();
+        toast('已撤销 ↩');
+    } else {
+        toast('无法撤销');
+    }
+});
+
+document.getElementById('zodiacClearBtn').addEventListener('click', () => {
+    const textarea = document.getElementById('inputData');
+    zodiacHistory = textarea.value;
+    textarea.value = '';
+    textarea.focus();
+    toast('生肖输入已清空');
+});
+
+// ============ 模式切换：显示/隐藏生肖面板 ============
+document.getElementById('modeSelect').addEventListener('change', function() {
+    const mode = this.value;
+    const panel = document.getElementById('zodiacPanel');
+    
+    if (mode === 'shengxiao') {
+        panel.classList.add('show');
+        // 更新placeholder提示
+        document.getElementById('inputData').placeholder = '点击下方生肖按键快速输入\n也可以手动输入其他文字';
+    } else {
+        panel.classList.remove('show');
+        if (mode === 'digitSplit') {
+            document.getElementById('inputData').placeholder = '输入数字进行头尾统计\n例如：1234567890';
+        } else if (mode === 'digitWhole') {
+            document.getElementById('inputData').placeholder = '输入号码进行统计 (01-49)\n例如：01 23 45 12 34';
+        }
+    }
+});
 
 // ============ 应用主题 ============
 function applyTheme(index) {
-themeIndex = index;
-document.body.style.background = themes[themeIndex].bg;
-document.getElementById('container').style.background = themes[themeIndex].card;
-document.getElementById('themeBtn').innerText = themes[themeIndex].icon;
-localStorage.setItem('xy_theme', themeIndex);
-}
-
-// ============ 显示短按提示弹窗 ============
-function showTipPopup() {
-const existing = document.querySelector('.tip-popup');
-if (existing) {
-existing.classList.add('fade-out');
-setTimeout(() => existing.remove(), 300);
-}
-
-const tip = document.createElement('div');
-tip.className = 'tip-popup';
-tip.innerHTML = `
-<span class="tip-popup-icon">👆</span>
-<span class="tip-popup-text">
-<span class="tip-popup-highlight">长按</span> 即可自由选择主题
-</span>
-`;
-
-document.body.appendChild(tip);
-
-tipTimeout = setTimeout(() => {
-if (tip.parentNode) {
-tip.classList.add('fade-out');
-setTimeout(() => tip.remove(), 300);
-}
-}, 3000);
-
-tip.addEventListener('click', () => {
-clearTimeout(tipTimeout);
-tip.classList.add('fade-out');
-setTimeout(() => tip.remove(), 300);
-});
-}
-
-// ============ 隐藏提示弹窗 ============
-function hideTipPopup() {
-const tip = document.querySelector('.tip-popup');
-if (tip) {
-clearTimeout(tipTimeout);
-tip.classList.add('fade-out');
-setTimeout(() => tip.remove(), 300);
-}
-}
-
-// ============ 显示确认弹窗 ============
-function showConfirm(text, onConfirm) {
-const overlay = document.createElement('div');
-overlay.className = 'confirm-overlay';
-overlay.innerHTML = `
-<div class="confirm-dialog">
-<div class="confirm-text">${text}</div>
-<div class="confirm-btns">
-<button class="confirm-cancel">取消</button>
-<button class="confirm-ok">确定</button>
-</div>
-</div>
-`;
-
-document.body.appendChild(overlay);
-
-overlay.querySelector('.confirm-cancel').addEventListener('click', () => overlay.remove());
-overlay.querySelector('.confirm-ok').addEventListener('click', () => {
-overlay.remove();
-onConfirm();
-});
-overlay.addEventListener('click', function(e) {
-if (e.target === overlay) overlay.remove();
-});
-}
-
-// ============ 显示主题选择弹窗 ============
-function showThemePicker() {
-hideTipPopup();
-
-const existing = document.querySelector('.theme-modal-overlay');
-if (existing) existing.remove();
-
-const overlay = document.createElement('div');
-overlay.className = 'theme-modal-overlay';
-
-let html = '<div class="theme-modal">';
-html += '<div class="theme-modal-title">🎨 选择主题</div>';
-html += '<div class="theme-grid">';
-
-themes.forEach((theme, index) => {
-const activeClass = index === themeIndex ? ' active' : '';
-html += `
-<div class="theme-option${activeClass}" data-index="${index}">
-<span class="theme-option-icon">${theme.icon}</span>
-<span class="theme-option-name">${theme.name}</span>
-<div class="theme-preview" style="--preview-bg:${theme.bg}"></div>
-</div>
-`;
-});
-
-html += '</div>';
-html += '<button class="theme-modal-close" id="themeModalClose">关闭</button>';
-html += '</div>';
-
-overlay.innerHTML = html;
-document.body.appendChild(overlay);
-
-overlay.querySelectorAll('.theme-option').forEach(option => {
-option.addEventListener('click', function(e) {
-const index = parseInt(this.dataset.index);
-applyTheme(index);
-toast(`已切换至${themes[index].name}`);
-if (navigator.vibrate) navigator.vibrate(20);
-setTimeout(() => overlay.remove(), 200);
-});
-});
-
-overlay.querySelector('#themeModalClose').addEventListener('click', () => {
-overlay.remove();
-});
-
-overlay.addEventListener('click', function(e) {
-if (e.target === overlay) overlay.remove();
-});
-}
-
-// ============ 长按检测 ============
-let longPressTimer;
-let isLongPress = false;
-const themeBtn = document.getElementById('themeBtn');
-const LONG_PRESS_DURATION = 500;
-
-themeBtn.addEventListener('touchstart', function(e) {
-isLongPress = false;
-longPressTimer = setTimeout(() => {
-isLongPress = true;
-showThemePicker();
-if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
-}, LONG_PRESS_DURATION);
-});
-
-themeBtn.addEventListener('touchend', function(e) {
-clearTimeout(longPressTimer);
-if (!isLongPress) {
-e.preventDefault();
-showTipPopup();
-}
-});
-
-themeBtn.addEventListener('touchmove', function() {
-clearTimeout(longPressTimer);
-});
-
-themeBtn.addEventListener('mousedown', function(e) {
-isLongPress = false;
-longPressTimer = setTimeout(() => {
-isLongPress = true;
-showThemePicker();
-}, LONG_PRESS_DURATION);
-});
-
-themeBtn.addEventListener('mouseup', function(e) {
-clearTimeout(longPressTimer);
-if (!isLongPress) {
-showTipPopup();
-}
-});
-
-themeBtn.addEventListener('mouseleave', function() {
-clearTimeout(longPressTimer);
-});
-
-// ============ 粒子效果 ============
-function createParticles(x, y, count = 20) {
-const colors = ['#ff6b81', '#ffd700', '#00d2ff', '#ff69b4', '#7c3aed', '#22c55e'];
-const container = document.body;
-const fragment = document.createDocumentFragment();
-
-for (let i = 0; i < count; i++) {
-const particle = document.createElement('div');
-particle.className = 'particle';
-const size = Math.random() * 8 + 4;
-const angle = (Math.PI * 2 * i) / count;
-const velocity = Math.random() * 100 + 50;
-const tx = Math.cos(angle) * velocity;
-const ty = Math.sin(angle) * velocity;
-
-particle.style.cssText = `
-width: ${size}px; height: ${size}px;
-background: ${colors[Math.floor(Math.random() * colors.length)]};
-border-radius: 50%; left: ${x}px; top: ${y}px;
---tx: ${tx}px; --ty: ${ty}px;
-`;
-fragment.appendChild(particle);
-}
-
-container.appendChild(fragment);
-setTimeout(() => {
-container.querySelectorAll('.particle').forEach(p => p.remove());
-}, 1000);
-}
-
-// ============ 数字滚动动画 ============
-function animateNumber(element, targetValue) {
-const startValue = parseInt(element.innerText) || 0;
-const duration = 800;
-const startTime = performance.now();
-
-function update(currentTime) {
-const elapsed = currentTime - startTime;
-const progress = Math.min(elapsed / duration, 1);
-const easeProgress = 1 - Math.pow(1 - progress, 3);
-const currentValue = Math.round(startValue + (targetValue - startValue) * easeProgress);
-element.innerText = currentValue;
-if (progress < 1) {
-requestAnimationFrame(update);
-}
-}
-requestAnimationFrame(update);
+    themeIndex = index;
+    document.body.style.background = themes[index].bg;
+    document.getElementById('themeBtn').innerText = themes[index].icon;
+    localStorage.setItem('xy_theme', index);
 }
 
 // ============ Toast提示 ============
 function toast(text) {
-const el = document.createElement('div');
-el.className = 'toast';
-el.innerText = text;
-document.body.appendChild(el);
-setTimeout(() => {
-el.style.opacity = '0';
-el.style.transition = 'opacity 0.3s ease';
-setTimeout(() => el.remove(), 300);
-}, 2000);
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.innerText = text;
+    document.body.appendChild(el);
+    
+    setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transition = 'opacity .3s';
+        setTimeout(() => el.remove(), 300);
+    }, 1800);
 }
 
 // ============ 复制文本 ============
 function copyText(text) {
-if (navigator.clipboard && navigator.clipboard.writeText) {
-navigator.clipboard.writeText(text).then(() => toast('已复制')).catch(() => fallbackCopy(text));
-} else {
-fallbackCopy(text);
-}
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => toast('✅ 已复制')).catch(() => fallbackCopy(text));
+    } else {
+        fallbackCopy(text);
+    }
 }
 
 function fallbackCopy(text) {
-const textarea = document.createElement('textarea');
-textarea.value = text;
-textarea.style.position = 'fixed';
-textarea.style.opacity = '0';
-document.body.appendChild(textarea);
-textarea.select();
-try {
-document.execCommand('copy');
-toast('已复制');
-} catch(err) {
-toast('复制失败，请手动复制');
-}
-document.body.removeChild(textarea);
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.cssText = 'position:fixed;left:-9999px;';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        document.execCommand('copy');
+        toast('✅ 已复制');
+    } catch(e) {
+        toast('❌ 复制失败');
+    }
+    document.body.removeChild(textarea);
 }
 
-// ============ 统计核心函数 ============
+// ============ 统计核心 ============
 function stats(text, mode, includeZero = true) {
-if (!text.trim()) return null;
-const map = {};
-
-if (mode === 'digitSplit') {
-for (let i = 0; i <= 9; i++) map[String(i)] = 0;
-const digits = text.replace(/[^\d]/g, '');
-for (let i = 0; i < digits.length; i++) {
-const n = digits[i];
-map[n] = (map[n] || 0) + 1;
-}
-} else if (mode === 'digitWhole') {
-for (let i = 1; i <= 49; i++) map[String(i).padStart(2, '0')] = 0;
-const digits = text.replace(/[^\d]/g, '');
-for (let i = 0; i < digits.length - 1; i += 2) {
-let pair = digits.substr(i, 2);
-let num = parseInt(pair);
-if (num >= 1 && num <= 49) {
-let key = String(num).padStart(2, '0');
-map[key] = (map[key] || 0) + 1;
-}
-}
-} else if (mode === 'shengxiao') {
-const animals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
-animals.forEach(a => { map[a] = 0; });
-for (let i = 0; i < text.length; i++) {
-const ch = text[i];
-if (map.hasOwnProperty(ch)) map[ch]++;
-}
-}
-
-let arr = Object.entries(map);
-if (!includeZero) arr = arr.filter(i => i[1] > 0);
-if (arr.length === 0) return null;
-
-// 先按次数降序，次数相同按数字从小到大
-arr.sort((a, b) => {
-if (b[1] !== a[1]) return b[1] - a[1];
-let numA = parseInt(a[0]);
-let numB = parseInt(b[0]);
-if (!isNaN(numA) && !isNaN(numB)) {
-return numA - numB;
-}
-return String(a[0]).localeCompare(String(b[0]));
-});
-
-return arr;
+    if (!text.trim()) return null;
+    const map = {};
+    
+    if (mode === 'digitSplit') {
+        for (let i = 0; i <= 9; i++) map[String(i)] = 0;
+        const digits = text.replace(/[^\d]/g, '');
+        for (let i = 0; i < digits.length; i++) {
+            map[digits[i]] = (map[digits[i]] || 0) + 1;
+        }
+    } else if (mode === 'digitWhole') {
+        for (let i = 1; i <= 49; i++) map[String(i).padStart(2, '0')] = 0;
+        const digits = text.replace(/[^\d]/g, '');
+        for (let i = 0; i < digits.length - 1; i += 2) {
+            const pair = digits.substr(i, 2);
+            const num = parseInt(pair);
+            if (num >= 1 && num <= 49) {
+                map[pair] = (map[pair] || 0) + 1;
+            }
+        }
+    } else if (mode === 'shengxiao') {
+        zodiacAnimals.forEach(a => { map[a] = 0; });
+        for (let i = 0; i < text.length; i++) {
+            const ch = text[i];
+            if (map.hasOwnProperty(ch)) map[ch]++;
+        }
+    }
+    
+    let arr = Object.entries(map);
+    if (!includeZero) arr = arr.filter(i => i[1] > 0);
+    if (arr.length === 0) return null;
+    
+    arr.sort((a, b) => {
+        if (b[1] !== a[1]) return b[1] - a[1];
+        const numA = parseInt(a[0]);
+        const numB = parseInt(b[0]);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return String(a[0]).localeCompare(String(b[0]));
+    });
+    
+    return arr;
 }
 
-// ============ 渲染统计结果 ============
+// ============ 渲染结果 ============
 function render(data, includeZero = false) {
-if (!data || data.length === 0) {
-document.getElementById('result').innerHTML = '<div style="padding:25px;text-align:center;color:#ccc">暂无数据</div>';
-return;
-}
-
-const nonZeroData = data.filter(item => item[1] > 0);
-let maxCount = 0;
-if (nonZeroData.length > 0) maxCount = nonZeroData[0][1];
-
-let group = {};
-data.forEach(item => {
-let count = item[1];
-if (!includeZero && count === 0) return;
-if (!group[count]) group[count] = [];
-group[count].push(item[0]);
-});
-
-// 对每个组内的项目排序（从小到大）
-Object.keys(group).forEach(count => {
-group[count].sort((a, b) => {
-let numA = parseInt(a);
-let numB = parseInt(b);
-if (!isNaN(numA) && !isNaN(numB)) {
-return numA - numB;
-}
-return String(a).localeCompare(String(b));
-});
-});
-
-let html = '';
-const sortedCounts = Object.keys(group).map(Number).sort((a, b) => b - a);
-
-sortedCounts.forEach(count => {
-let items = group[count];
-const escapedItems = items.join("、").replace(/'/g, "\\'");
-
-html += `
-<div class="group">
-<div class="group-header">
-<span>✨ ${count}次</span>
-<button class="copy-small" onclick="copyText('${escapedItems}')">复制</button>
-</div>
-<div class="group-items">
-${items.map(i => {
-let isHot = (count === maxCount && count > 0);
-let isZero = (count === 0);
-let className = isHot ? 'hot' : (isZero ? 'zero' : '');
-return `<div class="item ${className}">${i}</div>`;
-}).join('')}
-</div>
-</div>`;
-});
-
-document.getElementById('result').innerHTML = html;
-document.getElementById('result').parentElement.scrollTop = 0;
+    if (!data || data.length === 0) {
+        document.getElementById('result').innerHTML = '<div class="empty">📭 暂无数据</div>';
+        return;
+    }
+    
+    const nonZeroData = data.filter(item => item[1] > 0);
+    const maxCount = nonZeroData.length > 0 ? nonZeroData[0][1] : 0;
+    
+    let group = {};
+    data.forEach(item => {
+        const count = item[1];
+        if (!includeZero && count === 0) return;
+        if (!group[count]) group[count] = [];
+        group[count].push(item[0]);
+    });
+    
+    let html = '';
+    const sortedCounts = Object.keys(group).map(Number).sort((a, b) => b - a);
+    
+    sortedCounts.forEach(count => {
+        const items = group[count];
+        const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        
+        html += `<div class="group">
+            <div class="group-header">
+                <span>✨ ${count}次</span>
+                <button class="copy-small" onclick="copyText('${escapedItems}')">📋 复制</button>
+            </div>
+            <div class="group-items">
+                ${items.map(i => {
+                    const isHot = (count === maxCount && count > 0);
+                    const isZero = (count === 0);
+                    const cls = isHot ? 'hot' : (isZero ? 'zero' : '');
+                    return `<div class="item ${cls}">${i}</div>`;
+                }).join('')}
+            </div>
+        </div>`;
+    });
+    
+    document.getElementById('result').innerHTML = html;
+    document.querySelector('.result-wrapper').scrollTop = 0;
 }
 
 // ============ 历史记录渲染 ============
 function renderHistoryResult(data) {
-if (!data || data.length === 0) return '';
-const nonZeroData = data.filter(item => item[1] > 0);
-let maxCount = nonZeroData.length > 0 ? nonZeroData[0][1] : 0;
-
-let group = {};
-data.forEach(item => {
-let count = item[1];
-if (!group[count]) group[count] = [];
-group[count].push(item[0]);
-});
-
-// 对每个组内的项目排序（从小到大）
-Object.keys(group).forEach(count => {
-group[count].sort((a, b) => {
-let numA = parseInt(a);
-let numB = parseInt(b);
-if (!isNaN(numA) && !isNaN(numB)) {
-return numA - numB;
-}
-return String(a).localeCompare(String(b));
-});
-});
-
-let html = '<div class="history-result">';
-const sortedCounts = Object.keys(group).map(Number).sort((a, b) => b - a);
-sortedCounts.forEach(count => {
-let items = group[count];
-html += `
-<div class="history-group">
-<div class="history-group-header"><span>✨ ${count}次</span></div>
-<div class="history-group-items">
-${items.map(i => {
-let isHot = (count === maxCount && count > 0);
-let isZero = (count === 0);
-let className = isHot ? 'hot' : (isZero ? 'zero' : '');
-return `<span class="history-item-tag ${className}">${i}</span>`;
-}).join('')}
-</div>
-</div>`;
-});
-html += '</div>';
-return html;
+    if (!data || data.length === 0) return '';
+    const nonZeroData = data.filter(item => item[1] > 0);
+    const maxCount = nonZeroData.length > 0 ? nonZeroData[0][1] : 0;
+    
+    let group = {};
+    data.forEach(item => {
+        const count = item[1];
+        if (count === 0) return;
+        if (!group[count]) group[count] = [];
+        group[count].push(item[0]);
+    });
+    
+    let html = '<div class="history-result">';
+    const sortedCounts = Object.keys(group).map(Number).sort((a, b) => b - a);
+    sortedCounts.forEach(count => {
+        const items = group[count];
+        html += `<div class="mini-group">
+            <div class="mini-group-header">✨ ${count}次</div>
+            <div class="mini-group-items">
+                ${items.map(i => {
+                    const cls = (count === maxCount) ? 'hot' : '';
+                    return `<span class="mini-item ${cls}">${i}</span>`;
+                }).join('')}
+            </div>
+        </div>`;
+    });
+    html += '</div>';
+    return html;
 }
 
-// ============ 保存历史记录 ============
+// ============ 保存历史 ============
 function saveHistory(text, mode, data) {
-let history = JSON.parse(localStorage.getItem('xy_history') || '[]');
-history.unshift({
-time: new Date().toLocaleString(),
-text: text.substring(0, 100),
-mode: mode,
-fullData: data
+    let history = [];
+    try {
+        history = JSON.parse(localStorage.getItem('xy_history') || '[]');
+    } catch(e) {
+        history = [];
+    }
+    
+    history.unshift({
+        time: new Date().toLocaleString('zh-CN'),
+        text: text.substring(0, 100),
+        mode: mode,
+        fullData: data
+    });
+    
+    if (history.length > 50) history = history.slice(0, 50);
+    
+    try {
+        localStorage.setItem('xy_history', JSON.stringify(history));
+    } catch(e) {
+        toast('⚠️ 存储空间不足');
+    }
+}
+
+// ============ 显示确认弹窗 ============
+function showConfirm(text, onConfirm) {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+        <div class="confirm-dialog">
+            <div class="confirm-text">${text}</div>
+            <div class="confirm-btns">
+                <button class="confirm-cancel">取消</button>
+                <button class="confirm-ok">确定</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    overlay.querySelector('.confirm-cancel').addEventListener('click', () => overlay.remove());
+    overlay.querySelector('.confirm-ok').addEventListener('click', () => {
+        overlay.remove();
+        onConfirm();
+    });
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) overlay.remove();
+    });
+}
+
+// ============ 显示主题选择 ============
+function showThemePicker() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    
+    let html = '<div class="modal-content">';
+    html += '<div class="modal-title">🎨 选择主题</div>';
+    html += '<div class="theme-grid">';
+    
+    themes.forEach((t, i) => {
+        const active = i === themeIndex ? ' active' : '';
+        html += `<div class="theme-option${active}" data-index="${i}">
+            <span class="theme-option-icon">${t.icon}</span>
+            <span class="theme-option-name">${t.name}</span>
+            <div class="theme-preview" style="background:${t.bg}"></div>
+        </div>`;
+    });
+    
+    html += '</div>';
+    html += '<button class="modal-close-btn">关闭</button>';
+    html += '</div>';
+    
+    overlay.innerHTML = html;
+    document.body.appendChild(overlay);
+    
+    overlay.querySelectorAll('.theme-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+            const index = parseInt(this.dataset.index);
+            applyTheme(index);
+            toast(`🎨 已切换至${themes[index].name}`);
+            setTimeout(() => overlay.remove(), 200);
+        });
+    });
+    
+    overlay.querySelector('.modal-close-btn').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) overlay.remove();
+    });
+}
+
+// ============ 显示历史记录 ============
+function showHistory() {
+    const history = JSON.parse(localStorage.getItem('xy_history') || '[]');
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    
+    let html = '<div class="modal-content">';
+    html += '<div class="modal-title">📜 历史记录</div>';
+    
+    if (!history.length) {
+        html += '<div class="empty">暂无历史记录</div>';
+    } else {
+        html += '<div class="history-actions">';
+        html += '<button class="history-clear-btn" id="clearAllHistory">🗑️ 清空全部</button>';
+        html += '</div>';
+        
+        history.slice(0, 20).forEach((h, i) => {
+            const modeText = h.mode === 'digitSplit' ? '头尾统计' : 
+                           (h.mode === 'digitWhole' ? '号码统计' : '生肖统计');
+            html += `<div class="history-item" data-index="${i}">
+                <button class="history-delete-btn" data-del="${i}">✕</button>
+                <div class="history-time">${i+1}. ${h.time}</div>
+                <div class="history-text">📝 ${h.text || '无数据'}</div>
+                <div class="history-mode">📋 ${modeText}</div>
+                ${h.fullData ? renderHistoryResult(h.fullData) : ''}
+            </div>`;
+        });
+    }
+    
+    html += '<button class="modal-close-btn">关闭</button>';
+    html += '</div>';
+    
+    overlay.innerHTML = html;
+    document.body.appendChild(overlay);
+    
+    // 关闭按钮
+    overlay.querySelector('.modal-close-btn').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) overlay.remove();
+    });
+    
+    // 删除单条
+    overlay.querySelectorAll('.history-delete-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const index = parseInt(this.dataset.del);
+            const h = JSON.parse(localStorage.getItem('xy_history') || '[]');
+            h.splice(index, 1);
+            localStorage.setItem('xy_history', JSON.stringify(h));
+            overlay.remove();
+            showHistory();
+        });
+    });
+    
+    // 点击恢复数据
+    overlay.querySelectorAll('.history-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const index = parseInt(this.dataset.index);
+            const h = history[index];
+            if (h) {
+                document.getElementById('inputData').value = h.text || '';
+                document.getElementById('modeSelect').value = h.mode || 'digitSplit';
+                // 触发模式切换事件
+                document.getElementById('modeSelect').dispatchEvent(new Event('change'));
+                overlay.remove();
+                toast('📥 数据已恢复，点击"开始统计"');
+            }
+        });
+    });
+    
+    // 清空全部
+    const clearBtn = overlay.querySelector('#clearAllHistory');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showConfirm('确定要清空所有历史记录吗？', () => {
+                localStorage.removeItem('xy_history');
+                overlay.remove();
+                toast('🗑️ 已清空');
+            });
+        });
+    }
+}
+
+// ============ 按钮事件 ============
+document.getElementById('runBtn').addEventListener('click', function() {
+    const text = document.getElementById('inputData').value;
+    const mode = document.getElementById('modeSelect').value;
+    const data = stats(text, mode, true);
+    
+    if (!data || data.length === 0) {
+        toast('⚠️ 请输入有效数据');
+        return;
+    }
+    
+    currentData = data;
+    const nonZeroData = data.filter(item => item[1] > 0);
+    highestItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '无';
+    
+    render(data, true);
+    
+    let total = 0;
+    if (mode === 'digitSplit') {
+        total = text.replace(/[^\d]/g, '').length;
+    } else if (mode === 'digitWhole') {
+        total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
+    } else if (mode === 'shengxiao') {
+        for (let i = 0; i < text.length; i++) {
+            if (zodiacAnimals.includes(text[i])) total++;
+        }
+    }
+    
+    document.getElementById('totalData').innerText = total;
+    document.getElementById('hotData').innerText = highestItem || '0';
+    
+    saveHistory(text, mode, data);
+    toast('✅ 统计完成！共' + total + '条');
 });
-history = history.slice(0, 50);
-localStorage.setItem('xy_history', JSON.stringify(history));
-}
 
-// ============ 清除所有历史 ============
-function clearAllHistory() {
-showConfirm('确定要清除所有历史记录吗？', () => {
-localStorage.removeItem('xy_history');
-toast('历史记录已清除');
-const overlay = document.querySelector('.modal-overlay');
-if (overlay) overlay.remove();
-document.getElementById('historyBtn').click();
-});
-}
-
-// ============ 删除单条历史 ============
-function deleteHistoryItem(index) {
-let history = JSON.parse(localStorage.getItem('xy_history') || '[]');
-history.splice(index, 1);
-localStorage.setItem('xy_history', JSON.stringify(history));
-toast('已删除');
-const overlay = document.querySelector('.modal-overlay');
-if (overlay) overlay.remove();
-document.getElementById('historyBtn').click();
-}
-
-// ============ 关闭弹窗 ============
-function closeModal() {
-const overlay = document.querySelector('.modal-overlay');
-if (overlay) {
-overlay.style.opacity = '0';
-overlay.style.transition = 'opacity 0.3s ease';
-setTimeout(() => overlay.remove(), 300);
-}
-}
-
-// ============ 按钮事件绑定 ============
-document.getElementById('runBtn').addEventListener('click', function(e) {
-const text = document.getElementById('inputData').value;
-const mode = document.getElementById('modeSelect').value;
-const data = stats(text, mode, true);
-
-if (!data || data.length === 0) {
-toast('请输入有效数据');
-if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
-return;
-}
-
-currentData = data;
-const nonZeroData = data.filter(item => item[1] > 0);
-highestItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '无';
-
-render(data, true);
-
-let total = 0;
-if (mode === 'digitSplit') {
-total = text.replace(/[^\d]/g, '').length;
-} else if (mode === 'digitWhole') {
-total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
-} else {
-const animals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
-for (let i = 0; i < text.length; i++) {
-if (animals.includes(text[i])) total++;
-}
-}
-
-animateNumber(document.getElementById('totalData'), total);
-document.getElementById('hotData').innerText = (highestItem && highestItem !== '无') ? highestItem : '0';
-
-saveHistory(text, mode, data);
-
-const rect = e.target.getBoundingClientRect();
-createParticles(rect.left + rect.width/2, rect.top + rect.height/2, 30);
-if (navigator.vibrate) navigator.vibrate(40);
-toast('统计完成 ✨');
+document.getElementById('copyBtn').addEventListener('click', function() {
+    if (!currentData.length) {
+        toast('⚠️ 暂无统计结果');
+        return;
+    }
+    
+    let text = '📊 咸鱼统计结果\n\n';
+    const group = {};
+    currentData.forEach(item => {
+        if (!group[item[1]]) group[item[1]] = [];
+        group[item[1]].push(item[0]);
+    });
+    
+    Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => {
+        text += `${count}次：${group[count].join("、")}\n`;
+    });
+    
+    copyText(text);
 });
 
-document.getElementById('copyBtn').addEventListener('click', function(e) {
-if (!currentData || !currentData.length) {
-toast('没有可复制内容');
-return;
+document.getElementById('clearBtn').addEventListener('click', function() {
+    document.getElementById('inputData').value = '';
+    document.getElementById('result').innerHTML = '<div class="empty">✨ 输入数据后点击"开始统计"</div>';
+    document.getElementById('totalData').innerText = '0';
+    document.getElementById('hotData').innerText = '-';
+    currentData = [];
+    highestItem = '';
+    zodiacHistory = '';
+    toast('🗑️ 已清除');
+});
+
+document.getElementById('historyBtn').addEventListener('click', showHistory);
+
+// ============ 主题按钮（短按提示，长按选择） ============
+let longPressTimer;
+let isLongPress = false;
+const themeBtn = document.getElementById('themeBtn');
+
+themeBtn.addEventListener('click', function(e) {
+    if (!isLongPress) {
+        showThemePicker();
+    }
+    isLongPress = false;
+});
+
+themeBtn.addEventListener('mousedown', function() {
+    isLongPress = false;
+    longPressTimer = setTimeout(() => {
+        isLongPress = true;
+        showThemePicker();
+    }, 600);
+});
+
+themeBtn.addEventListener('mouseup', () => clearTimeout(longPressTimer));
+themeBtn.addEventListener('mouseleave', () => clearTimeout(longPressTimer));
+
+themeBtn.addEventListener('touchstart', function() {
+    isLongPress = false;
+    longPressTimer = setTimeout(() => {
+        isLongPress = true;
+        showThemePicker();
+        if (navigator.vibrate) navigator.vibrate(30);
+    }, 600);
+});
+
+themeBtn.addEventListener('touchend', () => clearTimeout(longPressTimer));
+themeBtn.addEventListener('touchmove', () => clearTimeout(longPressTimer));
+
+// ============ 初始化 ============
+function init() {
+    // 初始化生肖按键面板
+    initZodiacPanel();
+    
+    // 加载主题
+    const savedTheme = localStorage.getItem('xy_theme');
+    if (savedTheme !== null && savedTheme < themes.length) {
+        applyTheme(parseInt(savedTheme));
+    }
+    
+    // 初始状态检查模式
+    if (document.getElementById('modeSelect').value === 'shengxiao') {
+        document.getElementById('zodiacPanel').classList.add('show');
+    }
 }
 
-let text = '📊 咸鱼统计结果\n\n';
-let group = {};
-currentData.forEach(item => {
-let count = item[1];
-if (!group[count]) group[count] = [];
-group[count].push(item[0]);
-});
-const sortedCounts = Object.keys(group).map(Number).sort((a, b) => b - a);
-sortedCounts.forEach(count => {
-text += `${count}次：${group[count].join("、")}\n`;
-});
-copyText(text);
-const rect = e.target.getBoundingClientRect();
-createParticles(rect.left + rect.width/2, rect.top + rect.height/2, 10);
-});
+init();
 
-document.getElementById('clearBtn').addEventListener('click', function(e) {
-document.getElementById('inputData').value = '';
-document.getElementById('result').innerHTML = '<div style="padding:25px;text-align:center;color:#ccc">暂无数据</div>';
-document.getElementById('totalData').innerText = '0';
-document.getElementById('hotData').innerText = '0';
-currentData = [];
-highestItem = '';
-const rect = e.target.getBoundingClientRect();
-createParticles(rect.left + rect.width/2, rect.top + rect.height/2, 10);
-toast('已清除');
-});
-
-document.getElementById('historyBtn').addEventListener('click', function(e) {
-const history = JSON.parse(localStorage.getItem('xy_history') || '[]');
-const rect = e.target.getBoundingClientRect();
-createParticles(rect.left + rect.width/2, rect.top + rect.height/2, 10);
-
-const overlay = document.createElement('div');
-overlay.className = 'modal-overlay';
-let historyHTML = '<div class="modal-content">';
-historyHTML += '<div class="modal-title">📜 历史记录</div>';
-
-if (!history.length) {
-historyHTML += '<div class="empty-history">暂无历史记录</div>';
-} else {
-historyHTML += '<div class="history-actions-bar">';
-historyHTML += '<button class="history-clear-all-btn" onclick="clearAllHistory()">🗑️ 清除全部</button>';
-historyHTML += '<button class="history-refresh-btn" onclick="closeModal();document.getElementById(\'historyBtn\').click();">🔄 刷新</button>';
-historyHTML += '</div>';
-
-history.slice(0, 20).forEach((h, i) => {
-const modeText = h.mode === 'digitSplit' ? '头尾统计' : (h.mode === 'digitWhole' ? '号码统计' : '生肖统计');
-historyHTML += `
-<div class="history-item">
-<button class="history-delete-btn" onclick="event.stopPropagation();deleteHistoryItem(${i})">✕</button>
-<div class="history-time">${i+1}. ${h.time}</div>
-<div class="history-text">📝 ${h.text || '无数据'}</div>
-<div class="history-mode">📋 模式：${modeText}</div>
-${h.fullData ? renderHistoryResult(h.fullData) : '<div style="color:#999;font-size:12px;">无统计数据</div>'}
-</div>`;
-});
-}
-
-historyHTML += '</div>';
-
-overlay.innerHTML = historyHTML;
-overlay.onclick = function(e) { if (e.target === overlay) closeModal(); };
-document.body.appendChild(overlay);
-});
-
-// 点击统计数字触发粒子
-document.addEventListener('click', function(e) {
-if (e.target.classList.contains('item')) {
-const rect = e.target.getBoundingClientRect();
-createParticles(rect.left + rect.width/2, rect.top + rect.height/2, 8);
-}
-});
-
-// ============ 初始化：加载保存的主题 ============
-const savedTheme = localStorage.getItem('xy_theme');
-if (savedTheme !== null && savedTheme < themes.length) {
-applyTheme(parseInt(savedTheme));
-}
-
+console.log('✅ 咸鱼统计器 Pro 已就绪');
+console.log('🐲 生肖快捷按键已加载');
+console.log('🎨 主题数量：' + themes.length);
 </script>
-
 </body>
 </html>
