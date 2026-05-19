@@ -133,102 +133,6 @@ select option{
     color:#fff;
 }
 
-/* 生肖快捷按键面板 */
-.zodiac-panel{
-    background:rgba(255,255,255,.06);
-    border-radius:18px;
-    padding:12px;
-    margin-bottom:10px;
-    display:none;
-    animation:slideDown .3s ease;
-}
-
-.zodiac-panel.show{
-    display:block;
-}
-
-@keyframes slideDown{
-    from{opacity:0;transform:translateY(-10px);max-height:0}
-    to{opacity:1;transform:translateY(0);max-height:300px}
-}
-
-.zodiac-panel-title{
-    font-size:12px;
-    opacity:.6;
-    margin-bottom:10px;
-    text-align:center;
-}
-
-.zodiac-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:8px;
-}
-
-.zodiac-btn{
-    padding:10px 6px;
-    border:none;
-    border-radius:12px;
-    background:rgba(255,255,255,.08);
-    color:#fff;
-    font-size:14px;
-    font-weight:600;
-    cursor:pointer;
-    transition:all .2s;
-    text-align:center;
-    -webkit-tap-highlight-color:transparent;
-}
-
-.zodiac-btn:active{
-    transform:scale(.9);
-    background:rgba(255,255,255,.2);
-}
-
-.zodiac-btn:hover{
-    background:rgba(255,255,255,.15);
-}
-
-.zodiac-actions{
-    display:flex;
-    gap:8px;
-    margin-top:10px;
-}
-
-.zodiac-actions button{
-    flex:1;
-    padding:8px;
-    border:none;
-    border-radius:10px;
-    font-size:12px;
-    cursor:pointer;
-    transition:all .2s;
-    color:#fff;
-}
-
-.zodiac-clear-btn{
-    background:rgba(239,68,68,.3);
-}
-
-.zodiac-clear-btn:active{
-    background:rgba(239,68,68,.6);
-}
-
-.zodiac-space-btn{
-    background:rgba(255,255,255,.1);
-}
-
-.zodiac-space-btn:active{
-    background:rgba(255,255,255,.2);
-}
-
-.zodiac-undo-btn{
-    background:rgba(139,92,246,.3);
-}
-
-.zodiac-undo-btn:active{
-    background:rgba(139,92,246,.6);
-}
-
 .button-panel{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -663,7 +567,6 @@ button.action:active{
 @media (max-width:400px){
     .container{padding:12px}
     h1{font-size:20px}
-    .zodiac-grid{grid-template-columns:repeat(3,1fr)}
     .theme-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
@@ -677,18 +580,7 @@ button.action:active{
         <button class="icon-btn" id="themeBtn">🌸</button>
     </div>
 
-    <textarea id="inputData" placeholder="请选择统计模式后输入数据&#10;头尾统计：1234567890&#10;号码统计：01 23 45 12 34&#10;生肖统计：点击下方生肖按键快速输入"></textarea>
-
-    <!-- 生肖快捷按键面板 -->
-    <div class="zodiac-panel" id="zodiacPanel">
-        <div class="zodiac-panel-title">🐲 点击生肖快速输入</div>
-        <div class="zodiac-grid" id="zodiacGrid"></div>
-        <div class="zodiac-actions">
-            <button class="zodiac-space-btn" id="zodiacSpaceBtn">⏎ 空格</button>
-            <button class="zodiac-undo-btn" id="zodiacUndoBtn">↩ 撤销</button>
-            <button class="zodiac-clear-btn" id="zodiacClearBtn">🗑 清空</button>
-        </div>
-    </div>
+    <textarea id="inputData" placeholder="请选择统计模式后输入数据&#10;头尾统计：输入数字统计0-9出现次数&#10;号码统计：输入号码统计01-49出现次数&#10;生肖统计：输入文字自动提取十二生肖统计"></textarea>
 
     <select id="modeSelect">
         <option value="digitSplit">头尾统计 (0-9)</option>
@@ -723,6 +615,9 @@ button.action:active{
 </div>
 
 <script>
+// ============ 十二生肖 ============
+const zodiacAnimals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
+
 // ============ 主题配置 ============
 const themes = [
     { bg:'linear-gradient(135deg,#ffdde1,#ee9ca7)', icon:'🌸', name:'樱花粉' },
@@ -739,99 +634,21 @@ const themes = [
     { bg:'linear-gradient(135deg,#ff0844,#ffb199)', icon:'💗', name:'玫瑰金' }
 ];
 
-// ============ 十二生肖 ============
-const zodiacAnimals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
-
 let currentData = [];
 let highestItem = '';
 let themeIndex = 0;
-let zodiacHistory = ''; // 用于撤销
 
-// ============ 初始化生肖按键 ============
-function initZodiacPanel() {
-    const grid = document.getElementById('zodiacGrid');
-    grid.innerHTML = '';
-    
-    zodiacAnimals.forEach(animal => {
-        const btn = document.createElement('button');
-        btn.className = 'zodiac-btn';
-        btn.textContent = animal;
-        btn.addEventListener('click', () => insertZodiac(animal));
-        grid.appendChild(btn);
-    });
-}
-
-// ============ 插入生肖文字 ============
-function insertZodiac(animal) {
-    const textarea = document.getElementById('inputData');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = textarea.value;
-    
-    // 保存当前值用于撤销
-    zodiacHistory = text;
-    
-    // 在光标位置插入生肖
-    textarea.value = text.substring(0, start) + animal + text.substring(end);
-    
-    // 移动光标到插入文字后面
-    const newPos = start + animal.length;
-    textarea.setSelectionRange(newPos, newPos);
-    textarea.focus();
-    
-    // 震动反馈
-    if (navigator.vibrate) navigator.vibrate(15);
-}
-
-// ============ 生肖面板按钮事件 ============
-document.getElementById('zodiacSpaceBtn').addEventListener('click', () => {
-    const textarea = document.getElementById('inputData');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = textarea.value;
-    
-    zodiacHistory = text;
-    textarea.value = text.substring(0, start) + ' ' + text.substring(end);
-    textarea.setSelectionRange(start + 1, start + 1);
-    textarea.focus();
-});
-
-document.getElementById('zodiacUndoBtn').addEventListener('click', () => {
-    const textarea = document.getElementById('inputData');
-    if (zodiacHistory !== '') {
-        textarea.value = zodiacHistory;
-        zodiacHistory = '';
-        textarea.focus();
-        toast('已撤销 ↩');
-    } else {
-        toast('无法撤销');
-    }
-});
-
-document.getElementById('zodiacClearBtn').addEventListener('click', () => {
-    const textarea = document.getElementById('inputData');
-    zodiacHistory = textarea.value;
-    textarea.value = '';
-    textarea.focus();
-    toast('生肖输入已清空');
-});
-
-// ============ 模式切换：显示/隐藏生肖面板 ============
+// ============ 模式切换时更新placeholder ============
 document.getElementById('modeSelect').addEventListener('change', function() {
     const mode = this.value;
-    const panel = document.getElementById('zodiacPanel');
+    const textarea = document.getElementById('inputData');
     
     if (mode === 'shengxiao') {
-        panel.classList.add('show');
-        // 更新placeholder提示
-        document.getElementById('inputData').placeholder = '点击下方生肖按键快速输入\n也可以手动输入其他文字';
-    } else {
-        panel.classList.remove('show');
-        if (mode === 'digitSplit') {
-            document.getElementById('inputData').placeholder = '输入数字进行头尾统计\n例如：1234567890';
-        } else if (mode === 'digitWhole') {
-            document.getElementById('inputData').placeholder = '输入号码进行统计 (01-49)\n例如：01 23 45 12 34';
-        }
+        textarea.placeholder = '输入任意文字，自动提取十二生肖统计\n例如：鼠牛虎兔龙蛇马羊猴鸡狗猪\n也可以粘贴大段文字，只统计十二生肖';
+    } else if (mode === 'digitSplit') {
+        textarea.placeholder = '输入数字进行头尾统计 (0-9)\n例如：1234567890';
+    } else if (mode === 'digitWhole') {
+        textarea.placeholder = '输入号码进行统计 (01-49)\n例如：01 23 45 12 34';
     }
 });
 
@@ -890,12 +707,14 @@ function stats(text, mode, includeZero = true) {
     const map = {};
     
     if (mode === 'digitSplit') {
+        // 头尾统计：统计0-9每个数字
         for (let i = 0; i <= 9; i++) map[String(i)] = 0;
         const digits = text.replace(/[^\d]/g, '');
         for (let i = 0; i < digits.length; i++) {
             map[digits[i]] = (map[digits[i]] || 0) + 1;
         }
     } else if (mode === 'digitWhole') {
+        // 号码统计：统计01-49
         for (let i = 1; i <= 49; i++) map[String(i).padStart(2, '0')] = 0;
         const digits = text.replace(/[^\d]/g, '');
         for (let i = 0; i < digits.length - 1; i += 2) {
@@ -906,22 +725,33 @@ function stats(text, mode, includeZero = true) {
             }
         }
     } else if (mode === 'shengxiao') {
+        // 生肖统计：只统计十二生肖，忽略其他所有文字
         zodiacAnimals.forEach(a => { map[a] = 0; });
+        // 遍历文本中每个字符，只统计十二生肖
         for (let i = 0; i < text.length; i++) {
             const ch = text[i];
-            if (map.hasOwnProperty(ch)) map[ch]++;
+            if (map.hasOwnProperty(ch)) {
+                map[ch]++;
+            }
         }
+        // 其他所有文字自动忽略，不统计
     }
     
     let arr = Object.entries(map);
     if (!includeZero) arr = arr.filter(i => i[1] > 0);
     if (arr.length === 0) return null;
     
+    // 排序：先按次数降序，次数相同按数字/生肖顺序排序
     arr.sort((a, b) => {
         if (b[1] !== a[1]) return b[1] - a[1];
+        // 数字排序
         const numA = parseInt(a[0]);
         const numB = parseInt(b[0]);
         if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        // 生肖按固定顺序排序
+        if (zodiacAnimals.includes(a[0]) && zodiacAnimals.includes(b[0])) {
+            return zodiacAnimals.indexOf(a[0]) - zodiacAnimals.indexOf(b[0]);
+        }
         return String(a[0]).localeCompare(String(b[0]));
     });
     
@@ -1016,7 +846,7 @@ function saveHistory(text, mode, data) {
     
     history.unshift({
         time: new Date().toLocaleString('zh-CN'),
-        text: text.substring(0, 100),
+        text: text.substring(0, 200),
         mode: mode,
         fullData: data
     });
@@ -1132,7 +962,7 @@ function showHistory() {
     overlay.innerHTML = html;
     document.body.appendChild(overlay);
     
-    // 关闭按钮
+    // 关闭
     overlay.querySelector('.modal-close-btn').addEventListener('click', () => overlay.remove());
     overlay.addEventListener('click', function(e) {
         if (e.target === overlay) overlay.remove();
@@ -1153,14 +983,13 @@ function showHistory() {
     
     // 点击恢复数据
     overlay.querySelectorAll('.history-item').forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function(e) {
+            if (e.target.classList.contains('history-delete-btn')) return;
             const index = parseInt(this.dataset.index);
             const h = history[index];
             if (h) {
                 document.getElementById('inputData').value = h.text || '';
                 document.getElementById('modeSelect').value = h.mode || 'digitSplit';
-                // 触发模式切换事件
-                document.getElementById('modeSelect').dispatchEvent(new Event('change'));
                 overlay.remove();
                 toast('📥 数据已恢复，点击"开始统计"');
             }
@@ -1204,6 +1033,7 @@ document.getElementById('runBtn').addEventListener('click', function() {
     } else if (mode === 'digitWhole') {
         total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
     } else if (mode === 'shengxiao') {
+        // 只统计十二生肖的总数
         for (let i = 0; i < text.length; i++) {
             if (zodiacAnimals.includes(text[i])) total++;
         }
@@ -1243,68 +1073,27 @@ document.getElementById('clearBtn').addEventListener('click', function() {
     document.getElementById('hotData').innerText = '-';
     currentData = [];
     highestItem = '';
-    zodiacHistory = '';
     toast('🗑️ 已清除');
 });
 
 document.getElementById('historyBtn').addEventListener('click', showHistory);
 
-// ============ 主题按钮（短按提示，长按选择） ============
-let longPressTimer;
-let isLongPress = false;
-const themeBtn = document.getElementById('themeBtn');
-
-themeBtn.addEventListener('click', function(e) {
-    if (!isLongPress) {
-        showThemePicker();
-    }
-    isLongPress = false;
-});
-
-themeBtn.addEventListener('mousedown', function() {
-    isLongPress = false;
-    longPressTimer = setTimeout(() => {
-        isLongPress = true;
-        showThemePicker();
-    }, 600);
-});
-
-themeBtn.addEventListener('mouseup', () => clearTimeout(longPressTimer));
-themeBtn.addEventListener('mouseleave', () => clearTimeout(longPressTimer));
-
-themeBtn.addEventListener('touchstart', function() {
-    isLongPress = false;
-    longPressTimer = setTimeout(() => {
-        isLongPress = true;
-        showThemePicker();
-        if (navigator.vibrate) navigator.vibrate(30);
-    }, 600);
-});
-
-themeBtn.addEventListener('touchend', () => clearTimeout(longPressTimer));
-themeBtn.addEventListener('touchmove', () => clearTimeout(longPressTimer));
+// ============ 主题按钮 ============
+document.getElementById('themeBtn').addEventListener('click', showThemePicker);
 
 // ============ 初始化 ============
 function init() {
-    // 初始化生肖按键面板
-    initZodiacPanel();
-    
-    // 加载主题
     const savedTheme = localStorage.getItem('xy_theme');
     if (savedTheme !== null && savedTheme < themes.length) {
         applyTheme(parseInt(savedTheme));
-    }
-    
-    // 初始状态检查模式
-    if (document.getElementById('modeSelect').value === 'shengxiao') {
-        document.getElementById('zodiacPanel').classList.add('show');
     }
 }
 
 init();
 
 console.log('✅ 咸鱼统计器 Pro 已就绪');
-console.log('🐲 生肖快捷按键已加载');
+console.log('📊 支持模式：头尾统计 | 号码统计 | 生肖统计');
+console.log('🐲 生肖统计：只统计十二生肖，忽略其他所有文字');
 console.log('🎨 主题数量：' + themes.length);
 </script>
 </body>
