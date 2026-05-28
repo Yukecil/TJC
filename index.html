@@ -18,7 +18,7 @@ body{
     padding:12px;
     color:#fff;
     overflow-x:hidden;
-    transition:background .35s;
+    transition:background .5s;
     background:linear-gradient(135deg,#ffdde1,#ee9ca7);
 }
 
@@ -27,8 +27,8 @@ body::before{
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle at 20% 20%,rgba(255,255,255,.2),transparent 20%),
-        radial-gradient(circle at 80% 40%,rgba(255,255,255,.18),transparent 20%);
+        radial-gradient(circle at 20% 20%,rgba(255,255,255,.15),transparent 20%),
+        radial-gradient(circle at 80% 40%,rgba(255,255,255,.1),transparent 20%);
     pointer-events:none;
     z-index:0;
 }
@@ -265,16 +265,20 @@ button.action:active{
 
 .item.zero{
     background:linear-gradient(135deg,#ff4757,#ff6b81);
-    box-shadow:0 0 8px rgba(255,71,87,.2);
     font-weight:700;
-    animation:shake .5s ease-in-out infinite;
 }
 
-@keyframes shake{
-    0%,100%{transform:translateX(0)}
-    25%{transform:translateX(-3px)}
-    75%{transform:translateX(3px)}
-}
+.item.wuxing-jin{background:linear-gradient(135deg,#ffd700,#f0c000);color:#000}
+.item.wuxing-mu{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.item.wuxing-shui{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.item.wuxing-huo{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.item.wuxing-tu{background:linear-gradient(135deg,#a855f7,#7c3aed)}
+
+.item.wuxing-jin.hot{box-shadow:0 0 16px rgba(255,215,0,.6);font-weight:700;}
+.item.wuxing-mu.hot{box-shadow:0 0 16px rgba(34,197,94,.6);font-weight:700;}
+.item.wuxing-shui.hot{box-shadow:0 0 16px rgba(59,130,246,.6);font-weight:700;}
+.item.wuxing-huo.hot{box-shadow:0 0 16px rgba(239,68,68,.6);font-weight:700;}
+.item.wuxing-tu.hot{box-shadow:0 0 16px rgba(168,85,247,.6);font-weight:700;}
 
 .empty{
     padding:30px 10px;
@@ -313,7 +317,10 @@ button.action:active{
     align-items:center;
     z-index:100000;
     padding:16px;
+    animation:fadeIn .2s ease;
 }
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 .modal-content{
     background:rgba(30,30,45,.95);
@@ -323,9 +330,10 @@ button.action:active{
     padding:20px;
     width:100%;
     max-width:500px;
-    max-height:75vh;
-    max-height:75dvh;
-    overflow-y:auto;
+    max-height:80vh;
+    max-height:80dvh;
+    display:flex;
+    flex-direction:column;
     box-shadow:0 10px 40px rgba(0,0,0,.5);
 }
 
@@ -334,22 +342,60 @@ button.action:active{
     font-weight:700;
     margin-bottom:16px;
     text-align:center;
+    flex-shrink:0;
+}
+
+/* 主题分类标签 */
+.theme-categories{
+    display:flex;
+    gap:6px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+    flex-shrink:0;
+}
+
+.theme-cat-btn{
+    padding:6px 12px;
+    border:none;
+    border-radius:10px;
+    background:rgba(255,255,255,.06);
+    color:rgba(255,255,255,.7);
+    font-size:11px;
+    cursor:pointer;
+    transition:all .2s;
+    white-space:nowrap;
+}
+
+.theme-cat-btn.active{
+    background:rgba(255,215,0,.2);
+    color:#ffd700;
+}
+
+.theme-cat-btn:active{
+    transform:scale(.95);
 }
 
 .theme-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:8px;
+    overflow-y:auto;
+    flex:1;
+    padding-right:4px;
 }
 
+.theme-grid::-webkit-scrollbar{width:3px}
+.theme-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
+
 .theme-option{
-    background:rgba(255,255,255,.06);
+    background:rgba(255,255,255,.04);
     border-radius:14px;
-    padding:12px 8px;
+    padding:10px 6px;
     text-align:center;
     cursor:pointer;
     transition:all .2s;
     border:2px solid transparent;
+    position:relative;
 }
 
 .theme-option:active{
@@ -358,25 +404,45 @@ button.action:active{
 
 .theme-option.active{
     border-color:#ffd700;
-    box-shadow:0 0 15px rgba(255,215,0,.3);
+    box-shadow:0 0 12px rgba(255,215,0,.25);
+}
+
+.theme-option.active::after{
+    content:'✓';
+    position:absolute;
+    top:-6px;
+    right:-6px;
+    width:18px;
+    height:18px;
+    background:#ffd700;
+    border-radius:50%;
+    font-size:10px;
+    color:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
 }
 
 .theme-option-icon{
-    font-size:24px;
+    font-size:22px;
     display:block;
-    margin-bottom:4px;
+    margin-bottom:3px;
 }
 
 .theme-option-name{
-    font-size:11px;
+    font-size:10px;
     opacity:.8;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 .theme-preview{
     width:100%;
-    height:14px;
-    border-radius:7px;
-    margin-top:6px;
+    height:12px;
+    border-radius:6px;
+    margin-top:5px;
 }
 
 .modal-close-btn{
@@ -384,16 +450,17 @@ button.action:active{
     padding:10px;
     border:none;
     border-radius:12px;
-    background:rgba(255,255,255,.1);
+    background:rgba(255,255,255,.08);
     color:#fff;
     font-size:14px;
     cursor:pointer;
-    margin-top:14px;
+    margin-top:12px;
     transition:all .2s;
+    flex-shrink:0;
 }
 
 .modal-close-btn:active{
-    background:rgba(255,255,255,.2);
+    background:rgba(255,255,255,.15);
 }
 
 .history-actions{
@@ -516,6 +583,12 @@ button.action:active{
     font-weight:600;
 }
 
+.history-result .mini-item.wuxing-jin{background:linear-gradient(135deg,#ffd700,#f0c000);color:#000}
+.history-result .mini-item.wuxing-mu{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.history-result .mini-item.wuxing-shui{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.history-result .mini-item.wuxing-huo{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.history-result .mini-item.wuxing-tu{background:linear-gradient(135deg,#a855f7,#7c3aed)}
+
 .confirm-overlay{
     position:fixed;
     top:0;left:0;right:0;bottom:0;
@@ -567,7 +640,10 @@ button.action:active{
 @media (max-width:400px){
     .container{padding:12px}
     h1{font-size:20px}
-    .theme-grid{grid-template-columns:repeat(2,1fr)}
+    .theme-grid{grid-template-columns:repeat(3,1fr)}
+    .theme-option{padding:8px 4px}
+    .theme-option-icon{font-size:20px}
+    .theme-option-name{font-size:9px}
 }
 </style>
 </head>
@@ -580,12 +656,13 @@ button.action:active{
         <button class="icon-btn" id="themeBtn">🌸</button>
     </div>
 
-    <textarea id="inputData" placeholder="请选择统计模式后输入数据&#10;头尾统计：输入数字统计0-9出现次数&#10;号码统计：输入号码统计01-49出现次数&#10;生肖统计：输入文字自动提取十二生肖统计"></textarea>
+    <textarea id="inputData"></textarea>
 
     <select id="modeSelect">
         <option value="digitSplit">头尾统计 (0-9)</option>
         <option value="digitWhole">号码统计 (01-49)</option>
         <option value="shengxiao">生肖统计</option>
+        <option value="wuxing">五行统计</option>
     </select>
 
     <div class="button-panel">
@@ -615,42 +692,72 @@ button.action:active{
 </div>
 
 <script>
-// ============ 十二生肖 ============
+// ============ 24个免费主题 ============
+const themes = [
+    // 渐变系列 (0-5)
+    { icon:'🌸', name:'樱花粉', bg:'linear-gradient(135deg,#ffdde1,#ee9ca7)', cat:'渐变' },
+    { icon:'🍊', name:'日落橙', bg:'linear-gradient(135deg,#ff9966,#ff5e62)', cat:'渐变' },
+    { icon:'🍇', name:'葡萄紫', bg:'linear-gradient(135deg,#8e2de2,#4a00e0)', cat:'渐变' },
+    { icon:'🍬', name:'棉花糖', bg:'linear-gradient(135deg,#f093fb,#f5576c)', cat:'渐变' },
+    { icon:'🌈', name:'彩虹糖', bg:'linear-gradient(135deg,#ff9a9e,#fecfef,#a1c4fd)', cat:'渐变' },
+    { icon:'🦄', name:'独角兽', bg:'linear-gradient(135deg,#e0c3fc,#8ec5fc)', cat:'渐变' },
+
+    // 深色系列 (6-11)
+    { icon:'🌙', name:'深蓝夜', bg:'linear-gradient(135deg,#141e30,#243b55)', cat:'深色' },
+    { icon:'🖤', name:'暗夜黑', bg:'linear-gradient(135deg,#232526,#414345)', cat:'深色' },
+    { icon:'💜', name:'暗夜紫', bg:'linear-gradient(135deg,#1a1a2e,#16213e)', cat:'深色' },
+    { icon:'🌑', name:'极夜', bg:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)', cat:'深色' },
+    { icon:'🕶️', name:'午夜', bg:'linear-gradient(135deg,#000000,#434343)', cat:'深色' },
+    { icon:'🌌', name:'深空', bg:'linear-gradient(135deg,#0b0f19,#1a1f35)', cat:'深色' },
+
+    // 自然系列 (12-17)
+    { icon:'🌿', name:'翠绿林', bg:'linear-gradient(135deg,#11998e,#38ef7d)', cat:'自然' },
+    { icon:'❄️', name:'冰湖蓝', bg:'linear-gradient(135deg,#00b4db,#0083b0)', cat:'自然' },
+    { icon:'🏔️', name:'雪山', bg:'linear-gradient(135deg,#e6dada,#274046)', cat:'自然' },
+    { icon:'🌊', name:'深海', bg:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)', cat:'自然' },
+    { icon:'🌵', name:'沙漠', bg:'linear-gradient(135deg,#f5af19,#f12711)', cat:'自然' },
+    { icon:'🍁', name:'秋叶', bg:'linear-gradient(135deg,#d66d75,#e29587)', cat:'自然' },
+
+    // 个性系列 (18-23)
+    { icon:'💎', name:'赛博朋克', bg:'linear-gradient(135deg,#fc00ff,#00dbde)', cat:'个性' },
+    { icon:'🎮', name:'电竞紫', bg:'linear-gradient(135deg,#4b0082,#9400d3)', cat:'个性' },
+    { icon:'🕹️', name:'复古游戏', bg:'linear-gradient(135deg,#556270,#ff6b6b)', cat:'个性' },
+    { icon:'🔥', name:'烈焰', bg:'linear-gradient(135deg,#ed213a,#93291e)', cat:'个性' },
+    { icon:'💚', name:'霓虹绿', bg:'linear-gradient(135deg,#00b09b,#96c93d)', cat:'个性' },
+    { icon:'🎪', name:'马戏团', bg:'linear-gradient(135deg,#f83600,#f9d423)', cat:'个性' }
+];
+
+// 主题分类
+const themeCategories = ['全部', '渐变', '深色', '自然', '个性'];
+
+// 十二生肖
 const zodiacAnimals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
 
-// ============ 主题配置 ============
-const themes = [
-    { bg:'linear-gradient(135deg,#ffdde1,#ee9ca7)', icon:'🌸', name:'樱花粉' },
-    { bg:'linear-gradient(135deg,#141e30,#243b55)', icon:'🌙', name:'深蓝夜' },
-    { bg:'linear-gradient(135deg,#11998e,#38ef7d)', icon:'🌿', name:'翠绿林' },
-    { bg:'linear-gradient(135deg,#3a1c71,#d76d77,#ffaf7b)', icon:'🍭', name:'糖果紫' },
-    { bg:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)', icon:'💎', name:'深海蓝' },
-    { bg:'linear-gradient(135deg,#f5af19,#f12711)', icon:'🔥', name:'烈焰红' },
-    { bg:'linear-gradient(135deg,#8e2de2,#4a00e0)', icon:'💜', name:'极光紫' },
-    { bg:'linear-gradient(135deg,#00b4db,#0083b0)', icon:'❄️', name:'冰湖蓝' },
-    { bg:'linear-gradient(135deg,#ff9966,#ff5e62)', icon:'🧡', name:'落日橙' },
-    { bg:'linear-gradient(135deg,#232526,#414345)', icon:'🖤', name:'暗夜黑' },
-    { bg:'linear-gradient(135deg,#e0eafc,#cfdef3)', icon:'☁️', name:'云雾白' },
-    { bg:'linear-gradient(135deg,#ff0844,#ffb199)', icon:'💗', name:'玫瑰金' }
-];
+// 五行
+const wuxingElements = ["金","木","水","火","土"];
+const wuxingColors = {
+    "金": "wuxing-jin",
+    "木": "wuxing-mu",
+    "水": "wuxing-shui",
+    "火": "wuxing-huo",
+    "土": "wuxing-tu"
+};
 
 let currentData = [];
 let highestItem = '';
 let themeIndex = 0;
+let currentCat = '全部';
 
-// ============ 模式切换时更新placeholder ============
-document.getElementById('modeSelect').addEventListener('change', function() {
-    const mode = this.value;
-    const textarea = document.getElementById('inputData');
-    
-    if (mode === 'shengxiao') {
-        textarea.placeholder = '输入任意文字，自动提取十二生肖统计\n例如：鼠牛虎兔龙蛇马羊猴鸡狗猪\n也可以粘贴大段文字，只统计十二生肖';
-    } else if (mode === 'digitSplit') {
-        textarea.placeholder = '输入数字进行头尾统计 (0-9)\n例如：1234567890';
-    } else if (mode === 'digitWhole') {
-        textarea.placeholder = '输入号码进行统计 (01-49)\n例如：01 23 45 12 34';
-    }
-});
+const placeholderMap = {
+    digitSplit: '输入数字进行头尾统计 (0-9)\n例如：1234567890',
+    digitWhole: '输入号码进行统计 (01-49)\n例如：01 23 45 12 34',
+    shengxiao: '输入任意文字，自动提取十二生肖统计\n例如：鼠牛虎兔龙蛇马羊猴鸡狗猪\n也可以粘贴大段文字，只统计十二生肖',
+    wuxing: '输入任意文字，自动提取五行统计\n例如：金木水火土\n也可以粘贴大段文字，只统计金木水火土'
+};
+
+function updatePlaceholder(mode) {
+    document.getElementById('inputData').placeholder = placeholderMap[mode] || '';
+}
 
 // ============ 应用主题 ============
 function applyTheme(index) {
@@ -660,24 +767,24 @@ function applyTheme(index) {
     localStorage.setItem('xy_theme', index);
 }
 
-// ============ Toast提示 ============
+// ============ Toast ============
+let toastTimer = null;
 function toast(text) {
     const existing = document.querySelector('.toast');
     if (existing) existing.remove();
-    
+    if (toastTimer) clearTimeout(toastTimer);
     const el = document.createElement('div');
     el.className = 'toast';
     el.innerText = text;
     document.body.appendChild(el);
-    
-    setTimeout(() => {
+    toastTimer = setTimeout(() => {
         el.style.opacity = '0';
         el.style.transition = 'opacity .3s';
-        setTimeout(() => el.remove(), 300);
+        setTimeout(() => { if (el.parentNode) el.remove(); }, 300);
     }, 1800);
 }
 
-// ============ 复制文本 ============
+// ============ 复制 ============
 function copyText(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => toast('✅ 已复制')).catch(() => fallbackCopy(text));
@@ -692,82 +799,81 @@ function fallbackCopy(text) {
     textarea.style.cssText = 'position:fixed;left:-9999px;';
     document.body.appendChild(textarea);
     textarea.select();
-    try {
-        document.execCommand('copy');
-        toast('✅ 已复制');
-    } catch(e) {
-        toast('❌ 复制失败');
-    }
+    try { document.execCommand('copy'); toast('✅ 已复制'); }
+    catch(e) { toast('❌ 复制失败'); }
     document.body.removeChild(textarea);
 }
 
-// ============ 统计核心 ============
+// ============ 统计 ============
 function stats(text, mode, includeZero = true) {
     if (!text.trim()) return null;
     const map = {};
-    
+
     if (mode === 'digitSplit') {
-        // 头尾统计：统计0-9每个数字
         for (let i = 0; i <= 9; i++) map[String(i)] = 0;
         const digits = text.replace(/[^\d]/g, '');
         for (let i = 0; i < digits.length; i++) {
             map[digits[i]] = (map[digits[i]] || 0) + 1;
         }
     } else if (mode === 'digitWhole') {
-        // 号码统计：统计01-49
         for (let i = 1; i <= 49; i++) map[String(i).padStart(2, '0')] = 0;
-        const digits = text.replace(/[^\d]/g, '');
-        for (let i = 0; i < digits.length - 1; i += 2) {
-            const pair = digits.substr(i, 2);
-            const num = parseInt(pair);
+        const matches = text.match(/\b\d{1,2}\b/g) || [];
+        matches.forEach(m => {
+            const num = parseInt(m);
             if (num >= 1 && num <= 49) {
-                map[pair] = (map[pair] || 0) + 1;
+                const key = String(num).padStart(2, '0');
+                map[key] = (map[key] || 0) + 1;
             }
-        }
+        });
     } else if (mode === 'shengxiao') {
-        // 生肖统计：只统计十二生肖，忽略其他所有文字
         zodiacAnimals.forEach(a => { map[a] = 0; });
-        // 遍历文本中每个字符，只统计十二生肖
         for (let i = 0; i < text.length; i++) {
             const ch = text[i];
-            if (map.hasOwnProperty(ch)) {
-                map[ch]++;
-            }
+            if (map.hasOwnProperty(ch)) map[ch]++;
         }
-        // 其他所有文字自动忽略，不统计
+    } else if (mode === 'wuxing') {
+        wuxingElements.forEach(w => { map[w] = 0; });
+        for (let i = 0; i < text.length; i++) {
+            const ch = text[i];
+            if (map.hasOwnProperty(ch)) map[ch]++;
+        }
     }
-    
+
     let arr = Object.entries(map);
     if (!includeZero) arr = arr.filter(i => i[1] > 0);
     if (arr.length === 0) return null;
-    
-    // 排序：先按次数降序，次数相同按数字/生肖顺序排序
+
     arr.sort((a, b) => {
         if (b[1] !== a[1]) return b[1] - a[1];
-        // 数字排序
         const numA = parseInt(a[0]);
         const numB = parseInt(b[0]);
         if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-        // 生肖按固定顺序排序
-        if (zodiacAnimals.includes(a[0]) && zodiacAnimals.includes(b[0])) {
-            return zodiacAnimals.indexOf(a[0]) - zodiacAnimals.indexOf(b[0]);
-        }
+        if (zodiacAnimals.includes(a[0]) && zodiacAnimals.includes(b[0])) return zodiacAnimals.indexOf(a[0]) - zodiacAnimals.indexOf(b[0]);
+        if (wuxingElements.includes(a[0]) && wuxingElements.includes(b[0])) return wuxingElements.indexOf(a[0]) - wuxingElements.indexOf(b[0]);
         return String(a[0]).localeCompare(String(b[0]));
     });
-    
     return arr;
 }
 
-// ============ 渲染结果 ============
-function render(data, includeZero = false) {
+function getItemClass(item, count, maxCount) {
+    const isHot = (count === maxCount && count > 0);
+    const isZero = (count === 0);
+    if (wuxingElements.includes(item)) {
+        if (isZero) return 'item zero';
+        return isHot ? `item ${wuxingColors[item]} hot` : `item ${wuxingColors[item]}`;
+    }
+    if (isHot) return 'item hot';
+    if (isZero) return 'item zero';
+    return 'item';
+}
+
+function render(data, mode, includeZero = false) {
     if (!data || data.length === 0) {
         document.getElementById('result').innerHTML = '<div class="empty">📭 暂无数据</div>';
         return;
     }
-    
     const nonZeroData = data.filter(item => item[1] > 0);
     const maxCount = nonZeroData.length > 0 ? nonZeroData[0][1] : 0;
-    
     let group = {};
     data.forEach(item => {
         const count = item[1];
@@ -775,40 +881,31 @@ function render(data, includeZero = false) {
         if (!group[count]) group[count] = [];
         group[count].push(item[0]);
     });
-    
     let html = '';
     const sortedCounts = Object.keys(group).map(Number).sort((a, b) => b - a);
-    
     sortedCounts.forEach(count => {
         const items = group[count];
         const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        
         html += `<div class="group">
-            <div class="group-header">
-                <span>✨ ${count}次</span>
-                <button class="copy-small" onclick="copyText('${escapedItems}')">📋 复制</button>
-            </div>
-            <div class="group-items">
-                ${items.map(i => {
-                    const isHot = (count === maxCount && count > 0);
-                    const isZero = (count === 0);
-                    const cls = isHot ? 'hot' : (isZero ? 'zero' : '');
-                    return `<div class="item ${cls}">${i}</div>`;
-                }).join('')}
-            </div>
+            <div class="group-header"><span>✨ ${count}次</span><button class="copy-small" onclick="copyText('${escapedItems}')">📋 复制</button></div>
+            <div class="group-items">${items.map(i => `<div class="${getItemClass(i, count, maxCount)}">${i}</div>`).join('')}</div>
         </div>`;
     });
-    
+    if (mode === 'wuxing') {
+        const wuxingInfo = {"金":"收敛、肃杀，方位西","木":"生长、升发，方位东","水":"滋润、下行，方位北","火":"炎热、向上，方位南","土":"承载、化生，方位中"};
+        const topItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '';
+        if (topItem && wuxingInfo[topItem]) {
+            html += `<div style="padding:10px;text-align:center;font-size:12px;opacity:.6;margin-top:8px;">💡 最旺五行：<strong>${topItem}</strong> — ${wuxingInfo[topItem]}</div>`;
+        }
+    }
     document.getElementById('result').innerHTML = html;
     document.querySelector('.result-wrapper').scrollTop = 0;
 }
 
-// ============ 历史记录渲染 ============
-function renderHistoryResult(data) {
+function renderHistoryResult(data, mode) {
     if (!data || data.length === 0) return '';
     const nonZeroData = data.filter(item => item[1] > 0);
     const maxCount = nonZeroData.length > 0 ? nonZeroData[0][1] : 0;
-    
     let group = {};
     data.forEach(item => {
         const count = item[1];
@@ -816,86 +913,86 @@ function renderHistoryResult(data) {
         if (!group[count]) group[count] = [];
         group[count].push(item[0]);
     });
-    
     let html = '<div class="history-result">';
-    const sortedCounts = Object.keys(group).map(Number).sort((a, b) => b - a);
-    sortedCounts.forEach(count => {
-        const items = group[count];
-        html += `<div class="mini-group">
-            <div class="mini-group-header">✨ ${count}次</div>
-            <div class="mini-group-items">
-                ${items.map(i => {
-                    const cls = (count === maxCount) ? 'hot' : '';
-                    return `<span class="mini-item ${cls}">${i}</span>`;
-                }).join('')}
-            </div>
-        </div>`;
+    Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => {
+        html += `<div class="mini-group"><div class="mini-group-header">✨ ${count}次</div><div class="mini-group-items">${group[count].map(i => {
+            let cls = 'mini-item';
+            if (count === maxCount) cls += ' hot';
+            if (wuxingElements.includes(i)) cls += ' ' + wuxingColors[i];
+            return `<span class="${cls}">${i}</span>`;
+        }).join('')}</div></div>`;
     });
     html += '</div>';
     return html;
 }
 
-// ============ 保存历史 ============
 function saveHistory(text, mode, data) {
     let history = [];
-    try {
-        history = JSON.parse(localStorage.getItem('xy_history') || '[]');
-    } catch(e) {
-        history = [];
-    }
-    
-    history.unshift({
-        time: new Date().toLocaleString('zh-CN'),
-        text: text.substring(0, 200),
-        mode: mode,
-        fullData: data
-    });
-    
+    try { history = JSON.parse(localStorage.getItem('xy_history') || '[]'); } catch(e) { history = []; }
+    history.unshift({ time: new Date().toLocaleString('zh-CN'), text: text.substring(0, 200), mode: mode, fullData: data });
     if (history.length > 50) history = history.slice(0, 50);
-    
-    try {
-        localStorage.setItem('xy_history', JSON.stringify(history));
-    } catch(e) {
-        toast('⚠️ 存储空间不足');
-    }
+    try { localStorage.setItem('xy_history', JSON.stringify(history)); } catch(e) { toast('⚠️ 存储空间不足'); }
 }
 
-// ============ 显示确认弹窗 ============
 function showConfirm(text, onConfirm) {
     const overlay = document.createElement('div');
     overlay.className = 'confirm-overlay';
-    overlay.innerHTML = `
-        <div class="confirm-dialog">
-            <div class="confirm-text">${text}</div>
-            <div class="confirm-btns">
-                <button class="confirm-cancel">取消</button>
-                <button class="confirm-ok">确定</button>
-            </div>
-        </div>
-    `;
-    
+    overlay.innerHTML = `<div class="confirm-dialog"><div class="confirm-text">${text}</div><div class="confirm-btns"><button class="confirm-cancel">取消</button><button class="confirm-ok">确定</button></div></div>`;
     document.body.appendChild(overlay);
-    
     overlay.querySelector('.confirm-cancel').addEventListener('click', () => overlay.remove());
-    overlay.querySelector('.confirm-ok').addEventListener('click', () => {
-        overlay.remove();
-        onConfirm();
-    });
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) overlay.remove();
-    });
+    overlay.querySelector('.confirm-ok').addEventListener('click', () => { overlay.remove(); onConfirm(); });
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 }
 
-// ============ 显示主题选择 ============
+// ============ 主题选择弹窗（带分类） ============
 function showThemePicker() {
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
-    
+
     let html = '<div class="modal-content">';
-    html += '<div class="modal-title">🎨 选择主题</div>';
-    html += '<div class="theme-grid">';
-    
+    html += '<div class="modal-title">🎨 选择主题 (24款免费)</div>';
+
+    // 分类标签
+    html += '<div class="theme-categories">';
+    themeCategories.forEach(cat => {
+        const active = cat === currentCat ? ' active' : '';
+        html += `<button class="theme-cat-btn${active}" data-cat="${cat}">${cat}</button>`;
+    });
+    html += '</div>';
+
+    html += '<div class="theme-grid" id="themeGrid">';
+    html += renderThemeItems(currentCat);
+    html += '</div>';
+
+    html += '<button class="modal-close-btn">关闭</button>';
+    html += '</div>';
+
+    overlay.innerHTML = html;
+    document.body.appendChild(overlay);
+
+    // 分类切换
+    overlay.querySelectorAll('.theme-cat-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            currentCat = this.dataset.cat;
+            // 更新分类标签状态
+            overlay.querySelectorAll('.theme-cat-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            // 更新主题列表
+            document.getElementById('themeGrid').innerHTML = renderThemeItems(currentCat);
+            bindThemeClicks(overlay);
+        });
+    });
+
+    bindThemeClicks(overlay);
+
+    overlay.querySelector('.modal-close-btn').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+}
+
+function renderThemeItems(cat) {
+    let html = '';
     themes.forEach((t, i) => {
+        if (cat !== '全部' && t.cat !== cat) return;
         const active = i === themeIndex ? ' active' : '';
         html += `<div class="theme-option${active}" data-index="${i}">
             <span class="theme-option-icon">${t.icon}</span>
@@ -903,72 +1000,47 @@ function showThemePicker() {
             <div class="theme-preview" style="background:${t.bg}"></div>
         </div>`;
     });
-    
-    html += '</div>';
-    html += '<button class="modal-close-btn">关闭</button>';
-    html += '</div>';
-    
-    overlay.innerHTML = html;
-    document.body.appendChild(overlay);
-    
+    return html;
+}
+
+function bindThemeClicks(overlay) {
     overlay.querySelectorAll('.theme-option').forEach(opt => {
         opt.addEventListener('click', function() {
             const index = parseInt(this.dataset.index);
             applyTheme(index);
-            toast(`🎨 已切换至${themes[index].name}`);
-            setTimeout(() => overlay.remove(), 200);
+            overlay.remove();
+            setTimeout(() => toast(`🎨 已切换至${themes[index].name}`), 50);
         });
-    });
-    
-    overlay.querySelector('.modal-close-btn').addEventListener('click', () => overlay.remove());
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) overlay.remove();
     });
 }
 
-// ============ 显示历史记录 ============
+// ============ 历史记录 ============
 function showHistory() {
     const history = JSON.parse(localStorage.getItem('xy_history') || '[]');
-    
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
-    
     let html = '<div class="modal-content">';
     html += '<div class="modal-title">📜 历史记录</div>';
-    
     if (!history.length) {
         html += '<div class="empty">暂无历史记录</div>';
     } else {
-        html += '<div class="history-actions">';
-        html += '<button class="history-clear-btn" id="clearAllHistory">🗑️ 清空全部</button>';
-        html += '</div>';
-        
+        html += '<div class="history-actions"><button class="history-clear-btn" id="clearAllHistory">🗑️ 清空全部</button></div>';
         history.slice(0, 20).forEach((h, i) => {
-            const modeText = h.mode === 'digitSplit' ? '头尾统计' : 
-                           (h.mode === 'digitWhole' ? '号码统计' : '生肖统计');
+            let modeText = h.mode === 'digitSplit' ? '头尾统计' : h.mode === 'digitWhole' ? '号码统计' : h.mode === 'shengxiao' ? '生肖统计' : '五行统计';
             html += `<div class="history-item" data-index="${i}">
                 <button class="history-delete-btn" data-del="${i}">✕</button>
                 <div class="history-time">${i+1}. ${h.time}</div>
                 <div class="history-text">📝 ${h.text || '无数据'}</div>
                 <div class="history-mode">📋 ${modeText}</div>
-                ${h.fullData ? renderHistoryResult(h.fullData) : ''}
+                ${h.fullData ? renderHistoryResult(h.fullData, h.mode) : ''}
             </div>`;
         });
     }
-    
-    html += '<button class="modal-close-btn">关闭</button>';
-    html += '</div>';
-    
+    html += '<button class="modal-close-btn">关闭</button></div>';
     overlay.innerHTML = html;
     document.body.appendChild(overlay);
-    
-    // 关闭
     overlay.querySelector('.modal-close-btn').addEventListener('click', () => overlay.remove());
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) overlay.remove();
-    });
-    
-    // 删除单条
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
     overlay.querySelectorAll('.history-delete-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -980,8 +1052,6 @@ function showHistory() {
             showHistory();
         });
     });
-    
-    // 点击恢复数据
     overlay.querySelectorAll('.history-item').forEach(item => {
         item.addEventListener('click', function(e) {
             if (e.target.classList.contains('history-delete-btn')) return;
@@ -990,13 +1060,12 @@ function showHistory() {
             if (h) {
                 document.getElementById('inputData').value = h.text || '';
                 document.getElementById('modeSelect').value = h.mode || 'digitSplit';
+                updatePlaceholder(h.mode || 'digitSplit');
                 overlay.remove();
                 toast('📥 数据已恢复，点击"开始统计"');
             }
         });
     });
-    
-    // 清空全部
     const clearBtn = overlay.querySelector('#clearAllHistory');
     if (clearBtn) {
         clearBtn.addEventListener('click', function(e) {
@@ -1011,58 +1080,36 @@ function showHistory() {
 }
 
 // ============ 按钮事件 ============
+document.getElementById('modeSelect').addEventListener('change', function() {
+    updatePlaceholder(this.value);
+});
+
 document.getElementById('runBtn').addEventListener('click', function() {
     const text = document.getElementById('inputData').value;
     const mode = document.getElementById('modeSelect').value;
     const data = stats(text, mode, true);
-    
-    if (!data || data.length === 0) {
-        toast('⚠️ 请输入有效数据');
-        return;
-    }
-    
+    if (!data || data.length === 0) { toast('⚠️ 请输入有效数据'); return; }
     currentData = data;
     const nonZeroData = data.filter(item => item[1] > 0);
     highestItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '无';
-    
-    render(data, true);
-    
+    render(data, mode, true);
     let total = 0;
-    if (mode === 'digitSplit') {
-        total = text.replace(/[^\d]/g, '').length;
-    } else if (mode === 'digitWhole') {
-        total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
-    } else if (mode === 'shengxiao') {
-        // 只统计十二生肖的总数
-        for (let i = 0; i < text.length; i++) {
-            if (zodiacAnimals.includes(text[i])) total++;
-        }
-    }
-    
+    if (mode === 'digitSplit') total = text.replace(/[^\d]/g, '').length;
+    else if (mode === 'digitWhole') { const m = text.match(/\b\d{1,2}\b/g) || []; m.forEach(x => { if (parseInt(x) >= 1 && parseInt(x) <= 49) total++; }); }
+    else if (mode === 'shengxiao') { for (let i = 0; i < text.length; i++) { if (zodiacAnimals.includes(text[i])) total++; } }
+    else if (mode === 'wuxing') { for (let i = 0; i < text.length; i++) { if (wuxingElements.includes(text[i])) total++; } }
     document.getElementById('totalData').innerText = total;
     document.getElementById('hotData').innerText = highestItem || '0';
-    
     saveHistory(text, mode, data);
     toast('✅ 统计完成！共' + total + '条');
 });
 
 document.getElementById('copyBtn').addEventListener('click', function() {
-    if (!currentData.length) {
-        toast('⚠️ 暂无统计结果');
-        return;
-    }
-    
+    if (!currentData.length) { toast('⚠️ 暂无统计结果'); return; }
     let text = '📊 咸鱼统计结果\n\n';
     const group = {};
-    currentData.forEach(item => {
-        if (!group[item[1]]) group[item[1]] = [];
-        group[item[1]].push(item[0]);
-    });
-    
-    Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => {
-        text += `${count}次：${group[count].join("、")}\n`;
-    });
-    
+    currentData.forEach(item => { if (!group[item[1]]) group[item[1]] = []; group[item[1]].push(item[0]); });
+    Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => { text += `${count}次：${group[count].join("、")}\n`; });
     copyText(text);
 });
 
@@ -1077,24 +1124,21 @@ document.getElementById('clearBtn').addEventListener('click', function() {
 });
 
 document.getElementById('historyBtn').addEventListener('click', showHistory);
-
-// ============ 主题按钮 ============
 document.getElementById('themeBtn').addEventListener('click', showThemePicker);
 
 // ============ 初始化 ============
 function init() {
     const savedTheme = localStorage.getItem('xy_theme');
-    if (savedTheme !== null && savedTheme < themes.length) {
+    if (savedTheme !== null && parseInt(savedTheme) < themes.length) {
         applyTheme(parseInt(savedTheme));
     }
+    updatePlaceholder(document.getElementById('modeSelect').value);
 }
 
 init();
-
 console.log('✅ 咸鱼统计器 Pro 已就绪');
-console.log('📊 支持模式：头尾统计 | 号码统计 | 生肖统计');
-console.log('🐲 生肖统计：只统计十二生肖，忽略其他所有文字');
-console.log('🎨 主题数量：' + themes.length);
+console.log('🎨 24款免费主题 | 4大分类');
+console.log('📊 头尾统计 | 号码统计 | 生肖统计 | 五行统计');
 </script>
 </body>
 </html>
