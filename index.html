@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>咸鱼统计器 Pro</title>
-<meta name="theme-color" content="#ff69b4">
+<meta name="theme-color" content="#2a2a2a">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
@@ -15,177 +15,171 @@ body{
     display:flex;
     justify-content:center;
     align-items:flex-start;
-    padding:12px;
-    color:#fff;
-    overflow-x:hidden;
-    transition:background .5s;
-    background:url(https://cdn.jsdelivr.net/gh/jt6kdpmc7j-hue/cnd/IMG_7598.jpeg) center/cover no-repeat;
-    background-attachment:fixed;
-}
-
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.35);
-    pointer-events:none;
-    z-index:0;
+    padding:14px;
+    color:#e0e0e0;
+    background:#1e1e24;
 }
 
 .container{
     width:100%;
-    max-width:600px;
-    background:rgba(25,25,35,.72);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-    border-radius:24px;
+    max-width:520px;
+    background:#282830;
+    border-radius:16px;
     padding:16px;
-    box-shadow:0 10px 40px rgba(0,0,0,.4);
-    position:relative;
-    z-index:1;
+    border:1px solid rgba(255,255,255,.06);
     margin:0 auto;
 }
 
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-h1{font-size:22px;background:linear-gradient(135deg,#fff,#ffd1ea);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
-.icon-btn{width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.icon-btn:active{transform:scale(.9);background:rgba(255,255,255,.25)}
+.topbar{display:flex;justify-content:center;align-items:center;margin-bottom:14px;flex-direction:column;gap:10px}
+h1{font-size:22px;font-weight:700;color:#e0e0e0;text-align:center}
 
-textarea{width:100%;border:none;outline:none;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:rgba(255,255,255,.1);color:#fff;font-size:14px;resize:none;min-height:100px;font-family:inherit;line-height:1.6}
-textarea::placeholder{color:rgba(255,255,255,.45);font-size:13px}
-textarea:focus{background:rgba(255,255,255,.15)}
+.contact-card{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:12px 16px;
+    width:100%;
+    max-width:340px;
+}
+.contact-icon{font-size:30px;flex-shrink:0}
+.contact-info{flex:1;min-width:0}
+.contact-label{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:3px;letter-spacing:.5px}
+.contact-value{font-size:16px;font-weight:700;color:#8ab4f8;word-break:break-all}
+.contact-btn{
+    flex-shrink:0;
+    padding:10px 16px;
+    border:none;
+    border-radius:10px;
+    background:#3b3b45;
+    color:#e0e0e0;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .2s;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    z-index:5;
+    position:relative;
+}
+.contact-btn:active{transform:scale(.95);background:#4a4a55}
 
-select{width:100%;border:none;outline:none;padding:12px 14px;border-radius:18px;margin-bottom:10px;background:rgba(255,255,255,.1);color:#fff;font-size:14px;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-select option{background:#2a2a3a;color:#fff}
+textarea{width:100%;border:1px solid rgba(255,255,255,.08);outline:none;padding:12px;border-radius:12px;margin-bottom:10px;background:#1e1e24;color:#e0e0e0;font-size:14px;resize:none;min-height:90px;font-family:inherit;line-height:1.6}
+textarea::placeholder{color:rgba(255,255,255,.2);font-size:13px}
+textarea:focus{border-color:rgba(255,255,255,.15);background:#22222a}
+
+select{width:100%;border:1px solid rgba(255,255,255,.08);outline:none;padding:11px 14px;border-radius:12px;margin-bottom:10px;background:#1e1e24;color:#e0e0e0;font-size:14px;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+select option{background:#282830;color:#e0e0e0}
 
 .button-panel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-button.action{padding:12px 8px;border:none;border-radius:14px;font-weight:700;font-size:13px;color:#fff;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
-button.action:active{transform:scale(.95);opacity:.8}
+button.action{padding:12px 8px;border:none;border-radius:12px;font-weight:600;font-size:13px;color:#fff;cursor:pointer;transition:all .2s}
+button.action:active{transform:scale(.96);opacity:.85}
 
-#runBtn{background:linear-gradient(135deg,#22c55e,#16a34a)}
-#copyBtn{background:linear-gradient(135deg,#facc15,#eab308);color:#000}
-#clearBtn{background:linear-gradient(135deg,#ef4444,#dc2626)}
-#historyBtn{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
+#runBtn{background:#2d6a4f}
+#copyBtn{background:#3b5f8a}
+#clearBtn{background:#8a3b3b}
+#historyBtn{background:#5c3b8a}
 
 .stats-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.stat-card{background:rgba(255,255,255,.08);padding:10px;border-radius:14px;text-align:center}
-.stat-card div:first-child{font-size:11px;opacity:.75;margin-bottom:2px}
-.stat-card div:last-child{font-size:20px;font-weight:700}
+.stat-card{background:rgba(255,255,255,.04);padding:10px;border-radius:12px;text-align:center;border:1px solid rgba(255,255,255,.04)}
+.stat-card div:first-child{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:2px}
+.stat-card div:last-child{font-size:20px;font-weight:700;color:#e0e0e0}
 
-.result-wrapper{background:rgba(0,0,0,.2);border-radius:18px;padding:8px;max-height:50vh;max-height:50dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.result-wrapper::-webkit-scrollbar{width:4px}
+.result-wrapper{background:rgba(0,0,0,.15);border-radius:14px;padding:8px;max-height:50vh;max-height:50dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.result-wrapper::-webkit-scrollbar{width:3px}
 .result-wrapper::-webkit-scrollbar-track{background:transparent}
-.result-wrapper::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
+.result-wrapper::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
 
-.group{background:rgba(255,255,255,.06);border-radius:14px;margin-bottom:8px;overflow:hidden}
-.group-header{padding:10px 12px;font-weight:700;font-size:14px;background:linear-gradient(135deg,rgba(255,105,180,.35),rgba(255,105,180,.1));display:flex;justify-content:space-between;align-items:center}
-.copy-small{border:none;padding:4px 10px;border-radius:10px;background:rgba(255,255,255,.18);color:#fff;cursor:pointer;font-size:11px;transition:all .2s}
-.copy-small:active{background:rgba(255,255,255,.35);transform:scale(.9)}
-.group-items{display:flex;flex-wrap:wrap;gap:6px;padding:10px}
+.group{background:rgba(255,255,255,.03);border-radius:12px;margin-bottom:8px;overflow:hidden;border:1px solid rgba(255,255,255,.04)}
+.group-header{padding:10px 12px;font-weight:600;font-size:13px;background:rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;color:#ccc}
+.copy-small{border:1px solid rgba(255,255,255,.1);padding:3px 10px;border-radius:8px;background:rgba(255,255,255,.06);color:#bbb;cursor:pointer;font-size:11px;transition:all .2s}
+.copy-small:active{background:rgba(255,255,255,.12)}
+.group-items{display:flex;flex-wrap:wrap;gap:5px;padding:10px}
 
-.item{padding:6px 10px;border-radius:12px;background:rgba(255,255,255,.1);font-size:13px;min-width:36px;text-align:center;cursor:pointer;transition:all .2s}
-.item:active{transform:scale(.9);background:rgba(255,255,255,.22)}
-.item.hot{background:linear-gradient(135deg,#ff4757,#ff6b81);box-shadow:0 0 12px rgba(255,71,87,.3);font-weight:700}
-.item.zero{background:linear-gradient(135deg,#ff4757,#ff6b81);font-weight:700}
+.item{padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.06);font-size:13px;min-width:34px;text-align:center;color:#ddd}
+.item.hot{background:#6b3a3a;box-shadow:0 0 10px rgba(255,80,80,.2);font-weight:700}
+.item.zero{background:#6b3a3a;font-weight:700}
 
-.item.wuxing-jin{background:linear-gradient(135deg,#ffd700,#f0c000);color:#000}
-.item.wuxing-mu{background:linear-gradient(135deg,#22c55e,#16a34a)}
-.item.wuxing-shui{background:linear-gradient(135deg,#3b82f6,#2563eb)}
-.item.wuxing-huo{background:linear-gradient(135deg,#ef4444,#dc2626)}
-.item.wuxing-tu{background:linear-gradient(135deg,#a855f7,#7c3aed)}
-.item.wuxing-jin.hot{box-shadow:0 0 16px rgba(255,215,0,.6);font-weight:700}
-.item.wuxing-mu.hot{box-shadow:0 0 16px rgba(34,197,94,.6);font-weight:700}
-.item.wuxing-shui.hot{box-shadow:0 0 16px rgba(59,130,246,.6);font-weight:700}
-.item.wuxing-huo.hot{box-shadow:0 0 16px rgba(239,68,68,.6);font-weight:700}
-.item.wuxing-tu.hot{box-shadow:0 0 16px rgba(168,85,247,.6);font-weight:700}
+.item.wuxing-jin{background:#5c4a1a;color:#ffd700}
+.item.wuxing-mu{background:#1a4a2a;color:#4ade80}
+.item.wuxing-shui{background:#1a2a5c;color:#60a5fa}
+.item.wuxing-huo{background:#5c1a1a;color:#f87171}
+.item.wuxing-tu{background:#3a1a5c;color:#c084fc}
+.item.wuxing-jin.hot{box-shadow:0 0 12px rgba(255,215,0,.35)}
+.item.wuxing-mu.hot{box-shadow:0 0 12px rgba(34,197,94,.35)}
+.item.wuxing-shui.hot{box-shadow:0 0 12px rgba(59,130,246,.35)}
+.item.wuxing-huo.hot{box-shadow:0 0 12px rgba(239,68,68,.35)}
+.item.wuxing-tu.hot{box-shadow:0 0 12px rgba(168,85,247,.35)}
 
-.empty{padding:30px 10px;text-align:center;color:rgba(255,255,255,.5);font-size:14px}
+.empty{padding:30px 10px;text-align:center;color:rgba(255,255,255,.2);font-size:14px}
 
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);padding:10px 20px;border-radius:20px;z-index:99999;font-size:13px;animation:toastIn .3s ease;pointer-events:none;white-space:nowrap}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(40,40,50,.95);padding:10px 20px;border-radius:10px;z-index:99999;font-size:13px;animation:toastIn .3s ease;pointer-events:none;color:#ddd;border:1px solid rgba(255,255,255,.08)}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-/* 弹窗 */
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;z-index:100000;padding:16px;animation:fadeIn .2s ease}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;justify-content:center;align-items:center;z-index:100000;padding:16px;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 .modal-content{
-    background:rgba(30,30,50,.96);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-radius:20px;
+    background:#282830;
+    border-radius:16px;
     padding:20px;
     width:100%;
-    max-width:500px;
+    max-width:480px;
     max-height:80vh;
     max-height:80dvh;
     overflow-y:auto;
     -webkit-overflow-scrolling:touch;
-    box-shadow:0 10px 40px rgba(0,0,0,.5);
+    border:1px solid rgba(255,255,255,.06);
 }
-.modal-content::-webkit-scrollbar{width:4px}
+.modal-content::-webkit-scrollbar{width:3px}
 .modal-content::-webkit-scrollbar-track{background:transparent}
-.modal-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
+.modal-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
 
-.modal-title{font-size:18px;font-weight:700;margin-bottom:16px;text-align:center}
-
-.theme-categories{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.theme-cat-btn{padding:6px 12px;border:none;border-radius:10px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.theme-cat-btn.active{background:rgba(255,215,0,.25);color:#ffd700}
-.theme-cat-btn:active{transform:scale(.95)}
-
-.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-
-.theme-option{background:rgba(255,255,255,.06);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s;border:2px solid transparent;position:relative}
-.theme-option:active{transform:scale(.95)}
-.theme-option.active{border-color:#ffd700;box-shadow:0 0 12px rgba(255,215,0,.3)}
-.theme-option.active::after{content:'✓';position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:#ffd700;border-radius:50%;font-size:10px;color:#000;display:flex;align-items:center;justify-content:center;font-weight:700}
-.theme-option-icon{font-size:22px;display:block;margin-bottom:3px}
-.theme-option-name{font-size:10px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.theme-preview{width:100%;height:12px;border-radius:6px;margin-top:5px}
-
-.modal-close-btn{width:100%;padding:10px;border:none;border-radius:12px;background:rgba(255,255,255,.1);color:#fff;font-size:14px;cursor:pointer;margin-top:12px;transition:all .2s}
-.modal-close-btn:active{background:rgba(255,255,255,.18)}
+.modal-title{font-size:17px;font-weight:600;margin-bottom:14px;text-align:center;color:#ccc}
 
 .history-actions{display:flex;gap:6px;margin-bottom:12px}
-.history-actions button{flex:1;padding:8px;border:none;border-radius:10px;font-size:12px;cursor:pointer;color:#fff;transition:all .2s}
-.history-clear-btn{background:rgba(239,68,68,.35)}
-.history-clear-btn:active{background:rgba(239,68,68,.65)}
+.history-clear-btn{flex:1;padding:8px;border:1px solid rgba(239,68,68,.2);border-radius:10px;font-size:12px;cursor:pointer;color:#f87171;background:rgba(239,68,68,.06);transition:all .2s}
+.history-clear-btn:active{background:rgba(239,68,68,.15)}
 
-.history-item{background:rgba(255,255,255,.08);border-radius:12px;padding:12px;margin-bottom:8px;position:relative;cursor:pointer;transition:all .2s}
-.history-item:active{background:rgba(255,255,255,.14)}
-.history-delete-btn{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(239,68,68,.35);color:#fff;font-size:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.history-delete-btn:active{background:rgba(239,68,68,.75)}
-.history-time{font-size:11px;opacity:.6;margin-bottom:4px;padding-right:28px}
-.history-text{font-size:12px;opacity:.8;word-break:break-all;margin-bottom:4px}
-.history-mode{font-size:10px;opacity:.5}
+.history-item{background:rgba(255,255,255,.03);border-radius:12px;padding:12px;margin-bottom:8px;position:relative;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.04)}
+.history-item:active{background:rgba(255,255,255,.05)}
+.history-top-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.history-delete-btn{width:22px;height:22px;border-radius:50%;border:1px solid rgba(239,68,68,.2);background:rgba(239,68,68,.08);color:#f87171;font-size:9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.history-delete-btn:active{background:rgba(239,68,68,.25)}
+.history-time{font-size:11px;color:rgba(255,255,255,.25);margin-bottom:4px}
+.history-text{font-size:12px;color:rgba(255,255,255,.45);word-break:break-all;margin-bottom:4px}
+.history-mode{font-size:10px;color:rgba(255,255,255,.25)}
 
-.history-result{background:rgba(0,0,0,.25);border-radius:10px;padding:6px;margin-top:6px}
-.history-result .mini-group{background:rgba(255,255,255,.05);border-radius:6px;margin-bottom:4px;overflow:hidden}
-.history-result .mini-group-header{padding:4px 8px;font-size:11px;font-weight:600;background:rgba(255,105,180,.25)}
+.history-result{background:rgba(0,0,0,.15);border-radius:10px;padding:6px;margin-top:6px}
+.history-result .mini-group{background:rgba(255,255,255,.02);border-radius:6px;margin-bottom:4px;overflow:hidden}
+.history-result .mini-group-header{padding:4px 8px;font-size:11px;font-weight:500;color:rgba(255,255,255,.35);display:flex;justify-content:space-between;align-items:center}
 .history-result .mini-group-items{display:flex;flex-wrap:wrap;gap:4px;padding:6px}
-.history-result .mini-item{padding:3px 8px;border-radius:8px;background:rgba(255,255,255,.08);font-size:11px}
-.history-result .mini-item.hot{background:linear-gradient(135deg,#ff4757,#ff6b81);font-weight:600}
-.history-result .mini-item.wuxing-jin{background:linear-gradient(135deg,#ffd700,#f0c000);color:#000}
-.history-result .mini-item.wuxing-mu{background:linear-gradient(135deg,#22c55e,#16a34a)}
-.history-result .mini-item.wuxing-shui{background:linear-gradient(135deg,#3b82f6,#2563eb)}
-.history-result .mini-item.wuxing-huo{background:linear-gradient(135deg,#ef4444,#dc2626)}
-.history-result .mini-item.wuxing-tu{background:linear-gradient(135deg,#a855f7,#7c3aed)}
+.history-result .mini-item{padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.05);font-size:11px;color:rgba(255,255,255,.5)}
+.history-result .mini-item.hot{background:rgba(255,71,87,.1);color:#f87171}
+.history-result .mini-item.wuxing-jin{color:#ffd700}
+.history-result .mini-item.wuxing-mu{color:#4ade80}
+.history-result .mini-item.wuxing-shui{color:#60a5fa}
+.history-result .mini-item.wuxing-huo{color:#f87171}
+.history-result .mini-item.wuxing-tu{color:#c084fc}
 
-.confirm-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:flex;justify-content:center;align-items:center;z-index:100001}
-.confirm-dialog{background:rgba(30,30,45,.98);border-radius:16px;padding:20px;width:85%;max-width:300px;text-align:center}
-.confirm-text{font-size:14px;margin-bottom:16px}
+.confirm-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;z-index:100001}
+.confirm-dialog{background:#2a2a35;border-radius:14px;padding:20px;width:85%;max-width:280px;text-align:center;border:1px solid rgba(255,255,255,.06)}
+.confirm-text{font-size:14px;margin-bottom:16px;color:#ccc}
 .confirm-btns{display:flex;gap:8px}
-.confirm-btns button{flex:1;padding:10px;border:none;border-radius:10px;font-size:14px;cursor:pointer;color:#fff;transition:all .2s}
-.confirm-cancel{background:rgba(255,255,255,.12)}
-.confirm-ok{background:rgba(239,68,68,.55)}
+.confirm-btns button{flex:1;padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:13px;cursor:pointer;color:#ddd;transition:all .2s;background:rgba(255,255,255,.04)}
+.confirm-cancel:active{background:rgba(255,255,255,.08)}
+.confirm-ok{border-color:rgba(239,68,68,.25)!important;background:rgba(239,68,68,.1)!important;color:#f87171!important}
+.confirm-ok:active{background:rgba(239,68,68,.2)!important}
 
 @media (max-width:400px){
     .container{padding:12px}
     h1{font-size:20px}
-    .theme-grid{grid-template-columns:repeat(3,1fr)}
-    .theme-option{padding:8px 4px}
-    .theme-option-icon{font-size:20px}
-    .theme-option-name{font-size:9px}
+    .contact-card{max-width:100%}
+    .contact-value{font-size:14px}
 }
 </style>
 </head>
@@ -194,7 +188,14 @@ button.action:active{transform:scale(.95);opacity:.8}
 <div class="container" id="container">
     <div class="topbar">
         <h1>🫧 咸鱼统计器 Pro</h1>
-        <button class="icon-btn" id="themeBtn">🖼️</button>
+        <div class="contact-card">
+            <span class="contact-icon">📩</span>
+            <div class="contact-info">
+                <div class="contact-label">Telegram 联系方式</div>
+                <div class="contact-value">@Yukecil1</div>
+            </div>
+            <a href="https://t.me/Yukecil1" target="_blank" rel="noopener" class="contact-btn">💬 联系我</a>
+        </div>
     </div>
     <textarea id="inputData"></textarea>
     <select id="modeSelect">
@@ -219,45 +220,13 @@ button.action:active{transform:scale(.95);opacity:.8}
 </div>
 
 <script>
-// 背景图URL
-const BG_IMAGE = 'https://cdn.jsdelivr.net/gh/jt6kdpmc7j-hue/cnd/IMG_7598.jpeg';
-
-// 24个主题（全部使用背景图）
-const themes = [
-    { icon:'🖼️', name:'默认背景', bg:`url(${BG_IMAGE}) center/cover no-repeat`, cat:'图片' },
-    { icon:'🌸', name:'樱花粉', bg:`linear-gradient(135deg,rgba(255,221,225,.85),rgba(238,156,167,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'渐变' },
-    { icon:'🍊', name:'日落橙', bg:`linear-gradient(135deg,rgba(255,153,102,.85),rgba(255,94,98,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'渐变' },
-    { icon:'🍇', name:'葡萄紫', bg:`linear-gradient(135deg,rgba(142,45,226,.85),rgba(74,0,224,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'渐变' },
-    { icon:'🍬', name:'棉花糖', bg:`linear-gradient(135deg,rgba(240,147,251,.85),rgba(245,87,108,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'渐变' },
-    { icon:'🌈', name:'彩虹糖', bg:`linear-gradient(135deg,rgba(255,154,158,.85),rgba(254,207,239,.85),rgba(161,196,253,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'渐变' },
-    { icon:'🦄', name:'独角兽', bg:`linear-gradient(135deg,rgba(224,195,252,.85),rgba(142,197,252,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'渐变' },
-    { icon:'🌙', name:'深蓝夜', bg:`linear-gradient(135deg,rgba(20,30,48,.9),rgba(36,59,85,.9)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'深色' },
-    { icon:'🖤', name:'暗夜黑', bg:`linear-gradient(135deg,rgba(35,37,38,.92),rgba(65,67,69,.92)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'深色' },
-    { icon:'💜', name:'暗夜紫', bg:`linear-gradient(135deg,rgba(26,26,46,.9),rgba(22,33,62,.9)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'深色' },
-    { icon:'🌑', name:'极夜', bg:`linear-gradient(135deg,rgba(15,12,41,.92),rgba(48,43,99,.92),rgba(36,36,62,.92)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'深色' },
-    { icon:'🕶️', name:'午夜', bg:`linear-gradient(135deg,rgba(0,0,0,.93),rgba(67,67,67,.93)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'深色' },
-    { icon:'🌌', name:'深空', bg:`linear-gradient(135deg,rgba(11,15,25,.92),rgba(26,31,53,.92)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'深色' },
-    { icon:'🌿', name:'翠绿林', bg:`linear-gradient(135deg,rgba(17,153,142,.8),rgba(56,239,125,.8)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'自然' },
-    { icon:'❄️', name:'冰湖蓝', bg:`linear-gradient(135deg,rgba(0,180,219,.82),rgba(0,131,176,.82)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'自然' },
-    { icon:'🏔️', name:'雪山', bg:`linear-gradient(135deg,rgba(230,218,218,.85),rgba(39,64,70,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'自然' },
-    { icon:'🌊', name:'深海', bg:`linear-gradient(135deg,rgba(15,32,39,.88),rgba(32,58,67,.88),rgba(44,83,100,.88)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'自然' },
-    { icon:'🌵', name:'沙漠', bg:`linear-gradient(135deg,rgba(245,175,25,.82),rgba(241,39,17,.82)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'自然' },
-    { icon:'🍁', name:'秋叶', bg:`linear-gradient(135deg,rgba(214,109,117,.83),rgba(226,149,135,.83)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'自然' },
-    { icon:'💎', name:'赛博朋克', bg:`linear-gradient(135deg,rgba(252,0,255,.8),rgba(0,219,222,.8)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'个性' },
-    { icon:'🎮', name:'电竞紫', bg:`linear-gradient(135deg,rgba(75,0,130,.88),rgba(148,0,211,.88)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'个性' },
-    { icon:'🕹️', name:'复古游戏', bg:`linear-gradient(135deg,rgba(85,98,112,.85),rgba(255,107,107,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'个性' },
-    { icon:'🔥', name:'烈焰', bg:`linear-gradient(135deg,rgba(237,33,58,.85),rgba(147,41,30,.85)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'个性' },
-    { icon:'💚', name:'霓虹绿', bg:`linear-gradient(135deg,rgba(0,176,155,.82),rgba(150,201,61,.82)), url(${BG_IMAGE}) center/cover no-repeat`, cat:'个性' }
-];
-const themeCategories = ['全部', '图片', '渐变', '深色', '自然', '个性'];
 const zodiacAnimals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
 const wuxingElements = ["金","木","水","火","土"];
 const wuxingColors = {"金":"wuxing-jin","木":"wuxing-mu","水":"wuxing-shui","火":"wuxing-huo","土":"wuxing-tu"};
 
 let currentData = [];
 let highestItem = '';
-let themeIndex = 0;
-let currentCat = '全部';
+let currentMode = 'digitSplit';
 
 const placeholderMap = {
     digitSplit: '输入数字进行头尾统计 (0-9)\n例如：1234567890',
@@ -265,20 +234,15 @@ const placeholderMap = {
     shengxiao: '输入任意文字，自动提取十二生肖统计\n例如：鼠牛虎兔龙蛇马羊猴鸡狗猪',
     wuxing: '输入任意文字，自动提取五行统计\n例如：金木水火土'
 };
+const modeNameMap = {
+    digitSplit: '头尾统计',
+    digitWhole: '号码统计',
+    shengxiao: '生肖统计',
+    wuxing: '五行统计'
+};
 
 function updatePlaceholder(mode) {
     document.getElementById('inputData').placeholder = placeholderMap[mode] || '';
-}
-
-function applyTheme(index) {
-    themeIndex = index;
-    const bg = themes[index].bg;
-    document.body.style.background = bg;
-    if (bg.includes('url(')) {
-        document.body.style.backgroundAttachment = 'fixed';
-    }
-    document.getElementById('themeBtn').innerText = themes[index].icon;
-    localStorage.setItem('xy_theme', index);
 }
 
 let toastTimer = null;
@@ -294,7 +258,7 @@ function toast(text) {
         el.style.opacity = '0';
         el.style.transition = 'opacity .3s';
         setTimeout(() => { if (el.parentNode) el.remove(); }, 300);
-    }, 1800);
+    }, 1600);
 }
 
 function copyText(text) {
@@ -312,7 +276,7 @@ function fallbackCopy(text) {
     document.body.removeChild(ta);
 }
 
-function stats(text, mode, includeZero = true) {
+function stats(text, mode) {
     if (!text.trim()) return null;
     const map = {};
     if (mode === 'digitSplit') {
@@ -335,7 +299,6 @@ function stats(text, mode, includeZero = true) {
         for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
     }
     let arr = Object.entries(map);
-    if (!includeZero) arr = arr.filter(i => i[1] > 0);
     if (arr.length === 0) return null;
     arr.sort((a, b) => {
         if (b[1] !== a[1]) return b[1] - a[1];
@@ -360,17 +323,23 @@ function getItemClass(item, count, maxCount) {
     return 'item';
 }
 
-function render(data, mode, includeZero = false) {
+function render(data, mode) {
     if (!data || data.length === 0) {
         document.getElementById('result').innerHTML = '<div class="empty">📭 暂无数据</div>';
         return;
     }
     const nonZeroData = data.filter(item => item[1] > 0);
     const maxCount = nonZeroData.length > 0 ? nonZeroData[0][1] : 0;
+
+    let unitLabel = '码';
+    if (mode === 'digitSplit') unitLabel = '个';
+    else if (mode === 'digitWhole') unitLabel = '码';
+    else if (mode === 'shengxiao') unitLabel = '个';
+    else if (mode === 'wuxing') unitLabel = '个';
+
     let group = {};
     data.forEach(item => {
         const count = item[1];
-        if (!includeZero && count === 0) return;
         if (!group[count]) group[count] = [];
         group[count].push(item[0]);
     });
@@ -378,12 +347,12 @@ function render(data, mode, includeZero = false) {
     Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => {
         const items = group[count];
         const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        html += `<div class="group"><div class="group-header"><span>✨ ${count}次</span><button class="copy-small" onclick="copyText('${escapedItems}')">📋 复制</button></div><div class="group-items">${items.map(i => `<div class="${getItemClass(i, count, maxCount)}">${i}</div>`).join('')}</div></div>`;
+        html += `<div class="group"><div class="group-header"><span>✨ ${count}次 · ${items.length}${unitLabel}</span><button class="copy-small" onclick="copyText('${escapedItems}')">📋 复制</button></div><div class="group-items">${items.map(i => `<div class="${getItemClass(i, count, maxCount)}">${i}</div>`).join('')}</div></div>`;
     });
     if (mode === 'wuxing') {
         const wuxingInfo = {"金":"收敛、肃杀，方位西","木":"生长、升发，方位东","水":"滋润、下行，方位北","火":"炎热、向上，方位南","土":"承载、化生，方位中"};
         const topItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '';
-        if (topItem && wuxingInfo[topItem]) html += `<div style="padding:10px;text-align:center;font-size:12px;opacity:.6;margin-top:8px;">💡 最旺五行：<strong>${topItem}</strong> — ${wuxingInfo[topItem]}</div>`;
+        if (topItem && wuxingInfo[topItem]) html += `<div style="padding:10px;text-align:center;font-size:12px;opacity:.45;margin-top:6px;">💡 最旺五行：<strong>${topItem}</strong> — ${wuxingInfo[topItem]}</div>`;
     }
     document.getElementById('result').innerHTML = html;
     document.querySelector('.result-wrapper').scrollTop = 0;
@@ -401,12 +370,20 @@ function renderHistoryResult(data, mode) {
     });
     let html = '<div class="history-result">';
     Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => {
-        html += `<div class="mini-group"><div class="mini-group-header">✨ ${count}次</div><div class="mini-group-items">${group[count].map(i => {
-            let cls = 'mini-item';
-            if (count === maxCount && count > 0) cls += ' hot';
-            if (wuxingElements.includes(i)) cls += ' ' + wuxingColors[i];
-            return `<span class="${cls}">${i}</span>`;
-        }).join('')}</div></div>`;
+        const items = group[count];
+        const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        html += `<div class="mini-group">
+            <div class="mini-group-header">
+                <span>✨ ${count}次</span>
+                <button class="copy-small" style="font-size:10px;padding:2px 8px;" onclick="event.stopPropagation();copyText('${escapedItems}')">📋</button>
+            </div>
+            <div class="mini-group-items">${items.map(i => {
+                let cls = 'mini-item';
+                if (count === maxCount && count > 0) cls += ' hot';
+                if (wuxingElements.includes(i)) cls += ' ' + wuxingColors[i];
+                return `<span class="${cls}">${i}</span>`;
+            }).join('')}</div>
+        </div>`;
     });
     html += '</div>';
     return html;
@@ -430,55 +407,38 @@ function showConfirm(text, onConfirm) {
     overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 }
 
-function showThemePicker() {
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    let html = '<div class="modal-content">';
-    html += '<div class="modal-title">🎨 选择主题 (24款)</div>';
-    html += '<div class="theme-categories">';
-    themeCategories.forEach(cat => {
-        html += `<button class="theme-cat-btn${cat === currentCat ? ' active' : ''}" data-cat="${cat}">${cat}</button>`;
-    });
-    html += '</div><div class="theme-grid" id="themeGrid">';
-    themes.forEach((t, i) => {
-        if (currentCat !== '全部' && t.cat !== currentCat) return;
-        html += `<div class="theme-option${i === themeIndex ? ' active' : ''}" data-index="${i}"><span class="theme-option-icon">${t.icon}</span><span class="theme-option-name">${t.name}</span><div class="theme-preview" style="background:${t.bg.replace(/'/g, "\\'")}"></div></div>`;
-    });
-    html += '</div><button class="modal-close-btn">关闭</button></div>';
-    overlay.innerHTML = html;
-    document.body.appendChild(overlay);
+function formatCopyText(data, mode) {
+    if (!data || data.length === 0) return '';
+    const modeName = modeNameMap[mode] || mode;
+    const nonZeroData = data.filter(item => item[1] > 0);
+    let total = 0;
+    nonZeroData.forEach(item => { total += item[1]; });
 
-    overlay.querySelectorAll('.theme-cat-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            currentCat = this.dataset.cat;
-            overlay.querySelectorAll('.theme-cat-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const grid = overlay.querySelector('#themeGrid');
-            grid.innerHTML = '';
-            themes.forEach((t, i) => {
-                if (currentCat !== '全部' && t.cat !== currentCat) return;
-                grid.innerHTML += `<div class="theme-option${i === themeIndex ? ' active' : ''}" data-index="${i}"><span class="theme-option-icon">${t.icon}</span><span class="theme-option-name">${t.name}</span><div class="theme-preview" style="background:${t.bg.replace(/'/g, "\\'")}"></div></div>`;
-            });
-            grid.querySelectorAll('.theme-option').forEach(opt => {
-                opt.addEventListener('click', function() {
-                    applyTheme(parseInt(this.dataset.index));
-                    overlay.remove();
-                    setTimeout(() => toast(`🎨 已切换至${themes[parseInt(this.dataset.index)].name}`), 50);
-                });
-            });
-        });
+    let group = {};
+    nonZeroData.forEach(item => {
+        const count = item[1];
+        if (!group[count]) group[count] = [];
+        group[count].push(item[0]);
     });
 
-    overlay.querySelectorAll('.theme-option').forEach(opt => {
-        opt.addEventListener('click', function() {
-            applyTheme(parseInt(this.dataset.index));
-            overlay.remove();
-            setTimeout(() => toast(`🎨 已切换至${themes[parseInt(this.dataset.index)].name}`), 50);
-        });
+    let unitName = '码';
+    if (mode === 'digitSplit') unitName = '个';
+    else if (mode === 'digitWhole') unitName = '码';
+    else if (mode === 'shengxiao') unitName = '个';
+    else if (mode === 'wuxing') unitName = '个';
+
+    let text = `【${modeName}】（总次数：${total}次）\n`;
+    const sortedCounts = Object.keys(group).map(Number).sort((a, b) => a - b);
+    sortedCounts.forEach(count => {
+        const items = group[count];
+        let lines = [];
+        for (let i = 0; i < items.length; i += 10) {
+            lines.push(items.slice(i, i + 10).join(' '));
+        }
+        text += `【${String(count).padStart(2, '0')}次】${lines.join('\n')}（共${items.length}${unitName}）\n`;
     });
 
-    overlay.querySelector('.modal-close-btn').addEventListener('click', () => overlay.remove());
-    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+    return text.trim();
 }
 
 function showHistory() {
@@ -492,10 +452,12 @@ function showHistory() {
     } else {
         html += '<div class="history-actions"><button class="history-clear-btn" id="clearAllHistory">🗑️ 清空全部</button></div>';
         history.slice(0, 20).forEach((h, i) => {
-            let modeText = h.mode === 'digitSplit' ? '头尾统计' : h.mode === 'digitWhole' ? '号码统计' : h.mode === 'shengxiao' ? '生肖统计' : '五行统计';
+            let modeText = modeNameMap[h.mode] || h.mode;
             html += `<div class="history-item" data-index="${i}">
-                <button class="history-delete-btn" data-del="${i}">✕</button>
-                <div class="history-time">${i+1}. ${h.time}</div>
+                <div class="history-top-row">
+                    <span style="font-size:11px;color:rgba(255,255,255,.3)">${i+1}. ${h.time}</span>
+                    <button class="history-delete-btn" data-del="${i}">✕</button>
+                </div>
                 <div class="history-text">📝 ${h.text || '无数据'}</div>
                 <div class="history-mode">📋 ${modeText}</div>
                 ${h.fullData ? renderHistoryResult(h.fullData, h.mode) : ''}
@@ -505,8 +467,10 @@ function showHistory() {
     html += '<button class="modal-close-btn">关闭</button></div>';
     overlay.innerHTML = html;
     document.body.appendChild(overlay);
+
     overlay.querySelector('.modal-close-btn').addEventListener('click', () => overlay.remove());
     overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+
     overlay.querySelectorAll('.history-delete-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -517,19 +481,22 @@ function showHistory() {
             showHistory();
         });
     });
+
     overlay.querySelectorAll('.history-item').forEach(item => {
         item.addEventListener('click', function(e) {
-            if (e.target.classList.contains('history-delete-btn')) return;
+            if (e.target.classList.contains('history-delete-btn') || e.target.classList.contains('copy-small')) return;
             const h = history[parseInt(this.dataset.index)];
             if (h) {
                 document.getElementById('inputData').value = h.text || '';
                 document.getElementById('modeSelect').value = h.mode || 'digitSplit';
+                currentMode = h.mode || 'digitSplit';
                 updatePlaceholder(h.mode || 'digitSplit');
                 overlay.remove();
                 toast('📥 数据已恢复');
             }
         });
     });
+
     const clearBtn = overlay.querySelector('#clearAllHistory');
     if (clearBtn) {
         clearBtn.addEventListener('click', function(e) {
@@ -543,17 +510,21 @@ function showHistory() {
     }
 }
 
-document.getElementById('modeSelect').addEventListener('change', function() { updatePlaceholder(this.value); });
+document.getElementById('modeSelect').addEventListener('change', function() {
+    currentMode = this.value;
+    updatePlaceholder(this.value);
+});
 
 document.getElementById('runBtn').addEventListener('click', function() {
     const text = document.getElementById('inputData').value;
     const mode = document.getElementById('modeSelect').value;
-    const data = stats(text, mode, true);
+    currentMode = mode;
+    const data = stats(text, mode);
     if (!data || data.length === 0) { toast('⚠️ 请输入有效数据'); return; }
     currentData = data;
     const nonZeroData = data.filter(item => item[1] > 0);
     highestItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '无';
-    render(data, mode, true);
+    render(data, mode);
     let total = 0;
     if (mode === 'digitSplit') total = text.replace(/[^\d]/g, '').length;
     else if (mode === 'digitWhole') total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
@@ -567,11 +538,8 @@ document.getElementById('runBtn').addEventListener('click', function() {
 
 document.getElementById('copyBtn').addEventListener('click', function() {
     if (!currentData.length) { toast('⚠️ 暂无统计结果'); return; }
-    let text = '📊 咸鱼统计结果\n\n';
-    const group = {};
-    currentData.forEach(item => { if (!group[item[1]]) group[item[1]] = []; group[item[1]].push(item[0]); });
-    Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => { text += `${count}次：${group[count].join("、")}\n`; });
-    copyText(text);
+    const formattedText = formatCopyText(currentData, currentMode);
+    copyText(formattedText);
 });
 
 document.getElementById('clearBtn').addEventListener('click', function() {
@@ -585,20 +553,13 @@ document.getElementById('clearBtn').addEventListener('click', function() {
 });
 
 document.getElementById('historyBtn').addEventListener('click', showHistory);
-document.getElementById('themeBtn').addEventListener('click', showThemePicker);
 
 function init() {
-    const savedTheme = localStorage.getItem('xy_theme');
-    if (savedTheme !== null && parseInt(savedTheme) < themes.length) {
-        applyTheme(parseInt(savedTheme));
-    }
     updatePlaceholder(document.getElementById('modeSelect').value);
+    currentMode = document.getElementById('modeSelect').value;
 }
 
 init();
-console.log('✅ 咸鱼统计器 Pro 已就绪');
-console.log('🖼️ 背景图：' + BG_IMAGE);
-console.log('🎨 24款主题 | 📊 4种统计模式');
 </script>
 </body>
 </html>
