@@ -109,7 +109,6 @@ button.action:active{transform:scale(.96);opacity:.85}
     gap:6px;
     margin-bottom:8px;
 }
-/* 数量徽章 - 全部绿色 */
 .result-card-badge{
     font-size:12px;
     font-weight:700;
@@ -124,7 +123,6 @@ button.action:active{transform:scale(.96);opacity:.85}
     align-items:center;
     gap:8px;
 }
-/* 频次 - 全部红色 */
 .result-card-count{
     font-weight:700;
     font-size:14px;
@@ -162,7 +160,6 @@ button.action:active{transform:scale(.96);opacity:.85}
     font-size:12px;
     color:#ddd;
 }
-/* 只有最高次高亮 */
 .glass-item.hot-item{
     background:rgba(255,71,87,.18);
     border:1px solid rgba(255,71,87,.3);
@@ -407,15 +404,12 @@ function render(data, mode) {
         const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
         const isHot = (count === maxCount && count > 0);
 
-        // 频次 - 全部红色
         let countClass = 'result-card-count';
 
-        // 五行模式给频次加五行色
         if (mode === 'wuxing' && isHot && wuxingColors[items[0]]) {
             countClass += ' ' + wuxingColors[items[0]];
         }
 
-        // 玻璃方块
         let itemClass = 'glass-item';
         if (isHot) itemClass += ' hot-item';
 
@@ -535,10 +529,10 @@ function formatCopyText(data, mode) {
         for (let i = 0; i < items.length; i += 10) {
             lines.push(items.slice(i, i + 10).join(','));
         }
-        text += `【${String(count).padStart(2, '0')}次】${lines.join('\n')}（共${items.length}${unitName}）\n`;
+        text += `【${String(count).padStart(2, '0')}次】\n${lines.join('\n')}（共${items.length}${unitName}）\n`;
     });
 
-    text += `\n⏰ ${getBeijingTime()}\n👨‍💻 @Yukecil1`;
+    text += `\n⏰ ${getBeijingTime()}`;
 
     return text.trim();
 }
