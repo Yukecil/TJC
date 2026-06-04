@@ -89,31 +89,100 @@ button.action:active{transform:scale(.96);opacity:.85}
 .stat-card div:first-child{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:2px}
 .stat-card div:last-child{font-size:20px;font-weight:700;color:#e0e0e0}
 
-.result-wrapper{background:rgba(0,0,0,.15);border-radius:14px;padding:8px;max-height:50vh;max-height:50dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.result-wrapper{background:rgba(0,0,0,.15);border-radius:14px;padding:10px;max-height:50vh;max-height:50dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .result-wrapper::-webkit-scrollbar{width:3px}
 .result-wrapper::-webkit-scrollbar-track{background:transparent}
 .result-wrapper::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
 
-.group{background:rgba(255,255,255,.03);border-radius:12px;margin-bottom:8px;overflow:hidden;border:1px solid rgba(255,255,255,.04)}
-.group-header{padding:10px 12px;font-weight:600;font-size:13px;background:rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;color:#ccc}
-.copy-small{border:1px solid rgba(255,255,255,.1);padding:3px 10px;border-radius:8px;background:rgba(255,255,255,.06);color:#bbb;cursor:pointer;font-size:11px;transition:all .2s}
-.copy-small:active{background:rgba(255,255,255,.12)}
-.group-items{display:flex;flex-wrap:wrap;gap:5px;padding:10px}
+/* 结果卡片 */
+.result-card{
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.04);
+    border-radius:12px;
+    padding:10px 12px;
+    margin-bottom:6px;
+}
+.result-card-top{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-bottom:8px;
+}
+/* 数量徽章 - 全部绿色 */
+.result-card-badge{
+    font-size:12px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:8px;
+    background:rgba(74,222,128,.12);
+    color:#4ade80;
+}
 
-.item{padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.06);font-size:13px;min-width:34px;text-align:center;color:#ddd}
-.item.hot{background:#6b3a3a;box-shadow:0 0 10px rgba(255,80,80,.2);font-weight:700}
-.item.zero{background:#6b3a3a;font-weight:700}
+.result-card-bottom{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+/* 频次 - 全部红色 */
+.result-card-count{
+    font-weight:700;
+    font-size:14px;
+    min-width:36px;
+    text-align:center;
+    color:#ff6b81;
+}
 
-.item.wuxing-jin{background:#5c4a1a;color:#ffd700}
-.item.wuxing-mu{background:#1a4a2a;color:#4ade80}
-.item.wuxing-shui{background:#1a2a5c;color:#60a5fa}
-.item.wuxing-huo{background:#5c1a1a;color:#f87171}
-.item.wuxing-tu{background:#3a1a5c;color:#c084fc}
-.item.wuxing-jin.hot{box-shadow:0 0 12px rgba(255,215,0,.35)}
-.item.wuxing-mu.hot{box-shadow:0 0 12px rgba(34,197,94,.35)}
-.item.wuxing-shui.hot{box-shadow:0 0 12px rgba(59,130,246,.35)}
-.item.wuxing-huo.hot{box-shadow:0 0 12px rgba(239,68,68,.35)}
-.item.wuxing-tu.hot{box-shadow:0 0 12px rgba(168,85,247,.35)}
+.result-card-items{
+    flex:1;
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px;
+}
+.result-card-copy{
+    flex-shrink:0;
+    border:1px solid rgba(255,255,255,.1);
+    padding:3px 10px;
+    border-radius:6px;
+    background:rgba(255,255,255,.04);
+    color:#999;
+    cursor:pointer;
+    font-size:11px;
+    transition:all .2s;
+}
+.result-card-copy:active{background:rgba(255,255,255,.1)}
+
+/* 玻璃数字方块 */
+.glass-item{
+    display:inline-block;
+    padding:4px 8px;
+    border-radius:7px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    font-size:12px;
+    color:#ddd;
+}
+/* 只有最高次高亮 */
+.glass-item.hot-item{
+    background:rgba(255,71,87,.18);
+    border:1px solid rgba(255,71,87,.3);
+    color:#fff;
+    font-weight:600;
+    box-shadow:0 0 8px rgba(255,71,87,.15);
+}
+
+/* 五行颜色 - 频次 */
+.result-card-count.wuxing-jin{color:#ffd700}
+.result-card-count.wuxing-mu{color:#4ade80}
+.result-card-count.wuxing-shui{color:#60a5fa}
+.result-card-count.wuxing-huo{color:#f87171}
+.result-card-count.wuxing-tu{color:#c084fc}
+
+.glass-item.wuxing-jin-item{background:rgba(255,215,0,.12);border-color:rgba(255,215,0,.25);color:#ffd700}
+.glass-item.wuxing-mu-item{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.25);color:#4ade80}
+.glass-item.wuxing-shui-item{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.25);color:#60a5fa}
+.glass-item.wuxing-huo-item{background:rgba(248,113,113,.12);border-color:rgba(248,113,113,.25);color:#f87171}
+.glass-item.wuxing-tu-item{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.25);color:#c084fc}
 
 .empty{padding:30px 10px;text-align:center;color:rgba(255,255,255,.2);font-size:14px}
 
@@ -311,18 +380,6 @@ function stats(text, mode) {
     return arr;
 }
 
-function getItemClass(item, count, maxCount) {
-    const isHot = (count === maxCount && count > 0);
-    const isZero = (count === 0);
-    if (wuxingElements.includes(item)) {
-        if (isZero) return 'item zero';
-        return isHot ? `item ${wuxingColors[item]} hot` : `item ${wuxingColors[item]}`;
-    }
-    if (isHot) return 'item hot';
-    if (isZero) return 'item zero';
-    return 'item';
-}
-
 function render(data, mode) {
     if (!data || data.length === 0) {
         document.getElementById('result').innerHTML = '<div class="empty">📭 暂无数据</div>';
@@ -343,17 +400,48 @@ function render(data, mode) {
         if (!group[count]) group[count] = [];
         group[count].push(item[0]);
     });
+
     let html = '';
     Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => {
         const items = group[count];
         const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        html += `<div class="group"><div class="group-header"><span>✨ ${count}次 · ${items.length}${unitLabel}</span><button class="copy-small" onclick="copyText('${escapedItems}')">📋 复制</button></div><div class="group-items">${items.map(i => `<div class="${getItemClass(i, count, maxCount)}">${i}</div>`).join('')}</div></div>`;
+        const isHot = (count === maxCount && count > 0);
+
+        // 频次 - 全部红色
+        let countClass = 'result-card-count';
+
+        // 五行模式给频次加五行色
+        if (mode === 'wuxing' && isHot && wuxingColors[items[0]]) {
+            countClass += ' ' + wuxingColors[items[0]];
+        }
+
+        // 玻璃方块
+        let itemClass = 'glass-item';
+        if (isHot) itemClass += ' hot-item';
+
+        let itemColorClass = '';
+        if (mode === 'wuxing' && wuxingColors[items[0]]) {
+            itemColorClass = ' ' + wuxingColors[items[0]] + '-item';
+        }
+
+        html += `<div class="result-card">
+            <div class="result-card-top">
+                <span class="result-card-badge">${items.length}${unitLabel}</span>
+            </div>
+            <div class="result-card-bottom">
+                <span class="${countClass}">${count}次</span>
+                <span class="result-card-items">${items.map(i => `<span class="${itemClass}${itemColorClass}">${i}</span>`).join('')}</span>
+                <button class="result-card-copy" onclick="copyText('${escapedItems}')">复制</button>
+            </div>
+        </div>`;
     });
+
     if (mode === 'wuxing') {
         const wuxingInfo = {"金":"收敛、肃杀，方位西","木":"生长、升发，方位东","水":"滋润、下行，方位北","火":"炎热、向上，方位南","土":"承载、化生，方位中"};
         const topItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '';
-        if (topItem && wuxingInfo[topItem]) html += `<div style="padding:10px;text-align:center;font-size:12px;opacity:.45;margin-top:6px;">💡 最旺五行：<strong>${topItem}</strong> — ${wuxingInfo[topItem]}</div>`;
+        if (topItem && wuxingInfo[topItem]) html += `<div style="padding:8px;text-align:center;font-size:12px;opacity:.4;margin-top:4px;">💡 最旺五行：<strong>${topItem}</strong> — ${wuxingInfo[topItem]}</div>`;
     }
+
     document.getElementById('result').innerHTML = html;
     document.querySelector('.result-wrapper').scrollTop = 0;
 }
@@ -407,15 +495,27 @@ function showConfirm(text, onConfirm) {
     overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 }
 
+function getBeijingTime() {
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const bj = new Date(utc + (3600000 * 8));
+    const year = bj.getFullYear();
+    const month = String(bj.getMonth() + 1).padStart(2, '0');
+    const day = String(bj.getDate()).padStart(2, '0');
+    const hours = String(bj.getHours()).padStart(2, '0');
+    const minutes = String(bj.getMinutes()).padStart(2, '0');
+    const seconds = String(bj.getSeconds()).padStart(2, '0');
+    return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
+}
+
 function formatCopyText(data, mode) {
     if (!data || data.length === 0) return '';
     const modeName = modeNameMap[mode] || mode;
-    const nonZeroData = data.filter(item => item[1] > 0);
     let total = 0;
-    nonZeroData.forEach(item => { total += item[1]; });
+    data.forEach(item => { total += item[1]; });
 
     let group = {};
-    nonZeroData.forEach(item => {
+    data.forEach(item => {
         const count = item[1];
         if (!group[count]) group[count] = [];
         group[count].push(item[0]);
@@ -433,10 +533,12 @@ function formatCopyText(data, mode) {
         const items = group[count];
         let lines = [];
         for (let i = 0; i < items.length; i += 10) {
-            lines.push(items.slice(i, i + 10).join(' '));
+            lines.push(items.slice(i, i + 10).join(','));
         }
         text += `【${String(count).padStart(2, '0')}次】${lines.join('\n')}（共${items.length}${unitName}）\n`;
     });
+
+    text += `\n⏰ ${getBeijingTime()}\n👨‍💻 @Yukecil1`;
 
     return text.trim();
 }
