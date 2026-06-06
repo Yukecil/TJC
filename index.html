@@ -30,43 +30,8 @@ body{
     margin:0 auto;
 }
 
-.topbar{display:flex;justify-content:center;align-items:center;margin-bottom:14px;flex-direction:column;gap:10px}
+.topbar{display:flex;justify-content:center;align-items:center;margin-bottom:14px;flex-direction:column;gap:6px}
 h1{font-size:22px;font-weight:700;color:#e0e0e0;text-align:center}
-
-.contact-card{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:14px;
-    padding:12px 16px;
-    width:100%;
-    max-width:340px;
-}
-.contact-icon{font-size:30px;flex-shrink:0}
-.contact-info{flex:1;min-width:0}
-.contact-label{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:3px;letter-spacing:.5px}
-.contact-value{font-size:16px;font-weight:700;color:#8ab4f8;word-break:break-all}
-.contact-btn{
-    flex-shrink:0;
-    padding:10px 16px;
-    border:none;
-    border-radius:10px;
-    background:#3b3b45;
-    color:#e0e0e0;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-    transition:all .2s;
-    text-decoration:none;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    z-index:5;
-    position:relative;
-}
-.contact-btn:active{transform:scale(.95);background:#4a4a55}
 
 textarea{width:100%;border:1px solid rgba(255,255,255,.08);outline:none;padding:12px;border-radius:12px;margin-bottom:10px;background:#1e1e24;color:#e0e0e0;font-size:14px;resize:none;min-height:90px;font-family:inherit;line-height:1.6}
 textarea::placeholder{color:rgba(255,255,255,.2);font-size:13px}
@@ -94,7 +59,6 @@ button.action:active{transform:scale(.96);opacity:.85}
 .result-wrapper::-webkit-scrollbar-track{background:transparent}
 .result-wrapper::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
 
-/* 结果卡片 */
 .result-card{
     background:rgba(255,255,255,.03);
     border:1px solid rgba(255,255,255,.04);
@@ -150,7 +114,6 @@ button.action:active{transform:scale(.96);opacity:.85}
 }
 .result-card-copy:active{background:rgba(255,255,255,.1)}
 
-/* 玻璃数字方块 */
 .glass-item{
     display:inline-block;
     padding:4px 8px;
@@ -168,7 +131,7 @@ button.action:active{transform:scale(.96);opacity:.85}
     box-shadow:0 0 8px rgba(255,71,87,.15);
 }
 
-/* 五行颜色 - 频次 */
+/* 五行颜色 */
 .result-card-count.wuxing-jin{color:#ffd700}
 .result-card-count.wuxing-mu{color:#4ade80}
 .result-card-count.wuxing-shui{color:#60a5fa}
@@ -180,6 +143,11 @@ button.action:active{transform:scale(.96);opacity:.85}
 .glass-item.wuxing-shui-item{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.25);color:#60a5fa}
 .glass-item.wuxing-huo-item{background:rgba(248,113,113,.12);border-color:rgba(248,113,113,.25);color:#f87171}
 .glass-item.wuxing-tu-item{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.25);color:#c084fc}
+
+/* 波色统计颜色 */
+.glass-item.red-item{background:rgba(255,71,87,.15);border-color:rgba(255,71,87,.3);color:#ff6b81}
+.glass-item.blue-item{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.3);color:#60a5fa}
+.glass-item.green-item{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#4ade80}
 
 .empty{padding:30px 10px;text-align:center;color:rgba(255,255,255,.2);font-size:14px}
 
@@ -231,6 +199,9 @@ button.action:active{transform:scale(.96);opacity:.85}
 .history-result .mini-item.wuxing-shui{color:#60a5fa}
 .history-result .mini-item.wuxing-huo{color:#f87171}
 .history-result .mini-item.wuxing-tu{color:#c084fc}
+.history-result .mini-item.red-item{color:#ff6b81}
+.history-result .mini-item.blue-item{color:#60a5fa}
+.history-result .mini-item.green-item{color:#4ade80}
 
 .confirm-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;z-index:100001}
 .confirm-dialog{background:#2a2a35;border-radius:14px;padding:20px;width:85%;max-width:280px;text-align:center;border:1px solid rgba(255,255,255,.06)}
@@ -241,11 +212,32 @@ button.action:active{transform:scale(.96);opacity:.85}
 .confirm-ok{border-color:rgba(239,68,68,.25)!important;background:rgba(239,68,68,.1)!important;color:#f87171!important}
 .confirm-ok:active{background:rgba(239,68,68,.2)!important}
 
+/* PC端 */
+@media (min-width:768px){
+    body{padding:30px;align-items:center}
+    .container{max-width:800px;padding:28px;border-radius:20px}
+    .pc-layout{display:flex;gap:24px}
+    .pc-left{flex:1;min-width:0}
+    .pc-right{flex:1;min-width:0;display:flex;flex-direction:column}
+    .pc-right .result-wrapper{flex:1;max-height:55vh;max-height:55dvh}
+    h1{font-size:26px}
+    textarea{min-height:120px;font-size:15px}
+    .button-panel{grid-template-columns:repeat(4,1fr)}
+    button.action{font-size:14px;padding:14px 8px}
+    .stats-bar{grid-template-columns:repeat(4,1fr)}
+    .topbar{margin-bottom:20px}
+    textarea,select,.button-panel,.stats-bar{margin-bottom:14px}
+}
+@media (min-width:1024px){
+    .container{max-width:960px}
+    .pc-left{flex:1.2}
+    .pc-right{flex:1}
+    .pc-right .result-wrapper{max-height:60vh;max-height:60dvh}
+}
+
 @media (max-width:400px){
     .container{padding:12px}
     h1{font-size:20px}
-    .contact-card{max-width:100%}
-    .contact-value{font-size:14px}
 }
 </style>
 </head>
@@ -254,61 +246,151 @@ button.action:active{transform:scale(.96);opacity:.85}
 <div class="container" id="container">
     <div class="topbar">
         <h1>🫧 咸鱼统计器 Pro</h1>
-        <div class="contact-card">
-            <span class="contact-icon">📩</span>
-            <div class="contact-info">
-                <div class="contact-label">Telegram 联系方式</div>
-                <div class="contact-value">@Yukecil1</div>
-            </div>
-            <a href="https://t.me/Yukecil1" target="_blank" rel="noopener" class="contact-btn">💬 联系我</a>
-        </div>
     </div>
-    <textarea id="inputData"></textarea>
-    <select id="modeSelect">
-        <option value="digitSplit">头尾统计 (0-9)</option>
-        <option value="digitWhole">号码统计 (01-49)</option>
-        <option value="shengxiao">生肖统计</option>
-        <option value="wuxing">五行统计</option>
-    </select>
-    <div class="button-panel">
-        <button class="action" id="runBtn">🚀 开始统计</button>
-        <button class="action" id="copyBtn">📋 复制结果</button>
-        <button class="action" id="clearBtn">🗑️ 清除数据</button>
-        <button class="action" id="historyBtn">📜 历史记录</button>
-    </div>
-    <div class="stats-bar">
-        <div class="stat-card"><div>📊 总数据量</div><div id="totalData">0</div></div>
-        <div class="stat-card"><div>🔥 最高频次</div><div id="hotData">-</div></div>
-    </div>
-    <div class="result-wrapper">
-        <div id="result"><div class="empty">✨ 输入数据后点击"开始统计"</div></div>
-    </div>
+    <div id="mainLayout"></div>
 </div>
 
 <script>
 const zodiacAnimals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
 const wuxingElements = ["金","木","水","火","土"];
 const wuxingColors = {"金":"wuxing-jin","木":"wuxing-mu","水":"wuxing-shui","火":"wuxing-huo","土":"wuxing-tu"};
+const rgbElements = ["红","蓝","绿"];
+const rgbColors = {"红":"red-item","蓝":"blue-item","绿":"green-item"};
 
 let currentData = [];
 let highestItem = '';
 let currentMode = 'digitSplit';
+let isPC = false;
 
 const placeholderMap = {
     digitSplit: '输入数字进行头尾统计 (0-9)\n例如：1234567890',
     digitWhole: '输入号码自动切割统计 (01-49)\n例如：010203 或 252623',
     shengxiao: '输入任意文字，自动提取十二生肖统计\n例如：鼠牛虎兔龙蛇马羊猴鸡狗猪',
-    wuxing: '输入任意文字，自动提取五行统计\n例如：金木水火土'
+    wuxing: '输入任意文字，自动提取五行统计\n例如：金木水火土',
+    rgb: '输入任意文字，自动提取波色统计\n例如：红蓝绿红红蓝'
 };
 const modeNameMap = {
     digitSplit: '头尾统计',
     digitWhole: '号码统计',
     shengxiao: '生肖统计',
-    wuxing: '五行统计'
+    wuxing: '五行统计',
+    rgb: '波色统计'
 };
 
+function detectDevice() {
+    isPC = window.innerWidth >= 768;
+    buildLayout();
+}
+
+function buildLayout() {
+    const mainLayout = document.getElementById('mainLayout');
+    if (isPC) {
+        mainLayout.innerHTML = `
+            <div class="pc-layout">
+                <div class="pc-left">
+                    <textarea id="inputData"></textarea>
+                    <select id="modeSelect">
+                        <option value="digitSplit">头尾统计 (0-9)</option>
+                        <option value="digitWhole">号码统计 (01-49)</option>
+                        <option value="shengxiao">生肖统计</option>
+                        <option value="wuxing">五行统计</option>
+                        <option value="rgb">波色统计</option>
+                    </select>
+                    <div class="button-panel">
+                        <button class="action" id="runBtn">🚀 开始统计</button>
+                        <button class="action" id="copyBtn">📋 复制结果</button>
+                        <button class="action" id="clearBtn">🗑️ 清除数据</button>
+                        <button class="action" id="historyBtn">📜 历史记录</button>
+                    </div>
+                    <div class="stats-bar">
+                        <div class="stat-card"><div>📊 总数据量</div><div id="totalData">0</div></div>
+                        <div class="stat-card"><div>🔥 最高频次</div><div id="hotData">-</div></div>
+                    </div>
+                </div>
+                <div class="pc-right">
+                    <div class="result-wrapper">
+                        <div id="result"><div class="empty">✨ 输入数据后点击"开始统计"</div></div>
+                    </div>
+                </div>
+            </div>`;
+    } else {
+        mainLayout.innerHTML = `
+            <textarea id="inputData"></textarea>
+            <select id="modeSelect">
+                <option value="digitSplit">头尾统计 (0-9)</option>
+                <option value="digitWhole">号码统计 (01-49)</option>
+                <option value="shengxiao">生肖统计</option>
+                <option value="wuxing">五行统计</option>
+                <option value="rgb">波色统计</option>
+            </select>
+            <div class="button-panel">
+                <button class="action" id="runBtn">🚀 开始统计</button>
+                <button class="action" id="copyBtn">📋 复制结果</button>
+                <button class="action" id="clearBtn">🗑️ 清除数据</button>
+                <button class="action" id="historyBtn">📜 历史记录</button>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-card"><div>📊 总数据量</div><div id="totalData">0</div></div>
+                <div class="stat-card"><div>🔥 最高频次</div><div id="hotData">-</div></div>
+            </div>
+            <div class="result-wrapper">
+                <div id="result"><div class="empty">✨ 输入数据后点击"开始统计"</div></div>
+            </div>`;
+    }
+    bindEvents();
+    updatePlaceholder(currentMode);
+}
+
+function bindEvents() {
+    document.getElementById('modeSelect').addEventListener('change', function() {
+        currentMode = this.value;
+        updatePlaceholder(this.value);
+    });
+
+    document.getElementById('runBtn').addEventListener('click', function() {
+        const text = document.getElementById('inputData').value;
+        const mode = document.getElementById('modeSelect').value;
+        currentMode = mode;
+        const data = stats(text, mode);
+        if (!data || data.length === 0) { toast('⚠️ 请输入有效数据'); return; }
+        currentData = data;
+        const nonZeroData = data.filter(item => item[1] > 0);
+        highestItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '无';
+        render(data, mode);
+        let total = 0;
+        if (mode === 'digitSplit') total = text.replace(/[^\d]/g, '').length;
+        else if (mode === 'digitWhole') total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
+        else if (mode === 'shengxiao') { for (let i = 0; i < text.length; i++) { if (zodiacAnimals.includes(text[i])) total++; } }
+        else if (mode === 'wuxing') { for (let i = 0; i < text.length; i++) { if (wuxingElements.includes(text[i])) total++; } }
+        else if (mode === 'rgb') { for (let i = 0; i < text.length; i++) { if (rgbElements.includes(text[i])) total++; } }
+        document.getElementById('totalData').innerText = total;
+        document.getElementById('hotData').innerText = highestItem || '0';
+        saveHistory(text, mode, data);
+        toast('✅ 统计完成！共' + total + '条');
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', function() {
+        if (!currentData.length) { toast('⚠️ 暂无统计结果'); return; }
+        const formattedText = formatCopyText(currentData, currentMode);
+        copyText(formattedText);
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', function() {
+        document.getElementById('inputData').value = '';
+        document.getElementById('result').innerHTML = '<div class="empty">✨ 输入数据后点击"开始统计"</div>';
+        document.getElementById('totalData').innerText = '0';
+        document.getElementById('hotData').innerText = '-';
+        currentData = [];
+        highestItem = '';
+        toast('🗑️ 已清除');
+    });
+
+    document.getElementById('historyBtn').addEventListener('click', showHistory);
+}
+
 function updatePlaceholder(mode) {
-    document.getElementById('inputData').placeholder = placeholderMap[mode] || '';
+    const ta = document.getElementById('inputData');
+    if (ta) ta.placeholder = placeholderMap[mode] || '';
 }
 
 let toastTimer = null;
@@ -363,6 +445,9 @@ function stats(text, mode) {
     } else if (mode === 'wuxing') {
         wuxingElements.forEach(w => { map[w] = 0; });
         for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
+    } else if (mode === 'rgb') {
+        rgbElements.forEach(r => { map[r] = 0; });
+        for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
     }
     let arr = Object.entries(map);
     if (arr.length === 0) return null;
@@ -372,14 +457,17 @@ function stats(text, mode) {
         if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
         if (zodiacAnimals.includes(a[0]) && zodiacAnimals.includes(b[0])) return zodiacAnimals.indexOf(a[0]) - zodiacAnimals.indexOf(b[0]);
         if (wuxingElements.includes(a[0]) && wuxingElements.includes(b[0])) return wuxingElements.indexOf(a[0]) - wuxingElements.indexOf(b[0]);
+        if (rgbElements.includes(a[0]) && rgbElements.includes(b[0])) return rgbElements.indexOf(a[0]) - rgbElements.indexOf(b[0]);
         return String(a[0]).localeCompare(String(b[0]));
     });
     return arr;
 }
 
 function render(data, mode) {
+    const resultEl = document.getElementById('result');
+    if (!resultEl) return;
     if (!data || data.length === 0) {
-        document.getElementById('result').innerHTML = '<div class="empty">📭 暂无数据</div>';
+        resultEl.innerHTML = '<div class="empty">📭 暂无数据</div>';
         return;
     }
     const nonZeroData = data.filter(item => item[1] > 0);
@@ -390,6 +478,7 @@ function render(data, mode) {
     else if (mode === 'digitWhole') unitLabel = '码';
     else if (mode === 'shengxiao') unitLabel = '个';
     else if (mode === 'wuxing') unitLabel = '个';
+    else if (mode === 'rgb') unitLabel = '个';
 
     let group = {};
     data.forEach(item => {
@@ -405,7 +494,6 @@ function render(data, mode) {
         const isHot = (count === maxCount && count > 0);
 
         let countClass = 'result-card-count';
-
         if (mode === 'wuxing' && isHot && wuxingColors[items[0]]) {
             countClass += ' ' + wuxingColors[items[0]];
         }
@@ -413,9 +501,13 @@ function render(data, mode) {
         let itemClass = 'glass-item';
         if (isHot) itemClass += ' hot-item';
 
+        // 波色或五行的颜色
         let itemColorClass = '';
         if (mode === 'wuxing' && wuxingColors[items[0]]) {
             itemColorClass = ' ' + wuxingColors[items[0]] + '-item';
+        }
+        if (mode === 'rgb' && rgbColors[items[0]]) {
+            itemColorClass = ' ' + rgbColors[items[0]];
         }
 
         html += `<div class="result-card">
@@ -436,8 +528,9 @@ function render(data, mode) {
         if (topItem && wuxingInfo[topItem]) html += `<div style="padding:8px;text-align:center;font-size:12px;opacity:.4;margin-top:4px;">💡 最旺五行：<strong>${topItem}</strong> — ${wuxingInfo[topItem]}</div>`;
     }
 
-    document.getElementById('result').innerHTML = html;
-    document.querySelector('.result-wrapper').scrollTop = 0;
+    resultEl.innerHTML = html;
+    const wrapper = resultEl.closest('.result-wrapper');
+    if (wrapper) wrapper.scrollTop = 0;
 }
 
 function renderHistoryResult(data, mode) {
@@ -463,6 +556,7 @@ function renderHistoryResult(data, mode) {
                 let cls = 'mini-item';
                 if (count === maxCount && count > 0) cls += ' hot';
                 if (wuxingElements.includes(i)) cls += ' ' + wuxingColors[i];
+                if (rgbElements.includes(i)) cls += ' ' + rgbColors[i];
                 return `<span class="${cls}">${i}</span>`;
             }).join('')}</div>
         </div>`;
@@ -520,6 +614,7 @@ function formatCopyText(data, mode) {
     else if (mode === 'digitWhole') unitName = '码';
     else if (mode === 'shengxiao') unitName = '个';
     else if (mode === 'wuxing') unitName = '个';
+    else if (mode === 'rgb') unitName = '个';
 
     let text = `【${modeName}】（总次数：${total}次）\n`;
     const sortedCounts = Object.keys(group).map(Number).sort((a, b) => a - b);
@@ -606,53 +701,17 @@ function showHistory() {
     }
 }
 
-document.getElementById('modeSelect').addEventListener('change', function() {
-    currentMode = this.value;
-    updatePlaceholder(this.value);
-});
-
-document.getElementById('runBtn').addEventListener('click', function() {
-    const text = document.getElementById('inputData').value;
-    const mode = document.getElementById('modeSelect').value;
-    currentMode = mode;
-    const data = stats(text, mode);
-    if (!data || data.length === 0) { toast('⚠️ 请输入有效数据'); return; }
-    currentData = data;
-    const nonZeroData = data.filter(item => item[1] > 0);
-    highestItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '无';
-    render(data, mode);
-    let total = 0;
-    if (mode === 'digitSplit') total = text.replace(/[^\d]/g, '').length;
-    else if (mode === 'digitWhole') total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
-    else if (mode === 'shengxiao') { for (let i = 0; i < text.length; i++) { if (zodiacAnimals.includes(text[i])) total++; } }
-    else if (mode === 'wuxing') { for (let i = 0; i < text.length; i++) { if (wuxingElements.includes(text[i])) total++; } }
-    document.getElementById('totalData').innerText = total;
-    document.getElementById('hotData').innerText = highestItem || '0';
-    saveHistory(text, mode, data);
-    toast('✅ 统计完成！共' + total + '条');
-});
-
-document.getElementById('copyBtn').addEventListener('click', function() {
-    if (!currentData.length) { toast('⚠️ 暂无统计结果'); return; }
-    const formattedText = formatCopyText(currentData, currentMode);
-    copyText(formattedText);
-});
-
-document.getElementById('clearBtn').addEventListener('click', function() {
-    document.getElementById('inputData').value = '';
-    document.getElementById('result').innerHTML = '<div class="empty">✨ 输入数据后点击"开始统计"</div>';
-    document.getElementById('totalData').innerText = '0';
-    document.getElementById('hotData').innerText = '-';
-    currentData = [];
-    highestItem = '';
-    toast('🗑️ 已清除');
-});
-
-document.getElementById('historyBtn').addEventListener('click', showHistory);
-
 function init() {
-    updatePlaceholder(document.getElementById('modeSelect').value);
-    currentMode = document.getElementById('modeSelect').value;
+    detectDevice();
+    window.addEventListener('resize', function() {
+        const wasPC = isPC;
+        isPC = window.innerWidth >= 768;
+        if (wasPC !== isPC) {
+            currentData = [];
+            highestItem = '';
+            buildLayout();
+        }
+    });
 }
 
 init();
