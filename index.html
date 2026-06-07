@@ -1,400 +1,594 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<title>咸鱼统计器 Pro</title>
-<meta name="theme-color" content="#2a2a2a">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
-body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    min-height:100vh;
-    min-height:100dvh;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    padding:14px;
-    color:#e0e0e0;
-    background:#1e1e24;
-}
-
-.container{
-    width:100%;
-    max-width:520px;
-    background:#282830;
-    border-radius:16px;
-    padding:16px;
-    border:1px solid rgba(255,255,255,.06);
-    margin:0 auto;
-}
-
-.topbar{display:flex;justify-content:center;align-items:center;margin-bottom:14px;flex-direction:column;gap:6px}
-h1{font-size:22px;font-weight:700;color:#e0e0e0;text-align:center}
-
-textarea{width:100%;border:1px solid rgba(255,255,255,.08);outline:none;padding:12px;border-radius:12px;margin-bottom:10px;background:#1e1e24;color:#e0e0e0;font-size:14px;resize:none;min-height:90px;font-family:inherit;line-height:1.6}
-textarea::placeholder{color:rgba(255,255,255,.2);font-size:13px}
-textarea:focus{border-color:rgba(255,255,255,.15);background:#22222a}
-
-select{width:100%;border:1px solid rgba(255,255,255,.08);outline:none;padding:11px 14px;border-radius:12px;margin-bottom:10px;background:#1e1e24;color:#e0e0e0;font-size:14px;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-select option{background:#282830;color:#e0e0e0}
-
-.button-panel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-button.action{padding:12px 8px;border:none;border-radius:12px;font-weight:600;font-size:13px;color:#fff;cursor:pointer;transition:all .2s}
-button.action:active{transform:scale(.96);opacity:.85}
-
-#runBtn{background:#2d6a4f}
-#copyBtn{background:#3b5f8a}
-#clearBtn{background:#8a3b3b}
-#historyBtn{background:#5c3b8a}
-
-.stats-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.stat-card{background:rgba(255,255,255,.04);padding:10px;border-radius:12px;text-align:center;border:1px solid rgba(255,255,255,.04)}
-.stat-card div:first-child{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:2px}
-.stat-card div:last-child{font-size:20px;font-weight:700;color:#e0e0e0}
-
-.result-wrapper{background:rgba(0,0,0,.15);border-radius:14px;padding:10px;max-height:50vh;max-height:50dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.result-wrapper::-webkit-scrollbar{width:3px}
-.result-wrapper::-webkit-scrollbar-track{background:transparent}
-.result-wrapper::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
-
-.result-card{
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,255,255,.04);
-    border-radius:12px;
-    padding:10px 12px;
-    margin-bottom:6px;
-}
-.result-card-top{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    margin-bottom:8px;
-}
-.result-card-badge{
-    font-size:12px;
-    font-weight:700;
-    padding:3px 10px;
-    border-radius:8px;
-    background:rgba(74,222,128,.12);
-    color:#4ade80;
-}
-
-.result-card-bottom{
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-.result-card-count{
-    font-weight:700;
-    font-size:14px;
-    min-width:36px;
-    text-align:center;
-    color:#ff6b81;
-}
-
-.result-card-items{
-    flex:1;
-    display:flex;
-    flex-wrap:wrap;
-    gap:4px;
-}
-.result-card-copy{
-    flex-shrink:0;
-    border:1px solid rgba(255,255,255,.1);
-    padding:3px 10px;
-    border-radius:6px;
-    background:rgba(255,255,255,.04);
-    color:#999;
-    cursor:pointer;
-    font-size:11px;
-    transition:all .2s;
-}
-.result-card-copy:active{background:rgba(255,255,255,.1)}
-
-.glass-item{
-    display:inline-block;
-    padding:4px 8px;
-    border-radius:7px;
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.08);
-    font-size:12px;
-    color:#ddd;
-}
-.glass-item.hot-item{
-    background:rgba(255,71,87,.18);
-    border:1px solid rgba(255,71,87,.3);
-    color:#fff;
-    font-weight:600;
-    box-shadow:0 0 8px rgba(255,71,87,.15);
-}
-
-/* 五行颜色 */
-.result-card-count.wuxing-jin{color:#ffd700}
-.result-card-count.wuxing-mu{color:#4ade80}
-.result-card-count.wuxing-shui{color:#60a5fa}
-.result-card-count.wuxing-huo{color:#f87171}
-.result-card-count.wuxing-tu{color:#c084fc}
-
-.glass-item.wuxing-jin-item{background:rgba(255,215,0,.12);border-color:rgba(255,215,0,.25);color:#ffd700}
-.glass-item.wuxing-mu-item{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.25);color:#4ade80}
-.glass-item.wuxing-shui-item{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.25);color:#60a5fa}
-.glass-item.wuxing-huo-item{background:rgba(248,113,113,.12);border-color:rgba(248,113,113,.25);color:#f87171}
-.glass-item.wuxing-tu-item{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.25);color:#c084fc}
-
-/* 波色统计颜色 */
-.glass-item.red-item{background:rgba(255,71,87,.15);border-color:rgba(255,71,87,.3);color:#ff6b81}
-.glass-item.blue-item{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.3);color:#60a5fa}
-.glass-item.green-item{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#4ade80}
-
-.empty{padding:30px 10px;text-align:center;color:rgba(255,255,255,.2);font-size:14px}
-
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(40,40,50,.95);padding:10px 20px;border-radius:10px;z-index:99999;font-size:13px;animation:toastIn .3s ease;pointer-events:none;color:#ddd;border:1px solid rgba(255,255,255,.08)}
-@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;justify-content:center;align-items:center;z-index:100000;padding:16px;animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-.modal-content{
-    background:#282830;
-    border-radius:16px;
-    padding:20px;
-    width:100%;
-    max-width:480px;
-    max-height:80vh;
-    max-height:80dvh;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-    border:1px solid rgba(255,255,255,.06);
-}
-.modal-content::-webkit-scrollbar{width:3px}
-.modal-content::-webkit-scrollbar-track{background:transparent}
-.modal-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
-
-.modal-title{font-size:17px;font-weight:600;margin-bottom:14px;text-align:center;color:#ccc}
-
-.history-actions{display:flex;gap:6px;margin-bottom:12px}
-.history-clear-btn{flex:1;padding:8px;border:1px solid rgba(239,68,68,.2);border-radius:10px;font-size:12px;cursor:pointer;color:#f87171;background:rgba(239,68,68,.06);transition:all .2s}
-.history-clear-btn:active{background:rgba(239,68,68,.15)}
-
-.history-item{background:rgba(255,255,255,.03);border-radius:12px;padding:12px;margin-bottom:8px;position:relative;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.04)}
-.history-item:active{background:rgba(255,255,255,.05)}
-.history-top-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
-.history-delete-btn{width:22px;height:22px;border-radius:50%;border:1px solid rgba(239,68,68,.2);background:rgba(239,68,68,.08);color:#f87171;font-size:9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.history-delete-btn:active{background:rgba(239,68,68,.25)}
-.history-time{font-size:11px;color:rgba(255,255,255,.25);margin-bottom:4px}
-.history-text{font-size:12px;color:rgba(255,255,255,.45);word-break:break-all;margin-bottom:4px}
-.history-mode{font-size:10px;color:rgba(255,255,255,.25)}
-
-.history-result{background:rgba(0,0,0,.15);border-radius:10px;padding:6px;margin-top:6px}
-.history-result .mini-group{background:rgba(255,255,255,.02);border-radius:6px;margin-bottom:4px;overflow:hidden}
-.history-result .mini-group-header{padding:4px 8px;font-size:11px;font-weight:500;color:rgba(255,255,255,.35);display:flex;justify-content:space-between;align-items:center}
-.history-result .mini-group-items{display:flex;flex-wrap:wrap;gap:4px;padding:6px}
-.history-result .mini-item{padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.05);font-size:11px;color:rgba(255,255,255,.5)}
-.history-result .mini-item.hot{background:rgba(255,71,87,.1);color:#f87171}
-.history-result .mini-item.wuxing-jin{color:#ffd700}
-.history-result .mini-item.wuxing-mu{color:#4ade80}
-.history-result .mini-item.wuxing-shui{color:#60a5fa}
-.history-result .mini-item.wuxing-huo{color:#f87171}
-.history-result .mini-item.wuxing-tu{color:#c084fc}
-.history-result .mini-item.red-item{color:#ff6b81}
-.history-result .mini-item.blue-item{color:#60a5fa}
-.history-result .mini-item.green-item{color:#4ade80}
-
-.confirm-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;z-index:100001}
-.confirm-dialog{background:#2a2a35;border-radius:14px;padding:20px;width:85%;max-width:280px;text-align:center;border:1px solid rgba(255,255,255,.06)}
-.confirm-text{font-size:14px;margin-bottom:16px;color:#ccc}
-.confirm-btns{display:flex;gap:8px}
-.confirm-btns button{flex:1;padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:13px;cursor:pointer;color:#ddd;transition:all .2s;background:rgba(255,255,255,.04)}
-.confirm-cancel:active{background:rgba(255,255,255,.08)}
-.confirm-ok{border-color:rgba(239,68,68,.25)!important;background:rgba(239,68,68,.1)!important;color:#f87171!important}
-.confirm-ok:active{background:rgba(239,68,68,.2)!important}
-
-/* PC端 */
-@media (min-width:768px){
-    body{padding:30px;align-items:center}
-    .container{max-width:800px;padding:28px;border-radius:20px}
-    .pc-layout{display:flex;gap:24px}
-    .pc-left{flex:1;min-width:0}
-    .pc-right{flex:1;min-width:0;display:flex;flex-direction:column}
-    .pc-right .result-wrapper{flex:1;max-height:55vh;max-height:55dvh}
-    h1{font-size:26px}
-    textarea{min-height:120px;font-size:15px}
-    .button-panel{grid-template-columns:repeat(4,1fr)}
-    button.action{font-size:14px;padding:14px 8px}
-    .stats-bar{grid-template-columns:repeat(4,1fr)}
-    .topbar{margin-bottom:20px}
-    textarea,select,.button-panel,.stats-bar{margin-bottom:14px}
-}
-@media (min-width:1024px){
-    .container{max-width:960px}
-    .pc-left{flex:1.2}
-    .pc-right{flex:1}
-    .pc-right .result-wrapper{max-height:60vh;max-height:60dvh}
-}
-
-@media (max-width:400px){
-    .container{padding:12px}
-    h1{font-size:20px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>咸鱼统计器 Pro</title>
+  <meta name="theme-color" content="#2a2a2a">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 14px;
+      color: #e0e0e0;
+      background: #1e1e24;
+    }
+    .container {
+      width: 100%;
+      max-width: 520px;
+      background: #282830;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin: 0 auto;
+    }
+    .topbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-direction: column;
+      gap: 6px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #e0e0e0;
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      outline: none;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: #1e1e24;
+      color: #e0e0e0;
+      font-size: 14px;
+      resize: none;
+      min-height: 90px;
+      font-family: inherit;
+      line-height: 1.6;
+    }
+    textarea::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+      font-size: 13px;
+    }
+    textarea:focus {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: #22222a;
+    }
+    select {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      outline: none;
+      padding: 11px 14px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: #1e1e24;
+      color: #e0e0e0;
+      font-size: 14px;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    select option {
+      background: #282830;
+      color: #e0e0e0;
+    }
+    .button-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    button.action {
+      padding: 12px 8px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button.action:active {
+      transform: scale(0.96);
+      opacity: 0.85;
+    }
+    #runBtn { background: #2d6a4f; }
+    #copyBtn { background: #3b5f8a; }
+    #clearBtn { background: #8a3b3b; }
+    #historyBtn { background: #5c3b8a; }
+    .stats-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .stat-card {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 10px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .stat-card div:first-child {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 2px;
+    }
+    .stat-card div:last-child {
+      font-size: 20px;
+      font-weight: 700;
+      color: #e0e0e0;
+    }
+    .result-wrapper {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 14px;
+      padding: 10px;
+      max-height: 50vh;
+      max-height: 50dvh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .result-wrapper::-webkit-scrollbar { width: 3px; }
+    .result-wrapper::-webkit-scrollbar-track { background: transparent; }
+    .result-wrapper::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 2px; }
+    .result-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 6px;
+    }
+    .result-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .result-card-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 8px;
+      background: rgba(74, 222, 128, 0.12);
+      color: #4ade80;
+    }
+    .result-card-bottom {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .result-card-count {
+      font-weight: 700;
+      font-size: 14px;
+      min-width: 36px;
+      text-align: center;
+      color: #ff6b81;
+    }
+    .result-card-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .result-card-copy {
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #999;
+      cursor: pointer;
+      font-size: 11px;
+      transition: all 0.2s;
+    }
+    .result-card-copy:active { background: rgba(255, 255, 255, 0.1); }
+    .glass-item {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      color: #ddd;
+    }
+    .glass-item.hot-item {
+      background: rgba(255, 71, 87, 0.18);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 0 8px rgba(255, 71, 87, 0.15);
+    }
+    .result-card-count.wuxing-jin { color: #ffd700; }
+    .result-card-count.wuxing-mu { color: #4ade80; }
+    .result-card-count.wuxing-shui { color: #60a5fa; }
+    .result-card-count.wuxing-huo { color: #f87171; }
+    .result-card-count.wuxing-tu { color: #c084fc; }
+    .glass-item.wuxing-jin-item { background: rgba(255,215,0,0.12); border-color: rgba(255,215,0,0.25); color: #ffd700; }
+    .glass-item.wuxing-mu-item { background: rgba(74,222,128,0.12); border-color: rgba(74,222,128,0.25); color: #4ade80; }
+    .glass-item.wuxing-shui-item { background: rgba(96,165,250,0.12); border-color: rgba(96,165,250,0.25); color: #60a5fa; }
+    .glass-item.wuxing-huo-item { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.25); color: #f87171; }
+    .glass-item.wuxing-tu-item { background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.25); color: #c084fc; }
+    .glass-item.red-item { background: rgba(255,71,87,0.15); border-color: rgba(255,71,87,0.3); color: #ff6b81; }
+    .glass-item.blue-item { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); color: #60a5fa; }
+    .glass-item.green-item { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.3); color: #4ade80; }
+    .empty { padding: 30px 10px; text-align: center; color: rgba(255, 255, 255, 0.2); font-size: 14px; }
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(40, 40, 50, 0.95);
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 99999;
+      font-size: 13px;
+      animation: toastIn 0.3s ease;
+      pointer-events: none;
+      color: #ddd;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100000;
+      padding: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-content {
+      background: #282830;
+      border-radius: 16px;
+      padding: 20px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 80vh;
+      max-height: 80dvh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .modal-content::-webkit-scrollbar { width: 3px; }
+    .modal-content::-webkit-scrollbar-track { background: transparent; }
+    .modal-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+    .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 14px; text-align: center; color: #ccc; }
+    .history-actions { display: flex; gap: 6px; margin-bottom: 12px; }
+    .history-clear-btn {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 10px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #f87171;
+      background: rgba(239, 68, 68, 0.06);
+      transition: all 0.2s;
+    }
+    .history-clear-btn:active { background: rgba(239, 68, 68, 0.15); }
+    .history-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .history-item:active { background: rgba(255, 255, 255, 0.05); }
+    .history-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    .history-delete-btn {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.08);
+      color: #f87171;
+      font-size: 9px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .history-delete-btn:active { background: rgba(239, 68, 68, 0.25); }
+    .history-time { font-size: 11px; color: rgba(255, 255, 255, 0.25); margin-bottom: 4px; }
+    .history-text { font-size: 12px; color: rgba(255, 255, 255, 0.45); word-break: break-all; margin-bottom: 4px; }
+    .history-mode { font-size: 10px; color: rgba(255, 255, 255, 0.25); }
+    .history-result {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      padding: 6px;
+      margin-top: 6px;
+    }
+    .history-result .mini-group {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 6px;
+      margin-bottom: 4px;
+      overflow: hidden;
+    }
+    .history-result .mini-group-header {
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.35);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .history-result .mini-group-items { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; }
+    .history-result .mini-item {
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .history-result .mini-item.hot { background: rgba(255, 71, 87, 0.1); color: #f87171; }
+    .history-result .mini-item.wuxing-jin { color: #ffd700; }
+    .history-result .mini-item.wuxing-mu { color: #4ade80; }
+    .history-result .mini-item.wuxing-shui { color: #60a5fa; }
+    .history-result .mini-item.wuxing-huo { color: #f87171; }
+    .history-result .mini-item.wuxing-tu { color: #c084fc; }
+    .history-result .mini-item.red-item { color: #ff6b81; }
+    .history-result .mini-item.blue-item { color: #60a5fa; }
+    .history-result .mini-item.green-item { color: #4ade80; }
+    .confirm-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100001;
+    }
+    .confirm-dialog {
+      background: #2a2a35;
+      border-radius: 14px;
+      padding: 20px;
+      width: 85%;
+      max-width: 280px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .confirm-text { font-size: 14px; margin-bottom: 16px; color: #ccc; }
+    .confirm-btns { display: flex; gap: 8px; }
+    .confirm-btns button {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #ddd;
+      transition: all 0.2s;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .confirm-cancel:active { background: rgba(255, 255, 255, 0.08); }
+    .confirm-ok {
+      border-color: rgba(239, 68, 68, 0.25) !important;
+      background: rgba(239, 68, 68, 0.1) !important;
+      color: #f87171 !important;
+    }
+    .confirm-ok:active { background: rgba(239, 68, 68, 0.2) !important; }
+    @media (min-width: 768px) {
+      body { padding: 30px; align-items: center; }
+      .container { max-width: 800px; padding: 28px; border-radius: 20px; }
+      .pc-layout { display: flex; gap: 24px; }
+      .pc-left { flex: 1; min-width: 0; }
+      .pc-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+      .pc-right .result-wrapper { flex: 1; max-height: 55vh; max-height: 55dvh; }
+      h1 { font-size: 26px; }
+      textarea { min-height: 120px; font-size: 15px; }
+      .button-panel { grid-template-columns: repeat(4, 1fr); }
+      button.action { font-size: 14px; padding: 14px 8px; }
+      .stats-bar { grid-template-columns: repeat(4, 1fr); }
+      .topbar { margin-bottom: 20px; }
+      textarea, select, .button-panel, .stats-bar { margin-bottom: 14px; }
+    }
+    @media (min-width: 1024px) {
+      .container { max-width: 960px; }
+      .pc-left { flex: 1.2; }
+      .pc-right { flex: 1; }
+      .pc-right .result-wrapper { max-height: 60vh; max-height: 60dvh; }
+    }
+    @media (max-width: 400px) {
+      .container { padding: 12px; }
+      h1 { font-size: 20px; }
+    }
+  </style>
 </head>
 <body>
-
 <div class="container" id="container">
-    <div class="topbar">
-        <h1>🫧 咸鱼统计器 Pro</h1>
-    </div>
-    <div id="mainLayout"></div>
+  <div class="topbar">
+    <h1>🫧 咸鱼统计器 Pro</h1>
+  </div>
+  <div id="mainLayout"></div>
 </div>
-
 <script>
-const zodiacAnimals = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
-const wuxingElements = ["金","木","水","火","土"];
-const wuxingColors = {"金":"wuxing-jin","木":"wuxing-mu","水":"wuxing-shui","火":"wuxing-huo","土":"wuxing-tu"};
-const rgbElements = ["红","蓝","绿"];
-const rgbColors = {"红":"red-item","蓝":"blue-item","绿":"green-item"};
+  const zodiacAnimals = ["鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"];
+  const wuxingElements = ["金", "木", "水", "火", "土"];
+  const wuxingColors = { "金": "wuxing-jin", "木": "wuxing-mu", "水": "wuxing-shui", "火": "wuxing-huo", "土": "wuxing-tu" };
+  const rgbElements = ["红", "蓝", "绿"];
+  const rgbColors = { "红": "red-item", "蓝": "blue-item", "绿": "green-item" };
 
-let currentData = [];
-let highestItem = '';
-let currentMode = 'digitSplit';
-let isPC = false;
+  let currentData = [];
+  let highestItem = '';
+  let currentMode = 'digitSplit';
+  let isPC = false;
 
-const placeholderMap = {
+  const placeholderMap = {
     digitSplit: '输入数字进行头尾统计 (0-9)\n例如：1234567890',
     digitWhole: '输入号码自动切割统计 (01-49)\n例如：010203 或 252623',
     shengxiao: '输入任意文字，自动提取十二生肖统计\n例如：鼠牛虎兔龙蛇马羊猴鸡狗猪',
     wuxing: '输入任意文字，自动提取五行统计\n例如：金木水火土',
     rgb: '输入任意文字，自动提取波色统计\n例如：红蓝绿红红蓝'
-};
-const modeNameMap = {
+  };
+  const modeNameMap = {
     digitSplit: '头尾统计',
     digitWhole: '号码统计',
     shengxiao: '生肖统计',
     wuxing: '五行统计',
     rgb: '波色统计'
-};
+  };
 
-function detectDevice() {
+  function detectDevice() {
     isPC = window.innerWidth >= 768;
     buildLayout();
-}
+  }
 
-function buildLayout() {
+  function buildLayout() {
     const mainLayout = document.getElementById('mainLayout');
     if (isPC) {
-        mainLayout.innerHTML = `
-            <div class="pc-layout">
-                <div class="pc-left">
-                    <textarea id="inputData"></textarea>
-                    <select id="modeSelect">
-                        <option value="digitSplit">头尾统计 (0-9)</option>
-                        <option value="digitWhole">号码统计 (01-49)</option>
-                        <option value="shengxiao">生肖统计</option>
-                        <option value="wuxing">五行统计</option>
-                        <option value="rgb">波色统计</option>
-                    </select>
-                    <div class="button-panel">
-                        <button class="action" id="runBtn">🚀 开始统计</button>
-                        <button class="action" id="copyBtn">📋 复制结果</button>
-                        <button class="action" id="clearBtn">🗑️ 清除数据</button>
-                        <button class="action" id="historyBtn">📜 历史记录</button>
-                    </div>
-                    <div class="stats-bar">
-                        <div class="stat-card"><div>📊 总数据量</div><div id="totalData">0</div></div>
-                        <div class="stat-card"><div>🔥 最高频次</div><div id="hotData">-</div></div>
-                    </div>
-                </div>
-                <div class="pc-right">
-                    <div class="result-wrapper">
-                        <div id="result"><div class="empty">✨ 输入数据后点击"开始统计"</div></div>
-                    </div>
-                </div>
-            </div>`;
-    } else {
-        mainLayout.innerHTML = `
+      mainLayout.innerHTML = `
+        <div class="pc-layout">
+          <div class="pc-left">
             <textarea id="inputData"></textarea>
             <select id="modeSelect">
-                <option value="digitSplit">头尾统计 (0-9)</option>
-                <option value="digitWhole">号码统计 (01-49)</option>
-                <option value="shengxiao">生肖统计</option>
-                <option value="wuxing">五行统计</option>
-                <option value="rgb">波色统计</option>
+              <option value="digitSplit">头尾统计 (0-9)</option>
+              <option value="digitWhole">号码统计 (01-49)</option>
+              <option value="shengxiao">生肖统计</option>
+              <option value="wuxing">五行统计</option>
+              <option value="rgb">波色统计</option>
             </select>
             <div class="button-panel">
-                <button class="action" id="runBtn">🚀 开始统计</button>
-                <button class="action" id="copyBtn">📋 复制结果</button>
-                <button class="action" id="clearBtn">🗑️ 清除数据</button>
-                <button class="action" id="historyBtn">📜 历史记录</button>
+              <button class="action" id="runBtn">🚀 开始统计</button>
+              <button class="action" id="copyBtn">📋 复制结果</button>
+              <button class="action" id="clearBtn">🗑️ 清除数据</button>
+              <button class="action" id="historyBtn">📜 历史记录</button>
             </div>
             <div class="stats-bar">
-                <div class="stat-card"><div>📊 总数据量</div><div id="totalData">0</div></div>
-                <div class="stat-card"><div>🔥 最高频次</div><div id="hotData">-</div></div>
+              <div class="stat-card"><div>📊 总数据量</div><div id="totalData">0</div></div>
+              <div class="stat-card"><div>🔥 最高频次</div><div id="hotData">-</div></div>
             </div>
+          </div>
+          <div class="pc-right">
             <div class="result-wrapper">
-                <div id="result"><div class="empty">✨ 输入数据后点击"开始统计"</div></div>
-            </div>`;
+              <div id="result"><div class="empty">✨ 输入数据后点击"开始统计"</div></div>
+            </div>
+          </div>
+        </div>`;
+    } else {
+      mainLayout.innerHTML = `
+        <textarea id="inputData"></textarea>
+        <select id="modeSelect">
+          <option value="digitSplit">头尾统计 (0-9)</option>
+          <option value="digitWhole">号码统计 (01-49)</option>
+          <option value="shengxiao">生肖统计</option>
+          <option value="wuxing">五行统计</option>
+          <option value="rgb">波色统计</option>
+        </select>
+        <div class="button-panel">
+          <button class="action" id="runBtn">🚀 开始统计</button>
+          <button class="action" id="copyBtn">📋 复制结果</button>
+          <button class="action" id="clearBtn">🗑️ 清除数据</button>
+          <button class="action" id="historyBtn">📜 历史记录</button>
+        </div>
+        <div class="stats-bar">
+          <div class="stat-card"><div>📊 总数据量</div><div id="totalData">0</div></div>
+          <div class="stat-card"><div>🔥 最高频次</div><div id="hotData">-</div></div>
+        </div>
+        <div class="result-wrapper">
+          <div id="result"><div class="empty">✨ 输入数据后点击"开始统计"</div></div>
+        </div>`;
     }
     bindEvents();
     updatePlaceholder(currentMode);
-}
+  }
 
-function bindEvents() {
+  function bindEvents() {
     document.getElementById('modeSelect').addEventListener('change', function() {
-        currentMode = this.value;
-        updatePlaceholder(this.value);
+      currentMode = this.value;
+      updatePlaceholder(this.value);
     });
 
     document.getElementById('runBtn').addEventListener('click', function() {
-        const text = document.getElementById('inputData').value;
-        const mode = document.getElementById('modeSelect').value;
-        currentMode = mode;
-        const data = stats(text, mode);
-        if (!data || data.length === 0) { toast('⚠️ 请输入有效数据'); return; }
-        currentData = data;
-        const nonZeroData = data.filter(item => item[1] > 0);
-        highestItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '无';
-        render(data, mode);
-        let total = 0;
-        if (mode === 'digitSplit') total = text.replace(/[^\d]/g, '').length;
-        else if (mode === 'digitWhole') total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
-        else if (mode === 'shengxiao') { for (let i = 0; i < text.length; i++) { if (zodiacAnimals.includes(text[i])) total++; } }
-        else if (mode === 'wuxing') { for (let i = 0; i < text.length; i++) { if (wuxingElements.includes(text[i])) total++; } }
-        else if (mode === 'rgb') { for (let i = 0; i < text.length; i++) { if (rgbElements.includes(text[i])) total++; } }
-        document.getElementById('totalData').innerText = total;
-        document.getElementById('hotData').innerText = highestItem || '0';
-        saveHistory(text, mode, data);
-        toast('✅ 统计完成！共' + total + '条');
+      const text = document.getElementById('inputData').value;
+      const mode = document.getElementById('modeSelect').value;
+      currentMode = mode;
+      const data = stats(text, mode);
+      if (!data || data.length === 0) { toast('⚠️ 请输入有效数据'); return; }
+      currentData = data;
+      const nonZeroData = data.filter(item => item[1] > 0);
+      highestItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '无';
+      render(data, mode);
+      let total = 0;
+      if (mode === 'digitSplit') total = text.replace(/[^\d]/g, '').length;
+      else if (mode === 'digitWhole') total = Math.floor(text.replace(/[^\d]/g, '').length / 2);
+      else if (mode === 'shengxiao') { for (let i = 0; i < text.length; i++) { if (zodiacAnimals.includes(text[i])) total++; } }
+      else if (mode === 'wuxing') { for (let i = 0; i < text.length; i++) { if (wuxingElements.includes(text[i])) total++; } }
+      else if (mode === 'rgb') { for (let i = 0; i < text.length; i++) { if (rgbElements.includes(text[i])) total++; } }
+      document.getElementById('totalData').innerText = total;
+      document.getElementById('hotData').innerText = highestItem || '0';
+      saveHistory(text, mode, data);
+      toast('✅ 统计完成！共' + total + '条');
     });
 
     document.getElementById('copyBtn').addEventListener('click', function() {
-        if (!currentData.length) { toast('⚠️ 暂无统计结果'); return; }
-        const formattedText = formatCopyText(currentData, currentMode);
-        copyText(formattedText);
+      if (!currentData.length) { toast('⚠️ 暂无统计结果'); return; }
+      const formattedText = formatCopyText(currentData, currentMode);
+      copyText(formattedText);
     });
 
     document.getElementById('clearBtn').addEventListener('click', function() {
-        document.getElementById('inputData').value = '';
-        document.getElementById('result').innerHTML = '<div class="empty">✨ 输入数据后点击"开始统计"</div>';
-        document.getElementById('totalData').innerText = '0';
-        document.getElementById('hotData').innerText = '-';
-        currentData = [];
-        highestItem = '';
-        toast('🗑️ 已清除');
+      document.getElementById('inputData').value = '';
+      document.getElementById('result').innerHTML = '<div class="empty">✨ 输入数据后点击"开始统计"</div>';
+      document.getElementById('totalData').innerText = '0';
+      document.getElementById('hotData').innerText = '-';
+      currentData = [];
+      highestItem = '';
+      toast('🗑️ 已清除');
     });
 
     document.getElementById('historyBtn').addEventListener('click', showHistory);
-}
+  }
 
-function updatePlaceholder(mode) {
+  function updatePlaceholder(mode) {
     const ta = document.getElementById('inputData');
     if (ta) ta.placeholder = placeholderMap[mode] || '';
-}
+  }
 
-let toastTimer = null;
-function toast(text) {
+  let toastTimer = null;
+  function toast(text) {
     const existing = document.querySelector('.toast');
     if (existing) existing.remove();
     if (toastTimer) clearTimeout(toastTimer);
@@ -403,72 +597,74 @@ function toast(text) {
     el.innerText = text;
     document.body.appendChild(el);
     toastTimer = setTimeout(() => {
-        el.style.opacity = '0';
-        el.style.transition = 'opacity .3s';
-        setTimeout(() => { if (el.parentNode) el.remove(); }, 300);
+      el.style.opacity = '0';
+      el.style.transition = 'opacity .3s';
+      setTimeout(() => { if (el.parentNode) el.remove(); }, 300);
     }, 1600);
-}
+  }
 
-function copyText(text) {
+  function copyText(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => toast('✅ 已复制')).catch(() => fallbackCopy(text));
-    } else { fallbackCopy(text); }
-}
-function fallbackCopy(text) {
+      navigator.clipboard.writeText(text).then(() => toast('✅ 已复制')).catch(() => fallbackCopy(text));
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function fallbackCopy(text) {
     const ta = document.createElement('textarea');
     ta.value = text;
     ta.style.cssText = 'position:fixed;left:-9999px;';
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand('copy'); toast('✅ 已复制'); } catch(e) { toast('❌ 复制失败'); }
+    try { document.execCommand('copy'); toast('✅ 已复制'); } catch (e) { toast('❌ 复制失败'); }
     document.body.removeChild(ta);
-}
+  }
 
-function stats(text, mode) {
+  function stats(text, mode) {
     if (!text.trim()) return null;
     const map = {};
     if (mode === 'digitSplit') {
-        for (let i = 0; i <= 9; i++) map[String(i)] = 0;
-        const digits = text.replace(/[^\d]/g, '');
-        for (let i = 0; i < digits.length; i++) { map[digits[i]] = (map[digits[i]] || 0) + 1; }
+      for (let i = 0; i <= 9; i++) map[String(i)] = 0;
+      const digits = text.replace(/[^\d]/g, '');
+      for (let i = 0; i < digits.length; i++) { map[digits[i]] = (map[digits[i]] || 0) + 1; }
     } else if (mode === 'digitWhole') {
-        for (let i = 1; i <= 49; i++) map[String(i).padStart(2, '0')] = 0;
-        const digits = text.replace(/[^\d]/g, '');
-        for (let i = 0; i < digits.length - 1; i += 2) {
-            const pair = digits.substr(i, 2);
-            const num = parseInt(pair);
-            if (num >= 1 && num <= 49) { map[pair] = (map[pair] || 0) + 1; }
-        }
+      for (let i = 1; i <= 49; i++) map[String(i).padStart(2, '0')] = 0;
+      const digits = text.replace(/[^\d]/g, '');
+      for (let i = 0; i < digits.length - 1; i += 2) {
+        const pair = digits.substr(i, 2);
+        const num = parseInt(pair);
+        if (num >= 1 && num <= 49) { map[pair] = (map[pair] || 0) + 1; }
+      }
     } else if (mode === 'shengxiao') {
-        zodiacAnimals.forEach(a => { map[a] = 0; });
-        for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
+      zodiacAnimals.forEach(a => { map[a] = 0; });
+      for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
     } else if (mode === 'wuxing') {
-        wuxingElements.forEach(w => { map[w] = 0; });
-        for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
+      wuxingElements.forEach(w => { map[w] = 0; });
+      for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
     } else if (mode === 'rgb') {
-        rgbElements.forEach(r => { map[r] = 0; });
-        for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
+      rgbElements.forEach(r => { map[r] = 0; });
+      for (let i = 0; i < text.length; i++) { const ch = text[i]; if (map.hasOwnProperty(ch)) map[ch]++; }
     }
     let arr = Object.entries(map);
     if (arr.length === 0) return null;
     arr.sort((a, b) => {
-        if (b[1] !== a[1]) return b[1] - a[1];
-        const numA = parseInt(a[0]), numB = parseInt(b[0]);
-        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-        if (zodiacAnimals.includes(a[0]) && zodiacAnimals.includes(b[0])) return zodiacAnimals.indexOf(a[0]) - zodiacAnimals.indexOf(b[0]);
-        if (wuxingElements.includes(a[0]) && wuxingElements.includes(b[0])) return wuxingElements.indexOf(a[0]) - wuxingElements.indexOf(b[0]);
-        if (rgbElements.includes(a[0]) && rgbElements.includes(b[0])) return rgbElements.indexOf(a[0]) - rgbElements.indexOf(b[0]);
-        return String(a[0]).localeCompare(String(b[0]));
+      if (b[1] !== a[1]) return b[1] - a[1];
+      const numA = parseInt(a[0]), numB = parseInt(b[0]);
+      if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+      if (zodiacAnimals.includes(a[0]) && zodiacAnimals.includes(b[0])) return zodiacAnimals.indexOf(a[0]) - zodiacAnimals.indexOf(b[0]);
+      if (wuxingElements.includes(a[0]) && wuxingElements.includes(b[0])) return wuxingElements.indexOf(a[0]) - wuxingElements.indexOf(b[0]);
+      if (rgbElements.includes(a[0]) && rgbElements.includes(b[0])) return rgbElements.indexOf(a[0]) - rgbElements.indexOf(b[0]);
+      return String(a[0]).localeCompare(String(b[0]));
     });
     return arr;
-}
+  }
 
-function render(data, mode) {
+  function render(data, mode) {
     const resultEl = document.getElementById('result');
     if (!resultEl) return;
     if (!data || data.length === 0) {
-        resultEl.innerHTML = '<div class="empty">📭 暂无数据</div>';
-        return;
+      resultEl.innerHTML = '<div class="empty">📭 暂无数据</div>';
+      return;
     }
     const nonZeroData = data.filter(item => item[1] > 0);
     const maxCount = nonZeroData.length > 0 ? nonZeroData[0][1] : 0;
@@ -482,98 +678,97 @@ function render(data, mode) {
 
     let group = {};
     data.forEach(item => {
-        const count = item[1];
-        if (!group[count]) group[count] = [];
-        group[count].push(item[0]);
+      const count = item[1];
+      if (!group[count]) group[count] = [];
+      group[count].push(item[0]);
     });
 
     let html = '';
     Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => {
-        const items = group[count];
-        const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        const isHot = (count === maxCount && count > 0);
+      const items = group[count];
+      const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const isHot = (count === maxCount && count > 0);
 
-        let countClass = 'result-card-count';
-        if (mode === 'wuxing' && isHot && wuxingColors[items[0]]) {
-            countClass += ' ' + wuxingColors[items[0]];
-        }
+      let countClass = 'result-card-count';
+      if (mode === 'wuxing' && isHot && wuxingColors[items[0]]) {
+        countClass += ' ' + wuxingColors[items[0]];
+      }
 
-        let itemClass = 'glass-item';
-        if (isHot) itemClass += ' hot-item';
+      let itemClass = 'glass-item';
+      if (isHot) itemClass += ' hot-item';
 
-        // 波色或五行的颜色
-        let itemColorClass = '';
-        if (mode === 'wuxing' && wuxingColors[items[0]]) {
-            itemColorClass = ' ' + wuxingColors[items[0]] + '-item';
-        }
-        if (mode === 'rgb' && rgbColors[items[0]]) {
-            itemColorClass = ' ' + rgbColors[items[0]];
-        }
+      let itemColorClass = '';
+      if (mode === 'wuxing' && wuxingColors[items[0]]) {
+        itemColorClass = ' ' + wuxingColors[items[0]] + '-item';
+      }
+      if (mode === 'rgb' && rgbColors[items[0]]) {
+        itemColorClass = ' ' + rgbColors[items[0]];
+      }
 
-        html += `<div class="result-card">
-            <div class="result-card-top">
-                <span class="result-card-badge">${items.length}${unitLabel}</span>
-            </div>
-            <div class="result-card-bottom">
-                <span class="${countClass}">${count}次</span>
-                <span class="result-card-items">${items.map(i => `<span class="${itemClass}${itemColorClass}">${i}</span>`).join('')}</span>
-                <button class="result-card-copy" onclick="copyText('${escapedItems}')">复制</button>
-            </div>
-        </div>`;
+      html += `<div class="result-card">
+        <div class="result-card-top">
+          <span class="result-card-badge">${items.length}${unitLabel}</span>
+        </div>
+        <div class="result-card-bottom">
+          <span class="${countClass}">${count}次</span>
+          <span class="result-card-items">${items.map(i => `<span class="${itemClass}${itemColorClass}">${i}</span>`).join('')}</span>
+          <button class="result-card-copy" onclick="copyText('${escapedItems}')">复制</button>
+        </div>
+      </div>`;
     });
 
     if (mode === 'wuxing') {
-        const wuxingInfo = {"金":"收敛、肃杀，方位西","木":"生长、升发，方位东","水":"滋润、下行，方位北","火":"炎热、向上，方位南","土":"承载、化生，方位中"};
-        const topItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '';
-        if (topItem && wuxingInfo[topItem]) html += `<div style="padding:8px;text-align:center;font-size:12px;opacity:.4;margin-top:4px;">💡 最旺五行：<strong>${topItem}</strong> — ${wuxingInfo[topItem]}</div>`;
+      const wuxingInfo = { "金": "收敛、肃杀，方位西", "木": "生长、升发，方位东", "水": "滋润、下行，方位北", "火": "炎热、向上，方位南", "土": "承载、化生，方位中" };
+      const topItem = nonZeroData.length > 0 ? nonZeroData[0][0] : '';
+      if (topItem && wuxingInfo[topItem]) html += `<div style="padding:8px;text-align:center;font-size:12px;opacity:.4;margin-top:4px;">💡 最旺五行：<strong>${topItem}</strong> — ${wuxingInfo[topItem]}</div>`;
     }
 
     resultEl.innerHTML = html;
     const wrapper = resultEl.closest('.result-wrapper');
     if (wrapper) wrapper.scrollTop = 0;
-}
+  }
 
-function renderHistoryResult(data, mode) {
+  function renderHistoryResult(data, mode) {
     if (!data || data.length === 0) return '';
     const nonZeroData = data.filter(item => item[1] > 0);
     const maxCount = nonZeroData.length > 0 ? nonZeroData[0][1] : 0;
     let group = {};
     data.forEach(item => {
-        const count = item[1];
-        if (!group[count]) group[count] = [];
-        group[count].push(item[0]);
+      const count = item[1];
+      if (!group[count]) group[count] = [];
+      group[count].push(item[0]);
     });
     let html = '<div class="history-result">';
     Object.keys(group).map(Number).sort((a, b) => b - a).forEach(count => {
-        const items = group[count];
-        const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        html += `<div class="mini-group">
-            <div class="mini-group-header">
-                <span>✨ ${count}次</span>
-                <button class="copy-small" style="font-size:10px;padding:2px 8px;" onclick="event.stopPropagation();copyText('${escapedItems}')">📋</button>
-            </div>
-            <div class="mini-group-items">${items.map(i => {
-                let cls = 'mini-item';
-                if (count === maxCount && count > 0) cls += ' hot';
-                if (wuxingElements.includes(i)) cls += ' ' + wuxingColors[i];
-                if (rgbElements.includes(i)) cls += ' ' + rgbColors[i];
-                return `<span class="${cls}">${i}</span>`;
-            }).join('')}</div>
-        </div>`;
+      const items = group[count];
+      const escapedItems = items.join("、").replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      html += `<div class="mini-group">
+        <div class="mini-group-header">
+          <span>✨ ${count}次</span>
+          <button class="copy-small" style="font-size:10px;padding:2px 8px;" onclick="event.stopPropagation();copyText('${escapedItems}')">📋</button>
+        </div>
+        <div class="mini-group-items">${items.map(i => {
+          let cls = 'mini-item';
+          if (count === maxCount && count > 0) cls += ' hot';
+          if (wuxingElements.includes(i)) cls += ' ' + wuxingColors[i];
+          if (rgbElements.includes(i)) cls += ' ' + rgbColors[i];
+          return `<span class="${cls}">${i}</span>`;
+        }).join('')}</div>
+      </div>`;
     });
     html += '</div>';
     return html;
-}
+  }
 
-function saveHistory(text, mode, data) {
+  function saveHistory(text, mode, data) {
     let history = [];
-    try { history = JSON.parse(localStorage.getItem('xy_history') || '[]'); } catch(e) { history = []; }
+    try { history = JSON.parse(localStorage.getItem('xy_history') || '[]'); } catch (e) { history = []; }
     history.unshift({ time: new Date().toLocaleString('zh-CN'), text: text.substring(0, 200), mode: mode, fullData: data });
     if (history.length > 50) history = history.slice(0, 50);
-    try { localStorage.setItem('xy_history', JSON.stringify(history)); } catch(e) { toast('⚠️ 存储空间不足'); }
-}
+    try { localStorage.setItem('xy_history', JSON.stringify(history)); } catch (e) { toast('⚠️ 存储空间不足'); }
+  }
 
-function showConfirm(text, onConfirm) {
+  function showConfirm(text, onConfirm) {
     const overlay = document.createElement('div');
     overlay.className = 'confirm-overlay';
     overlay.innerHTML = `<div class="confirm-dialog"><div class="confirm-text">${text}</div><div class="confirm-btns"><button class="confirm-cancel">取消</button><button class="confirm-ok">确定</button></div></div>`;
@@ -581,22 +776,9 @@ function showConfirm(text, onConfirm) {
     overlay.querySelector('.confirm-cancel').addEventListener('click', () => overlay.remove());
     overlay.querySelector('.confirm-ok').addEventListener('click', () => { overlay.remove(); onConfirm(); });
     overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
-}
+  }
 
-function getBeijingTime() {
-    const now = new Date();
-    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-    const bj = new Date(utc + (3600000 * 8));
-    const year = bj.getFullYear();
-    const month = String(bj.getMonth() + 1).padStart(2, '0');
-    const day = String(bj.getDate()).padStart(2, '0');
-    const hours = String(bj.getHours()).padStart(2, '0');
-    const minutes = String(bj.getMinutes()).padStart(2, '0');
-    const seconds = String(bj.getSeconds()).padStart(2, '0');
-    return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
-}
-
-function formatCopyText(data, mode) {
+  function formatCopyText(data, mode) {
     if (!data || data.length === 0) return '';
     const modeName = modeNameMap[mode] || mode;
     let total = 0;
@@ -604,9 +786,9 @@ function formatCopyText(data, mode) {
 
     let group = {};
     data.forEach(item => {
-        const count = item[1];
-        if (!group[count]) group[count] = [];
-        group[count].push(item[0]);
+      const count = item[1];
+      if (!group[count]) group[count] = [];
+      group[count].push(item[0]);
     });
 
     let unitName = '码';
@@ -619,41 +801,35 @@ function formatCopyText(data, mode) {
     let text = `【${modeName}】（总次数：${total}次）\n`;
     const sortedCounts = Object.keys(group).map(Number).sort((a, b) => a - b);
     sortedCounts.forEach(count => {
-        const items = group[count];
-        let lines = [];
-        for (let i = 0; i < items.length; i += 10) {
-            lines.push(items.slice(i, i + 10).join(','));
-        }
-        text += `【${String(count).padStart(2, '0')}次】\n${lines.join('\n')}（共${items.length}${unitName}）\n`;
+      const items = group[count];
+      text += `【${String(count).padStart(2, '0')}次】${items.join('、')}（共${items.length}${unitName}）\n`;
     });
 
-    text += `\n⏰ ${getBeijingTime()}`;
-
     return text.trim();
-}
+  }
 
-function showHistory() {
+  function showHistory() {
     const history = JSON.parse(localStorage.getItem('xy_history') || '[]');
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
     let html = '<div class="modal-content">';
     html += '<div class="modal-title">📜 历史记录</div>';
     if (!history.length) {
-        html += '<div class="empty">暂无历史记录</div>';
+      html += '<div class="empty">暂无历史记录</div>';
     } else {
-        html += '<div class="history-actions"><button class="history-clear-btn" id="clearAllHistory">🗑️ 清空全部</button></div>';
-        history.slice(0, 20).forEach((h, i) => {
-            let modeText = modeNameMap[h.mode] || h.mode;
-            html += `<div class="history-item" data-index="${i}">
-                <div class="history-top-row">
-                    <span style="font-size:11px;color:rgba(255,255,255,.3)">${i+1}. ${h.time}</span>
-                    <button class="history-delete-btn" data-del="${i}">✕</button>
-                </div>
-                <div class="history-text">📝 ${h.text || '无数据'}</div>
-                <div class="history-mode">📋 ${modeText}</div>
-                ${h.fullData ? renderHistoryResult(h.fullData, h.mode) : ''}
-            </div>`;
-        });
+      html += '<div class="history-actions"><button class="history-clear-btn" id="clearAllHistory">🗑️ 清空全部</button></div>';
+      history.slice(0, 20).forEach((h, i) => {
+        let modeText = modeNameMap[h.mode] || h.mode;
+        html += `<div class="history-item" data-index="${i}">
+          <div class="history-top-row">
+            <span style="font-size:11px;color:rgba(255,255,255,0.3)">${i + 1}. ${h.time}</span>
+            <button class="history-delete-btn" data-del="${i}">✕</button>
+          </div>
+          <div class="history-text">📝 ${h.text || '无数据'}</div>
+          <div class="history-mode">📋 ${modeText}</div>
+          ${h.fullData ? renderHistoryResult(h.fullData, h.mode) : ''}
+        </div>`;
+      });
     }
     html += '<button class="modal-close-btn">关闭</button></div>';
     overlay.innerHTML = html;
@@ -663,58 +839,58 @@ function showHistory() {
     overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 
     overlay.querySelectorAll('.history-delete-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const h = JSON.parse(localStorage.getItem('xy_history') || '[]');
-            h.splice(parseInt(this.dataset.del), 1);
-            localStorage.setItem('xy_history', JSON.stringify(h));
-            overlay.remove();
-            showHistory();
-        });
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const h = JSON.parse(localStorage.getItem('xy_history') || '[]');
+        h.splice(parseInt(this.dataset.del), 1);
+        localStorage.setItem('xy_history', JSON.stringify(h));
+        overlay.remove();
+        showHistory();
+      });
     });
 
     overlay.querySelectorAll('.history-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-            if (e.target.classList.contains('history-delete-btn') || e.target.classList.contains('copy-small')) return;
-            const h = history[parseInt(this.dataset.index)];
-            if (h) {
-                document.getElementById('inputData').value = h.text || '';
-                document.getElementById('modeSelect').value = h.mode || 'digitSplit';
-                currentMode = h.mode || 'digitSplit';
-                updatePlaceholder(h.mode || 'digitSplit');
-                overlay.remove();
-                toast('📥 数据已恢复');
-            }
-        });
+      item.addEventListener('click', function(e) {
+        if (e.target.classList.contains('history-delete-btn') || e.target.classList.contains('copy-small')) return;
+        const h = history[parseInt(this.dataset.index)];
+        if (h) {
+          document.getElementById('inputData').value = h.text || '';
+          document.getElementById('modeSelect').value = h.mode || 'digitSplit';
+          currentMode = h.mode || 'digitSplit';
+          updatePlaceholder(h.mode || 'digitSplit');
+          overlay.remove();
+          toast('📥 数据已恢复');
+        }
+      });
     });
 
     const clearBtn = overlay.querySelector('#clearAllHistory');
     if (clearBtn) {
-        clearBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            showConfirm('确定要清空所有历史记录吗？', () => {
-                localStorage.removeItem('xy_history');
-                overlay.remove();
-                toast('🗑️ 已清空');
-            });
+      clearBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showConfirm('确定要清空所有历史记录吗？', () => {
+          localStorage.removeItem('xy_history');
+          overlay.remove();
+          toast('🗑️ 已清空');
         });
+      });
     }
-}
+  }
 
-function init() {
+  function init() {
     detectDevice();
     window.addEventListener('resize', function() {
-        const wasPC = isPC;
-        isPC = window.innerWidth >= 768;
-        if (wasPC !== isPC) {
-            currentData = [];
-            highestItem = '';
-            buildLayout();
-        }
+      const wasPC = isPC;
+      isPC = window.innerWidth >= 768;
+      if (wasPC !== isPC) {
+        currentData = [];
+        highestItem = '';
+        buildLayout();
+      }
     });
-}
+  }
 
-init();
+  init();
 </script>
 </body>
 </html>
